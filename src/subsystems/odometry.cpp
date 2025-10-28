@@ -23,27 +23,23 @@ void Odometry::updateEncoderDistances()
 
 void Odometry::setNewEncoderDistances(double leftD, double rightD, double backD)
 {
-    // mutex.lock();
+    mutex.lock();
     // update deltas
-    dLeftDist = leftD - leftDist;
     dRightDist = rightD - rightDist;
     dBackDist = backD - backDist;
 
     // update distances of encoders
-    leftDist = leftD;
     rightDist = rightD;
     backDist = backD;
-    // mutex.unlock();
+    mutex.unlock();
 }
 
 void Odometry::updatePose()
 {
     mutex.lock();
     // find delta heading
-    double deltaTheta = (dLeftDist - dRightDist) /
-                        (DIST_CENTER_TO_RIGHT_WHEEL + DIST_CENTER_TO_LEFT_WHEEL);
+    double deltaTheta = (inertial.heading(vex::rotationUnits::rev) * 2 * M_PI) - pose.radians;
     double dBDist = dBackDist;
-    double dLDist = dLeftDist;
     double dRDist = dRightDist;
     Pose currentPose = pose;
     mutex.unlock();
@@ -57,11 +53,11 @@ void Odometry::updatePose()
     //  X axis is relative front and back movement
     //  Y axis is relative side to side movement
     double relYDist, relXDist;
-    if (dLDist == dRDist)
+    if (deltaTheta == 0)
     {
         // heading has not changed
         relYDist = dBDist;
-        relXDist = dLDist;
+        relXDist = dRDist;
     }
     else
     {
@@ -105,7 +101,7 @@ void Odometry::updatePose()
 
 void Odometry::update()
 {
-    printf("l: %.3f, r: %.3f\n", leftDist, rightDist);
+    printf("r: %.3f\n", rightDist);
 
     updateEncoderDistances();
     updatePose();

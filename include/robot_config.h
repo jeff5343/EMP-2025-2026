@@ -37,4 +37,7 @@ inline extern vex::motor backRightMotor{
 inline extern vex::motor_group leftMotorGroup{frontLeftMotor, topLeftMotor, backLeftMotor};
 inline extern vex::motor_group rightMotorGroup{frontRightMotor, topRightMotor, backRightMotor};
 
+// IMU
+inline extern vex::inertial inertial{vex::PORT7}; // TODO: set correct port
+
 #endif

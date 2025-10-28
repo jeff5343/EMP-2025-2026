@@ -1,8 +1,17 @@
 #include "robot.h"
 #include <cmath>
 
-void Robot::init() {
-
+void Robot::init()
+{
+    /* CALIBRATE INERTIAL SENSOR */
+    inertial.calibrate();
+    while (inertial.installed() && inertial.isCalibrating())
+    {
+        brain.Screen.clearScreen();
+        brain.Screen.print("Calibrating inertial sensor...");
+        vex::this_thread::sleep_for(50);
+    }
+    inertial.resetHeading();
 };
 
 void Robot::usercontrolPeriodic()

@@ -30,15 +30,12 @@ class Odometry
 {
 private:
     static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 2.152634;
-    static constexpr double DIST_CENTER_TO_LEFT_WHEEL = 2.152634;
     static constexpr double DIST_CENTER_TO_BOT_WHEEL = -5.695;
 
     // distances based on encoders
-    double leftDist = 0;
     double rightDist = 0;
     double backDist = 0;
     // deltas
-    double dLeftDist = 0;
     double dRightDist = 0;
     double dBackDist = 0;
 
