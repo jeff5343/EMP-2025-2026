@@ -6,14 +6,17 @@ void PidDrive::setTargetPose(Pose pose)
 {
     target = pose;
     straightPid.setSetpoint(0);
-    anglePid.setSetpoint(pose.radians);
-}
+    anglePid.setSetpoint(0);
 
-// TODO: put into helper
-template <typename T>
-T signum(T x)
-{
-    return (x > 0) - (x < 0);
+    Pose current = drivetrain.getPose();
+
+    // calculate error to target pose
+    double errorX = target.x - current.x;
+    double errorY = target.y - current.y;
+    double targetAngle = atan2(errorX, errorY);
+    if (targetAngle < 0)
+        targetAngle += M_PI * 2.0;
+    startingTargetAngle = targetAngle;
 }
 
 void PidDrive::update()
@@ -23,15 +26,23 @@ void PidDrive::update()
     // calculate error to target pose
     double errorX = target.x - current.x;
     double errorY = target.y - current.y;
-    double errorDist = sqrt(errorX * errorX + errorY * errorY) * signum<double>(errorX); // signum is a cheap fix
-    double errorAngle = atan2(errorY, errorX);                                           // TODO: i don think this is accurate?
-    // i think it gives your desired angle?
-    // TODO: fix this logic ahhh
+    double targetAngle = atan2(errorX, errorY);
+    if (targetAngle < 0)
+        targetAngle += M_PI * 2.0;
+    double errorAngle = targetAngle - current.radians;
+    double errorDist = sqrt(errorX * errorX + errorY * errorY);
+    if (std::fabs(targetAngle - startingTargetAngle) > M_PI / 2.0)
+    {
+        // cheap fix, but if the target angle changes over 90
+        // from the original target angle then robot probably
+        // went over the goal and we can reverse direction
+        errorDist *= -1;
+    }
 
     // PID based on error to target (setpoints are 0)
     // TODO: clamp pid values
     double straightPidOut = -MathUtil::clamp(straightPid.calculate(errorDist), -.1, .1);
-    double turnPidOut = MathUtil::clamp(anglePid.calculate(current.radians), -.1, .1);
+    double turnPidOut = MathUtil::clamp(anglePid.calculate(errorAngle), -.1, .1);
 
     // output values to left and right wheels
     double leftOut = 0, rightOut = 0;

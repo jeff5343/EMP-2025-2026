@@ -14,6 +14,8 @@ private:
 
     Drivetrain &drivetrain;
 
+    double startingTargetAngle;
+
 public:
     PidDrive(PidConstants anglePidConstants, PidConstants straightPidConstants, Drivetrain &drivetrain)
         : anglePid(anglePidConstants), straightPid(straightPidConstants), drivetrain(drivetrain)
