@@ -6,6 +6,7 @@
 #include "v5.h"
 #include "v5_vcs.h"
 
+#include "robot_config.h"
 
 #define waitUntil(condition)                                                   \
   do {                                                                         \

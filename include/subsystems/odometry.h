@@ -29,22 +29,17 @@
 class Odometry
 {
 private:
-    const double DIST_CENTER_TO_RIGHT_WHEEL = 7.25;
-    const double DIST_CENTER_TO_LEFT_WHEEL = 7.25;
-    const double DIST_CENTER_TO_BOT_WHEEL = 7.75;
-
-    vex::encoder &leftEncoder;
-    vex::encoder &rightEncoder;
-    vex::encoder &backEncoder;
+    static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 2.152634;
+    static constexpr double DIST_CENTER_TO_BOT_WHEEL = -5.695;
 
     // distances based on encoders
-    double leftDist = 0;
     double rightDist = 0;
     double backDist = 0;
     // deltas
-    double dLeftDist = 0;
     double dRightDist = 0;
     double dBackDist = 0;
+    // rotation from inertial sensor
+    double prevRotation = 0;
 
     Pose pose{0, 0, 0};
 
@@ -64,7 +59,6 @@ private:
         while (workerRunning)
         {
             update();
-            printf("hi!");
             vex::this_thread::sleep_for(10);
         }
         return 0;
@@ -79,17 +73,24 @@ private:
     void updatePose();
 
     /* added to simplify testing */
-    void setNewEncoderDistances(double leftDist, double rightDist, double backDist);
+    void setNewEncoderDistances(double rightDist, double backDist);
 
 public:
-    static constexpr double WHEEL_RADIUS_INCHES = 2.0;
+    static constexpr double WHEEL_RADIUS_INCHES = 2.7 / 2.0; // 2.75 / 2.0;
+    // TODO: will remove later, but for testing the back wheel has a different radius
+    static constexpr double BACK_WHEEL_RADIUS_INCHES = 1.9;
 
-    Odometry(vex::encoder &leftEncoder, vex::encoder &rightEncoder, vex::encoder &backEncoder)
-        : leftEncoder(leftEncoder), rightEncoder(rightEncoder), backEncoder(backEncoder)
+    Odometry()
+    {
+        reset(0, 0, 0);
+    };
+
+    /* MUST BE CALLED!!! */
+    void startThread()
     {
         workerRunning = true;
         worker = vex::thread(Odometry::vexThreadWrapper, this);
-    };
+    }
 
     /* returns calculated pose */
     Pose getPose()
@@ -100,12 +101,16 @@ public:
         return newPose;
     }
 
-    void resetOdometry(double x, double y, double rad)
+    void reset(double x, double y, double rad)
     {
         mutex.lock();
         pose = Pose{x, y, rad};
+        rightEncoder.setPosition(0, vex::rotationUnits::rev);
+        backEncoder.setPosition(0, vex::rotationUnits::rev);
+        inertial.setHeading(rad / (M_PI * 2.0), vex::rotationUnits::rev);
         mutex.unlock();
-        setNewEncoderDistances(0, 0, 0);
+
+        setNewEncoderDistances(0, 0);
     }
 
     ~Odometry()

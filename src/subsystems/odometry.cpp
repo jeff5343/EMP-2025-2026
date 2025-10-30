@@ -9,26 +9,25 @@
 void Odometry::updateEncoderDistances()
 {
     double wheelCircumference = 2 * M_PI * WHEEL_RADIUS_INCHES;
+    // TODO: remove after improved odom because they will all have the same radius
+    double backWheelCircumference = 2 * M_PI * BACK_WHEEL_RADIUS_INCHES;
 
     mutex.lock();
-    double leftD = leftEncoder.position(vex::rev) * wheelCircumference;
     double rightD = rightEncoder.position(vex::rev) * wheelCircumference;
-    double backD = backEncoder.position(vex::rev) * wheelCircumference;
+    double backD = backEncoder.position(vex::rev) * backWheelCircumference;
     mutex.unlock();
 
-    setNewEncoderDistances(leftD, rightD, backD);
+    setNewEncoderDistances(rightD, backD);
 }
 
-void Odometry::setNewEncoderDistances(double leftD, double rightD, double backD)
+void Odometry::setNewEncoderDistances(double rightD, double backD)
 {
     mutex.lock();
     // update deltas
-    dLeftDist = leftD - leftDist;
     dRightDist = rightD - rightDist;
     dBackDist = backD - backDist;
 
     // update distances of encoders
-    leftDist = leftD;
     rightDist = rightD;
     backDist = backD;
     mutex.unlock();
@@ -38,10 +37,19 @@ void Odometry::updatePose()
 {
     mutex.lock();
     // find delta heading
-    double deltaTheta = (dLeftDist - dRightDist) /
-                        (DIST_CENTER_TO_RIGHT_WHEEL + DIST_CENTER_TO_LEFT_WHEEL);
-    double dBDist = dBackDist;
-    double dLDist = dLeftDist;
+    double newHeading = (inertial.heading(vex::rotationUnits::rev) * 2 * M_PI);
+    double newRotation = (inertial.rotation(vex::rotationUnits::rev) * 2 * M_PI);
+    // double deltaTheta = (std::fmod(std::fmod(newHeading - pose.radians, 2 * M_PI) + M_PI, 2 * M_PI) - M_PI);
+    // TODO: learn how this subtraction works whtwht
+    double deltaTheta = newRotation - prevRotation;
+    prevRotation = newRotation;
+
+    // printf("newHeading: %.3f\n", newHeading);
+    // printf("newRotation: %.3f\n", newRotation);
+    // printf("deltaTheta: %.3f\n", deltaTheta);
+
+    // double dBDist = dBackDist;
+    double dBDist = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL); // TODO: UNCOMMENT, FOR TESTING
     double dRDist = dRightDist;
     Pose currentPose = pose;
     mutex.unlock();
@@ -52,14 +60,14 @@ void Odometry::updatePose()
     // printf(" backWheelDrift: %.3f\n", dBDist - backWheelNormalTravelDistance);
 
     // calculate relative distance traveled
-    //  Y axis is relative side to side movement
     //  X axis is relative front and back movement
+    //  Y axis is relative side to side movement
     double relYDist, relXDist;
-    if (dLDist == dRDist)
+    if (deltaTheta == 0)
     {
         // heading has not changed
         relYDist = dBDist;
-        relXDist = dLDist;
+        relXDist = dRDist;
     }
     else
     {

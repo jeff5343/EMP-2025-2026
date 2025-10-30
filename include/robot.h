@@ -8,8 +8,6 @@
 class Robot
 {
 private:
-    static const vex::brain BRAIN;
-
     // subsystems
     Drivetrain drivetrain{};
 
@@ -34,9 +32,6 @@ private:
     bool isPoseSetpointSet = false;
 
 public:
-    /* get brain for encoder ports */
-    static const vex::brain &getBrain() { return BRAIN; }
-
     /* called in pre_auton */
     void init();
 

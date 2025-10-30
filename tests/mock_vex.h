@@ -12,13 +12,13 @@ namespace vex
         rev
     };
 
-    class encoder
+    class rotation
     {
     private:
         double mockRevs;
 
     public:
-        encoder(double revs) : mockRevs(revs) {};
+        rotation(double revs) : mockRevs(revs) {};
 
         double position(rotationUnits rotUnits) { return mockRevs; }
 
