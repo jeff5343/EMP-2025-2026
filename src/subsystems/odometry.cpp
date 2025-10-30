@@ -9,7 +9,7 @@
 void Odometry::updateEncoderDistances()
 {
     double wheelCircumference = 2 * M_PI * WHEEL_RADIUS_INCHES;
-    // TODO: remove after improved odom
+    // TODO: remove after improved odom because they will all have the same radius
     double backWheelCircumference = 2 * M_PI * BACK_WHEEL_RADIUS_INCHES;
 
     mutex.lock();
@@ -44,9 +44,9 @@ void Odometry::updatePose()
     double deltaTheta = newRotation - prevRotation;
     prevRotation = newRotation;
 
-    printf("newHeading: %.3f\n", newHeading);
-    printf("newRotation: %.3f\n", newRotation);
-    printf("deltaTheta: %.3f\n", deltaTheta);
+    // printf("newHeading: %.3f\n", newHeading);
+    // printf("newRotation: %.3f\n", newRotation);
+    // printf("deltaTheta: %.3f\n", deltaTheta);
 
     // double dBDist = dBackDist;
     double dBDist = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL); // TODO: UNCOMMENT, FOR TESTING

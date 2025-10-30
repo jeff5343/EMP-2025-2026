@@ -4,7 +4,6 @@
 void Robot::init()
 {
     /* CALIBRATE INERTIAL SENSOR */
-    isCalibrating = true;
     inertial.calibrate();
     while (inertial.installed() && inertial.isCalibrating())
     {
@@ -14,19 +13,10 @@ void Robot::init()
     }
     inertial.resetHeading();
     drivetrain.startOdometry();
-    isCalibrating = false;
 };
 
 void Robot::usercontrolPeriodic()
 {
-    /* don't run anything until inertial is calibrated */
-    // i dont think this is needed, while loop should block thread
-    if (isCalibrating)
-    {
-        printf("calibrating...");
-        return;
-    }
-
     /* TELEOP DRIVING: */
 
     // convert axis positions to range -1.0 to 1.0
