@@ -29,7 +29,7 @@
 class Odometry
 {
 private:
-    static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 2.152634;
+    static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 0.0;
     static constexpr double DIST_CENTER_TO_BOT_WHEEL = -5.695;
 
     // distances based on encoders
@@ -76,7 +76,7 @@ private:
     void setNewEncoderDistances(double rightDist, double backDist);
 
 public:
-    static constexpr double WHEEL_RADIUS_INCHES = 2.7 / 2.0; // 2.75 / 2.0;
+    static constexpr double WHEEL_RADIUS_INCHES = 2.0 / 2.0; // 2.75 / 2.0;
     // TODO: will remove later, but for testing the back wheel has a different radius
     static constexpr double BACK_WHEEL_RADIUS_INCHES = 1.9;
 

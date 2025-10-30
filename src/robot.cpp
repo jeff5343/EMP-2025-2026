@@ -88,7 +88,7 @@ void Robot::autonomousPeriodic()
 void Robot::log()
 {
     /* subsystem logging */
-    drivetrain.log();
+    // drivetrain.log();
 
     /* brain logging */
     brain.Screen.clearLine();

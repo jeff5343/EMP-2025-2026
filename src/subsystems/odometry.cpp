@@ -51,6 +51,8 @@ void Odometry::updatePose()
     // double dBDist = dBackDist;
     double dBDist = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL); // TODO: UNCOMMENT, FOR TESTING
     double dRDist = dRightDist;
+    printf("%.3f\n", dRightDist - (-deltaTheta * DIST_CENTER_TO_RIGHT_WHEEL));
+    printf("%.3f\n", DIST_CENTER_TO_RIGHT_WHEEL);
     Pose currentPose = pose;
     mutex.unlock();
 
