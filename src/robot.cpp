@@ -8,7 +8,7 @@ void Robot::init()
     inertial.calibrate();
     while (inertial.installed() && inertial.isCalibrating())
     {
-        brain.Screen.clearScreen();
+        brain.Screen.clearLine();
         brain.Screen.print("Calibrating inertial sensor...");
         printf("calibrating...\n");
         vex::this_thread::sleep_for(50);
@@ -19,8 +19,14 @@ void Robot::init()
     printf("done calibrating!\n");
 };
 
-void Robot::teleop()
+void Robot::usercontrolPeriodic()
 {
+    /* DON'T RUN IF CALIBRATING */
+    if (isCalibrating)
+        return;
+
+    /* TELEOP DRIVING: */
+
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
     {
@@ -38,6 +44,9 @@ void Robot::teleop()
     }
     else
     {
+        // so that setTargetPose is ran when b is pressed ahfwahf
+        isPoseSetpointSet = false;
+
         // convert axis positions to range -1.0 to 1.0
         double x = static_cast<double>(controller.Axis1.position()) / 100.0;
         double y = static_cast<double>(controller.Axis3.position()) / 100.0;
@@ -52,9 +61,12 @@ void Robot::teleop()
         else
             drivetrain.stop();
     }
+
+    /* logging */
+    log();
 }
 
-void Robot::autoRoutine()
+void Robot::autonomousPeriodic()
 {
     if (!isPoseSetpointSet)
     {
@@ -73,17 +85,12 @@ void Robot::autoRoutine()
     }
 }
 
-void Robot::usercontrolPeriodic()
+void Robot::log()
 {
-    if (isCalibrating)
-        return;
+    /* subsystem logging */
+    drivetrain.log();
 
-    /* TELEOP DRIVING: */
-    teleop();
-
-    /* ODOMETRY TESTING: */
-    // drivetrain.log();
-
+    /* brain logging */
     brain.Screen.clearLine();
 
     brain.Screen.print("x: ");
@@ -92,8 +99,4 @@ void Robot::usercontrolPeriodic()
     brain.Screen.print(drivetrain.getPose().y);
     brain.Screen.print(", deg: ");
     brain.Screen.print(drivetrain.getPose().radians * (180 / M_PI));
-}
-void Robot::autonomousPeriodic()
-{
-    autoRoutine();
 }

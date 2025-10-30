@@ -43,8 +43,8 @@ public:
     /* called every 20ms in usercontrol */
     void usercontrolPeriodic();
 
-    void teleop();
-    void autoRoutine();
+    /* logging statements */
+    void log();
 };
 
 #endif
