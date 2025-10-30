@@ -38,8 +38,19 @@ public:
      */
     void log();
 
-    Pose getPose() {
+    void startOdometry()
+    {
+        odometry.startThread();
+    }
+
+    Pose getPose()
+    {
         return odometry.getPose();
+    }
+
+    void resetOdometry(double x, double y, double rad)
+    {
+        odometry.reset(0, 0, 0);
     }
 };
 

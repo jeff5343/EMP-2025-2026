@@ -37,16 +37,27 @@ void Odometry::updatePose()
 {
     mutex.lock();
     // find delta heading
-    double deltaTheta = (inertial.heading(vex::rotationUnits::rev) * 2 * M_PI) - pose.radians;
-    double dBDist = dBackDist;
+    double newHeading = (inertial.heading(vex::rotationUnits::rev) * 2 * M_PI);
+    double newRotation = (inertial.rotation(vex::rotationUnits::rev) * 2 * M_PI);
+    // double deltaTheta = (std::fmod(std::fmod(newHeading - pose.radians, 2 * M_PI) + M_PI, 2 * M_PI) - M_PI);
+    // TODO: learn how this subtraction works whtwht
+    double deltaTheta = newRotation - prevRotation;
+    prevRotation = newRotation;
+
+    printf("newHeading: %.3f\n", newHeading);
+    printf("newRotation: %.3f\n", newRotation);
+    printf("deltaTheta: %.3f\n", deltaTheta);
+
+    // double dBDist = dBackDist;
+    double dBDist = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL); // TODO: UNCOMMENT, FOR TESTING
     double dRDist = dRightDist;
     Pose currentPose = pose;
     mutex.unlock();
 
     // (used for debugging)
     // the distance the back wheel should have traveled if there was no drift
-    double backWheelNormalTravelDistance = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL);
-    printf(" backWheelDrift: %.3f\n", dBDist - backWheelNormalTravelDistance);
+    // double backWheelNormalTravelDistance = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL);
+    // printf(" backWheelDrift: %.3f\n", dBDist - backWheelNormalTravelDistance);
 
     // calculate relative distance traveled
     //  X axis is relative front and back movement
@@ -100,8 +111,6 @@ void Odometry::updatePose()
 
 void Odometry::update()
 {
-    printf("r: %.3f\n", rightDist);
-
     updateEncoderDistances();
     updatePose();
 }

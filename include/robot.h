@@ -9,6 +9,8 @@ private:
     // subsystems
     Drivetrain drivetrain{};
 
+    bool isCalibrating = true;
+
 public:
     /* called in pre_auton */
     void init();

@@ -4,6 +4,7 @@
 void Robot::init()
 {
     /* CALIBRATE INERTIAL SENSOR */
+    isCalibrating = true;
     inertial.calibrate();
     while (inertial.installed() && inertial.isCalibrating())
     {
@@ -12,10 +13,20 @@ void Robot::init()
         vex::this_thread::sleep_for(50);
     }
     inertial.resetHeading();
+    drivetrain.startOdometry();
+    isCalibrating = false;
 };
 
 void Robot::usercontrolPeriodic()
 {
+    /* don't run anything until inertial is calibrated */
+    // i dont think this is needed, while loop should block thread
+    if (isCalibrating)
+    {
+        printf("calibrating...");
+        return;
+    }
+
     /* TELEOP DRIVING: */
 
     // convert axis positions to range -1.0 to 1.0
@@ -31,6 +42,12 @@ void Robot::usercontrolPeriodic()
         drivetrain.arcadeDrive(x, y);
     else
         drivetrain.stop();
+
+    // TODO: find out how to bind functions to events??
+    if (controller.ButtonA.pressing())
+    {
+        drivetrain.resetOdometry(0, 0, 0);
+    }
 
     /* ODOMETRY TESTING: */
     drivetrain.log();

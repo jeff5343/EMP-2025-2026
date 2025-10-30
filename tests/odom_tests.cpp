@@ -60,7 +60,7 @@ public:
 
     void reset()
     {
-        odomTest.resetOdometry(0, 0, 0);
+        odomTest.reset(0, 0, 0);
     }
 };
 

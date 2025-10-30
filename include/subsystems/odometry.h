@@ -38,6 +38,8 @@ private:
     // deltas
     double dRightDist = 0;
     double dBackDist = 0;
+    // rotation from inertial sensor
+    double prevRotation = 0;
 
     Pose pose{0, 0, 0};
 
@@ -74,16 +76,21 @@ private:
     void setNewEncoderDistances(double rightDist, double backDist);
 
 public:
-    static constexpr double WHEEL_RADIUS_INCHES = 1.6301; // 2.75 / 2.0;
+    static constexpr double WHEEL_RADIUS_INCHES = 2.7 / 2.0; // 2.75 / 2.0;
     // TODO: will remove later, but for testing the back wheel has a different radius
     static constexpr double BACK_WHEEL_RADIUS_INCHES = 1.9;
 
     Odometry()
     {
-        resetOdometry(0, 0, 0);
+        reset(0, 0, 0);
+    };
+
+    /* MUST BE CALLED!!! */
+    void startThread()
+    {
         workerRunning = true;
         worker = vex::thread(Odometry::vexThreadWrapper, this);
-    };
+    }
 
     /* returns calculated pose */
     Pose getPose()
@@ -94,14 +101,14 @@ public:
         return newPose;
     }
 
-    void resetOdometry(double x, double y, double rad)
+    void reset(double x, double y, double rad)
     {
         mutex.lock();
         pose = Pose{x, y, rad};
-        mutex.unlock();
-
         rightEncoder.setPosition(0, vex::rotationUnits::rev);
         backEncoder.setPosition(0, vex::rotationUnits::rev);
+        inertial.setHeading(rad / (M_PI * 2.0), vex::rotationUnits::rev);
+        mutex.unlock();
 
         setNewEncoderDistances(0, 0);
     }
