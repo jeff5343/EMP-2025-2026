@@ -35,7 +35,7 @@ void Drivetrain::stop()
 
 void Drivetrain::arcadeDrive(double x, double y)
 {
-    double max = std::max(std::abs(x), std::abs(y));
+    double max = std::max(std::fabs(x), std::fabs(y));
     double total = y + x, difference = y - x;
 
     double leftOut, rightOut;
@@ -67,4 +67,9 @@ void Drivetrain::arcadeDrive(double x, double y)
 
     setVelocityLeftMotors(leftOut * Drivetrain::MAX_RPM);
     setVelocityRightMotors(rightOut * Drivetrain::MAX_RPM);
+}
+
+void Drivetrain::log()
+{
+    odometry.getPose().print();
 }

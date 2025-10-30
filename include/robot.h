@@ -6,17 +6,12 @@
 class Robot
 {
 private:
-    static const vex::brain BRAIN;
-
     // subsystems
     Drivetrain drivetrain{};
 
-    const vex::controller controller{};
+    bool isCalibrating = true;
 
 public:
-    /* get brain for encoder ports */
-    static const vex::brain &getBrain() { return BRAIN; }
-
     /* called in pre_auton */
     void init();
 
