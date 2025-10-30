@@ -13,15 +13,14 @@ void Odometry::updateEncoderDistances()
     double backWheelCircumference = 2 * M_PI * BACK_WHEEL_RADIUS_INCHES;
 
     mutex.lock();
-    double leftD = leftEncoder.position(vex::rev) * wheelCircumference;
     double rightD = rightEncoder.position(vex::rev) * wheelCircumference;
     double backD = backEncoder.position(vex::rev) * backWheelCircumference;
     mutex.unlock();
 
-    setNewEncoderDistances(leftD, rightD, backD);
+    setNewEncoderDistances(rightD, backD);
 }
 
-void Odometry::setNewEncoderDistances(double leftD, double rightD, double backD)
+void Odometry::setNewEncoderDistances(double rightD, double backD)
 {
     mutex.lock();
     // update deltas

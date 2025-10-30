@@ -71,7 +71,7 @@ private:
     void updatePose();
 
     /* added to simplify testing */
-    void setNewEncoderDistances(double leftDist, double rightDist, double backDist);
+    void setNewEncoderDistances(double rightDist, double backDist);
 
 public:
     static constexpr double WHEEL_RADIUS_INCHES = 1.6301; // 2.75 / 2.0;
@@ -100,11 +100,10 @@ public:
         pose = Pose{x, y, rad};
         mutex.unlock();
 
-        leftEncoder.setPosition(0, vex::rotationUnits::rev);
         rightEncoder.setPosition(0, vex::rotationUnits::rev);
         backEncoder.setPosition(0, vex::rotationUnits::rev);
 
-        setNewEncoderDistances(0, 0, 0);
+        setNewEncoderDistances(0, 0);
     }
 
     ~Odometry()

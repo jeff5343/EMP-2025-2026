@@ -3,17 +3,16 @@
 
 #include "vex.h"
 
-/** 
+/**
  * I didn't know all your components had to be initalized in one file
  * with the brain. I wasted so much time rip.
-*/
+ */
 
 inline extern vex::brain brain{};
 
 inline const vex::controller controller{};
 
 // encoders
-inline extern vex::rotation leftEncoder{vex::PORT9, false};
 inline extern vex::rotation rightEncoder{vex::PORT10, false};
 inline extern vex::rotation backEncoder{vex::PORT16, false};
 
