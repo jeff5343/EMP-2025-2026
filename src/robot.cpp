@@ -4,43 +4,85 @@
 void Robot::init()
 {
     /* CALIBRATE INERTIAL SENSOR */
+    isCalibrating = true;
     inertial.calibrate();
     while (inertial.installed() && inertial.isCalibrating())
     {
         brain.Screen.clearScreen();
         brain.Screen.print("Calibrating inertial sensor...");
+        printf("calibrating...\n");
         vex::this_thread::sleep_for(50);
     }
     inertial.resetHeading();
     drivetrain.startOdometry();
+    isCalibrating = false;
+    printf("done calibrating!\n");
 };
 
-void Robot::usercontrolPeriodic()
+void Robot::teleop()
 {
-    /* TELEOP DRIVING: */
-
-    // convert axis positions to range -1.0 to 1.0
-    double x = static_cast<double>(controller.Axis1.position()) / 100.0;
-    double y = static_cast<double>(controller.Axis3.position()) / 100.0;
-
-    double deadband = 0.01;
-    if (std::fabs(x) <= deadband)
-        x = 0;
-    if (std::fabs(y) <= deadband)
-        y = 0;
-    if (std::fabs(x) > deadband || std::fabs(y) > deadband)
-        drivetrain.arcadeDrive(x, y);
-    else
-        drivetrain.stop();
-
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
     {
         drivetrain.resetOdometry(0, 0, 0);
     }
 
+    if (controller.ButtonB.pressing())
+    {
+        if (!isPoseSetpointSet)
+        {
+            pidDrive.setTargetPose(poseSetpoints[poseSetpointIndex]);
+            isPoseSetpointSet = true;
+        }
+        pidDrive.update();
+    }
+    else
+    {
+        // convert axis positions to range -1.0 to 1.0
+        double x = static_cast<double>(controller.Axis1.position()) / 100.0;
+        double y = static_cast<double>(controller.Axis3.position()) / 100.0;
+
+        double deadband = 0.01;
+        if (std::fabs(x) <= deadband)
+            x = 0;
+        if (std::fabs(y) <= deadband)
+            y = 0;
+        if (std::fabs(x) > deadband || std::fabs(y) > deadband)
+            drivetrain.arcadeDrive(x, y);
+        else
+            drivetrain.stop();
+    }
+}
+
+void Robot::autoRoutine()
+{
+    if (!isPoseSetpointSet)
+    {
+        pidDrive.setTargetPose(poseSetpoints[poseSetpointIndex]);
+        isPoseSetpointSet = true;
+    }
+    pidDrive.update();
+
+    if (pidDrive.isAtSetpoint())
+    {
+        poseSetpointIndex += 1;
+        if (poseSetpointIndex >= poseSetpointsLength)
+        {
+            poseSetpointIndex = 0;
+        }
+    }
+}
+
+void Robot::usercontrolPeriodic()
+{
+    if (isCalibrating)
+        return;
+
+    /* TELEOP DRIVING: */
+    teleop();
+
     /* ODOMETRY TESTING: */
-    drivetrain.log();
+    // drivetrain.log();
 
     brain.Screen.clearLine();
 
@@ -51,20 +93,7 @@ void Robot::usercontrolPeriodic()
     brain.Screen.print(", deg: ");
     brain.Screen.print(drivetrain.getPose().radians * (180 / M_PI));
 }
-
 void Robot::autonomousPeriodic()
 {
-    if (!isPoseSetpointSet)
-    {
-        pidDrive.setTargetPose(poseSetpoints[poseSetpointIndex]);
-        isPoseSetpointSet = true;
-    }
-    pidDrive.update();
-
-    if (pidDrive.isAtSetpoint()) {
-        poseSetpointIndex += 1;
-        if (poseSetpointIndex >= poseSetpointsLength) {
-            poseSetpointIndex = 0;
-        }
-    }
+    autoRoutine();
 }

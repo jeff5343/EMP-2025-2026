@@ -13,23 +13,25 @@ private:
 
     PidDrive pidDrive{
         // turning pid constants
-        PidConstants{1.0, 0.0, 0.0}, 
+        PidConstants{0.25, 0.0, 0.0},
         // straight pid constants
-        PidConstants{1.0, 0.0, 0.0}, 
+        PidConstants{0.05, 0.0, 0.0},
         drivetrain};
 
     const vex::controller controller{};
 
     // for testing
     const Pose poseSetpoints[4] = {
-        Pose{1.0, 0.0, 0.0},
+        Pose{10.0, 0.0, 0.0},
         Pose{1.0, 1.0, M_PI / 2.0},
         Pose{0.0, 1.0, M_PI},
         Pose{0.0, 0.0, -M_PI / 2.0},
     };
-    int poseSetpointsLength = 4;
+    int poseSetpointsLength = 1;
     int poseSetpointIndex = 0;
     bool isPoseSetpointSet = false;
+
+    bool isCalibrating = true;
 
 public:
     /* called in pre_auton */
@@ -40,6 +42,9 @@ public:
 
     /* called every 20ms in usercontrol */
     void usercontrolPeriodic();
+
+    void teleop();
+    void autoRoutine();
 };
 
 #endif

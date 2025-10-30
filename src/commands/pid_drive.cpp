@@ -1,11 +1,19 @@
 #include "commands/pid_drive.h"
 #include "util/math_util.h"
+#include "util/angle.h"
 
 void PidDrive::setTargetPose(Pose pose)
 {
     target = pose;
     straightPid.setSetpoint(0);
-    anglePid.setSetpoint(0);
+    anglePid.setSetpoint(pose.radians);
+}
+
+// TODO: put into helper
+template <typename T>
+T signum(T x)
+{
+    return (x > 0) - (x < 0);
 }
 
 void PidDrive::update()
@@ -13,15 +21,17 @@ void PidDrive::update()
     Pose current = drivetrain.getPose();
 
     // calculate error to target pose
-    double errorX = current.x - target.x;
-    double errorY = current.y - target.y;
-    double errorDist = sqrt(errorX * errorX + errorY * errorY);
-    double errorAngle = atan2(errorY, errorX);
+    double errorX = target.x - current.x;
+    double errorY = target.y - current.y;
+    double errorDist = sqrt(errorX * errorX + errorY * errorY) * signum<double>(errorX); // signum is a cheap fix
+    double errorAngle = atan2(errorY, errorX);                                           // TODO: i don think this is accurate?
+    // i think it gives your desired angle?
+    // TODO: fix this logic ahhh
 
     // PID based on error to target (setpoints are 0)
     // TODO: clamp pid values
-    double straightPidOut = -MathUtil::clamp(straightPid.calculate(errorDist), -1.0, 1.0);
-    double turnPidOut = MathUtil::clamp(anglePid.calculate(errorAngle), -1.0, 1.0);
+    double straightPidOut = -MathUtil::clamp(straightPid.calculate(errorDist), -.1, .1);
+    double turnPidOut = MathUtil::clamp(anglePid.calculate(current.radians), -.1, .1);
 
     // output values to left and right wheels
     double leftOut = 0, rightOut = 0;
@@ -42,6 +52,11 @@ void PidDrive::update()
             rightOut = straightPidOut;
         }
     }
+
+    printf("angle error: %.3f\n", Angle::toDegrees(errorAngle));
+    printf("dist error: %.3f\n", errorDist);
+    printf("leftOut: %.3f\n", leftOut);
+    printf("calcOutput: %.3f\n", anglePid.calculate(errorAngle));
 
     drivetrain.setPercentOut(leftOut, rightOut);
 

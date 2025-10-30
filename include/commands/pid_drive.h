@@ -16,7 +16,7 @@ private:
 
 public:
     PidDrive(PidConstants anglePidConstants, PidConstants straightPidConstants, Drivetrain &drivetrain)
-        : anglePid(anglePidConstants), straightPid(anglePidConstants), drivetrain(drivetrain)
+        : anglePid(anglePidConstants), straightPid(straightPidConstants), drivetrain(drivetrain)
     {
         anglePid.enableContinuousInput(true);
     };
