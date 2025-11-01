@@ -29,6 +29,12 @@
 class Odometry
 {
 private:
+    /**
+     * To tune DIST_CENTER_TO_RIGHT_WHEEL:
+     *   spin robot 10 times (make sure its in the same position after spinning)
+     *   read distance of right wheel traveled
+     *     (dRightDist / deltaTheta) = (dRightDist / ((M_PI * 2) * 10))
+     */
     static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 0.0;
     static constexpr double DIST_CENTER_TO_BOT_WHEEL = -5.695;
 

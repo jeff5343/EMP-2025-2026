@@ -40,11 +40,10 @@ void PidDrive::update()
     double angleDifference = 180 - std::fabs(std::fabs(targetAngle - startingTargetAngle) - 180);
     if (angleDifference > 3.0 * M_PI / 4.0)
     {
-        printf("NEGATING!!!!");
+        printf("NEGATING!!!!\n");
         errorDist *= -1;
     }
 
-    // PID based on error to target (setpoints are 0)
     double straightPidOut = -MathUtil::clamp(straightPid.calculate(errorDist), -.2, .2);
     double turnPidOut = MathUtil::clamp(anglePid.calculate(current.radians), -.5, .5);
 
@@ -57,14 +56,14 @@ void PidDrive::update()
         // first point to pose
         if (!anglePid.isAtSetpoint() && errorDist > 0)
         {
-            printf("angling!!!");
+            printf("angling!!!\n");
             leftOut = -turnPidOut;
             rightOut = turnPidOut;
         }
         // drive to pose
         else
         {
-            printf("straighting!!!");
+            printf("straighting!!!\n");
             leftOut = straightPidOut;
             rightOut = straightPidOut;
         }

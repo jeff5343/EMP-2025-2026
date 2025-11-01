@@ -11,7 +11,7 @@ void Robot::init()
         brain.Screen.clearLine();
         brain.Screen.print("Calibrating inertial sensor...");
         printf("calibrating...\n");
-        vex::this_thread::sleep_for(50);
+        vex::this_thread::sleep_for(100);
     }
     inertial.resetHeading();
     drivetrain.startOdometry();
