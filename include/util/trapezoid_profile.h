@@ -22,6 +22,8 @@ public:
         double velocity;
     };
 
+    TrapezoidProfile(Constraints constraints)
+        : constraints(constraints), initialState({0, 0}), goalState({0, 0}) {};
     TrapezoidProfile(Constraints constraints, State initialState, State goalState)
         : constraints(constraints), initialState(initialState), goalState(goalState) {};
 
@@ -29,16 +31,16 @@ public:
     double calculate(double time)
     {
         // limit max velocity
-        if (std::fabs(initalState.velocity) > constraints.maxVelocity)
-            initialState.velocity = sgn(initS.velocity) * constraints.maxVelocity;
+        if (std::fabs(initialState.velocity) > constraints.maxVelocity)
+            initialState.velocity = sgn(initialState.velocity) * constraints.maxVelocity;
 
         // acceleration direction
         int acc_direction = initialState.position < goalState.position ? 1 : -1;
         // flip positions/velocities based on direction
         // for arithmetic operations, will be reverted
         State initS = initialState;
-        initialS.position *= acc_direction;
-        initialS.velocity *= acc_direction;
+        initS.position *= acc_direction;
+        initS.velocity *= acc_direction;
         State goalS = goalState;
         goalS.position *= acc_direction;
         goalS.velocity *= acc_direction;
@@ -68,17 +70,17 @@ public:
 
         State result = initS;
 
-        if (t < endAcc_sec)
+        if (time < endAcc_sec)
         {
             result.position += (initS.velocity + 0.5 * constraints.maxAcceleration * time) * time;
         }
-        else if (t < endFullSpeed_sec)
+        else if (time < endFullSpeed_sec)
         {
             result.position +=
                 (initS.velocity + 0.5 * constraints.maxAcceleration * endAcc_sec) * endAcc_sec +
                 +((time - endAcc_sec) * constraints.maxVelocity);
         }
-        else if (t <= endDecel_sec)
+        else if (time <= endDecel_sec)
         {
             double timeLeft = endDecel_sec - time;
             result.position = goalS.position -

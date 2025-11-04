@@ -21,6 +21,10 @@ private:
 public:
     Drivetrain();
 
+    Odometry& getOdometry() {
+        return odometry;
+    }
+
     /* Stops all motors */
     void stop();
 

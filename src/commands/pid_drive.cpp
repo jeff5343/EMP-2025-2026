@@ -17,6 +17,12 @@ void PidDrive::setTargetPose(Pose pose)
         targetAngle += M_PI * 2.0;
     startingTargetAngle = targetAngle;
     anglePid.setSetpoint(targetAngle);
+
+    // TODO: profiled pid doesnt account for angle bwjhdakdaw
+    // angleProfileTimer.reset();
+    // angleTrapProfile.setInitialState(current.radians);
+    // angleTrapProfile.setGoalState(targetAngle);
+    angleReached = false;
 }
 
 void PidDrive::update()
@@ -59,10 +65,18 @@ void PidDrive::update()
             printf("angling!!!\n");
             leftOut = -turnPidOut;
             rightOut = turnPidOut;
+            angleReached = false;
         }
         // drive to pose
         else
         {
+            if (angleReached == false)
+            {
+                straightProfileTimer.reset();
+                straightTrapProfile.setInitialState(TrapezoidProfile::State{errorDist, 0});
+                straightTrapProfile.setGoalState(TrapezoidProfile::State{0, 0});
+                angleReached = true;
+            }
             printf("straighting!!!\n");
             leftOut = straightPidOut;
             rightOut = straightPidOut;

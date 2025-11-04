@@ -44,10 +44,11 @@ private:
     // deltas
     double dRightDist = 0;
     double dBackDist = 0;
-    // rotation from inertial sensor
-    double prevRotation = 0;
+    // rotation from inertial sensor in radians
+    double prevRotationRad = 0;
 
     Pose pose{0, 0, 0};
+    Pose velocity{0, 0, 0}; // TODO: implement velocity?
 
     vex::thread worker;
     vex::mutex mutex;
@@ -105,6 +106,16 @@ public:
         Pose newPose = pose;
         mutex.unlock();
         return newPose;
+    }
+
+    int getRightDist()
+    {
+        return rightDist;
+    }
+
+    int getBackDist()
+    {
+        return backDist;
     }
 
     void reset(double x, double y, double rad)

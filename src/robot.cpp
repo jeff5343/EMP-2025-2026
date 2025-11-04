@@ -93,7 +93,9 @@ void Robot::log()
     /* brain logging */
     brain.Screen.clearLine();
 
-    brain.Screen.print("x: ");
+    brain.Screen.print("rightD: ");
+    brain.Screen.print(drivetrain.getOdometry().getRightDist());
+    brain.Screen.print(", x: ");
     brain.Screen.print(drivetrain.getPose().x);
     brain.Screen.print(", y: ");
     brain.Screen.print(drivetrain.getPose().y);

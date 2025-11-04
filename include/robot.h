@@ -4,6 +4,7 @@
 #include "subsystems/drivetrain.h"
 #include "commands/pid_drive.h"
 #include "util/pose.h"
+#include "util/trapezoid_profile.h"
 
 class Robot
 {
@@ -12,11 +13,16 @@ private:
     Drivetrain drivetrain{};
 
     PidDrive pidDrive{
+        drivetrain,
         // turning pid constants
         PidConstants{0.25, 0.0, 0.0},
         // straight pid constants
         PidConstants{0.05, 0.0, 0.0},
-        drivetrain};
+        // turning profile constraints
+        TrapezoidProfile::Constraints{M_PI, M_PI},
+        // straight profile constraints
+        TrapezoidProfile::Constraints{10, 10},
+    };
 
     const vex::controller controller{};
 
