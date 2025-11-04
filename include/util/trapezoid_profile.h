@@ -4,7 +4,7 @@
 #include <cmath>
 
 /**
- * good overview:
+ * direct copy from FRC:
  * https://frcdocs.wpi.edu/en/2020/docs/software/advanced-control/controllers/trapezoidal-profiles.html
  * */
 
@@ -28,44 +28,74 @@ public:
     /* returns position at time in the trapezoid profile */
     double calculate(double time)
     {
-        // account for nonzero inital or final velocity
-        double cutoffBegin_sec = initialState.velocity / constraints.maxAcceleration;
+        // limit max velocity
+        if (std::fabs(initalState.velocity) > constraints.maxVelocity)
+            initialState.velocity = sgn(initS.velocity) * constraints.maxVelocity;
+
+        // acceleration direction
+        int acc_direction = initialState.position < goalState.position ? 1 : -1;
+        // flip positions/velocities based on direction
+        // for arithmetic operations, will be reverted
+        State initS = initialState;
+        initialS.position *= acc_direction;
+        initialS.velocity *= acc_direction;
+        State goalS = goalState;
+        goalS.position *= acc_direction;
+        goalS.velocity *= acc_direction;
+
+        // account for negaive/positive inital or final velocity
+        double cutoffBegin_sec = initS.velocity / constraints.maxAcceleration;
         double cutoffBegin_dist = 0.5 * constraints.maxAcceleration * cutoffBegin_sec * cutoffBegin_sec;
-        double cutoffEnd_sec = goalState.velocity / constraints.maxAcceleration;
+
+        double cutoffEnd_sec = goalS.velocity / constraints.maxAcceleration;
         double cutoffEnd_dist = 0.5 * constraints.maxAcceleration * cutoffEnd_sec * cutoffEnd_sec;
 
-        double dist_total = cutoffBegin_dist + std::fabs(goalState.position - initialState.position) + cutoffEnd_dist;
-        double t_acc = constraints.maxVelocity / constraints.maxAcceleration;
-        double t_vel = (dist_total / constraints.maxVelocity) - t_acc;
+        double fullTrapezoid_dist = cutoffBegin_dist + (goalS.position - initS.position) + cutoffEnd_dist;
+        double accTime_sec = constraints.maxVelocity / constraints.maxAcceleration;
 
-        if (t_vel < 0)
-            t_acc = sqrt(dist_total / constraints.maxVelocity);
+        double fullSpeed_dist = fullTrapezoid_dist - accTime_sec * accTime_sec * constraints.maxAcceleration;
 
-        double pos = initialState.position;
-        if (t_vel >= 0)
+        // max velocity is never reached (triangle)
+        if (fullSpeed_dist < 0)
         {
-            if (time >= t_vel)
-                pos += constraints.maxVelocity * time * (0.5 * constraints.maxAcceleration * (time * time));
-            if (time >= t_acc)
-                pos += constraints.maxVelocity * (time - t_acc);
+            accTime_sec = sqrt(fullTrapezoid_dist / constraints.maxAcceleration);
+            fullSpeed_dist = 0;
+        }
+
+        double endAcc_sec = accTime_sec - cutoffBegin_sec;
+        double endFullSpeed_sec = endAcc_sec + fullSpeed_dist / constraints.maxVelocity;
+        double endDecel_sec = endFullSpeed_sec + accTime_sec - cutoffEnd_sec;
+
+        State result = initS;
+
+        if (t < endAcc_sec)
+        {
+            result.position += (initS.velocity + 0.5 * constraints.maxAcceleration * time) * time;
+        }
+        else if (t < endFullSpeed_sec)
+        {
+            result.position +=
+                (initS.velocity + 0.5 * constraints.maxAcceleration * endAcc_sec) * endAcc_sec +
+                +((time - endAcc_sec) * constraints.maxVelocity);
+        }
+        else if (t <= endDecel_sec)
+        {
+            double timeLeft = endDecel_sec - time;
+            result.position = goalS.position -
+                              (goalS.velocity + timeLeft * constraints.maxAcceleration / 2.0) * timeLeft;
         }
         else
         {
-            if (time >= t_acc)
-            {
-                double maxVelocityReached = t_acc * constraints.maxAcceleration;
-                pos += maxVelocityReached * time - (0.5 * constraints.maxAcceleration * (time * time));
-            }
+            result = goalS;
         }
-        pos += 0.5 * constraints.maxAcceleration * (time * time);
 
-        return pos;
+        return result.position * acc_direction;
     }
 
     State getGoalState() { return goalState; }
     State getInitialState() { return initialState; }
 
-    void setStartState(State initialState)
+    void setInitialState(State initialState)
     {
         this->initialState = initialState;
     }
@@ -78,6 +108,13 @@ private:
     Constraints constraints;
     State initialState;
     State goalState;
+
+    // TODO: put into helper class?
+    template <typename T>
+    int sgn(T val)
+    {
+        return (T(0) < val) - (val < T(0));
+    }
 };
 
 #endif
