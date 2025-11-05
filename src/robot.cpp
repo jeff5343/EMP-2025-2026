@@ -75,7 +75,7 @@ void Robot::autonomousPeriodic()
     }
     pidDrive.update();
 
-    if (pidDrive.isAtSetpoint())
+    if (pidDrive.isAtTargetPose())
     {
         poseSetpointIndex += 1;
         if (poseSetpointIndex >= poseSetpointsLength)

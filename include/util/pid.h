@@ -30,6 +30,11 @@ public:
         this->continuous = continuous;
     }
 
+    bool isContinuousInputEnabled()
+    {
+        return continuous;
+    }
+
     void setSetpoint(double setpoint)
     {
         reset();

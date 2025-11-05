@@ -2,41 +2,38 @@
 #define __PID_DRIVE_H_INCLUDED__
 
 #include "util/pid_constants.h"
-#include "util/pid.h"
-#include "util/trapezoid_profile.h"
+#include "util/profiled_pid.h"
 #include "subsystems/drivetrain.h"
 #include "vex.h"
 
 class PidDrive
 {
 private:
-    Pid anglePid;
-    Pid straightPid;
+    ProfiledPid headingController;
+    ProfiledPid straightController;
     Pose target;
-    // TODO: make a ProfiledPID to make it easier to use trap profiles
-    TrapezoidProfile angleTrapProfile;
-    TrapezoidProfile straightTrapProfile;
-    vex::timer straightProfileTimer{};
-
-    bool angleReached = false;
 
     Drivetrain &drivetrain;
 
     double startingTargetAngle;
+    bool hasReachedAngle = false;
+
+    double calculateTargetAngle(Pose current);
+    double calculateErrorDist(Pose current);
 
 public:
-    PidDrive(Drivetrain &drivetrain, PidConstants anglePidConstants, PidConstants straightPidConstants,
-             TrapezoidProfile::Constraints angleProfileConstraints,
+    PidDrive(Drivetrain &drivetrain, PidConstants headingPidConstants, PidConstants straightPidConstants,
+             TrapezoidProfile::Constraints headingProfileConstraints,
              TrapezoidProfile::Constraints straightProfileConstraints)
-        : drivetrain(drivetrain), anglePid(anglePidConstants), straightPid(straightPidConstants),
-          angleTrapProfile(angleProfileConstraints), straightTrapProfile(straightProfileConstraints)
+        : drivetrain(drivetrain), headingController(headingPidConstants, headingProfileConstraints),
+          straightController(straightPidConstants, straightProfileConstraints)
     {
-        anglePid.enableContinuousInput(true);
+        headingController.enableContinuousInput(true);
     };
 
     void setTargetPose(Pose pose);
     void update();
-    bool isAtSetpoint();
+    bool isAtTargetPose();
 };
 
 #endif
