@@ -81,12 +81,12 @@ void usercontrol(void)
     // try to ensure that each loop is 20 ms
     double loopTimeMSec = loopTimer.value() * 1000;
     loopTimer.reset();
-    if (loopTime > 20)
+    if (loopTimeMSec > 20)
     {
       std::printf("loop overrun! %.3f milliseconds.\n", loopTimeMSec - 20);
-      loopTime = 20;
+      loopTimeMSec = 20;
     }
-    wait(loopTime - 20, msec); 
+    wait(loopTimeMSec - 20, msec); 
   }
 }
 
