@@ -41,18 +41,21 @@ void PidDrive::update()
     double targetAngle = calculateTargetAngle(current);
     double errorDist = calculateErrorDist(current);
 
+    double angleDifference = M_PI - std::fabs(std::fabs(targetAngle - (current.radians)) - M_PI);
+    // HEHEHE I THINK I FIGURE IT OUT!!! ONG UYAY IF THIS DOESNT
+    // WORK I WILL DO SOMETHING!!! AND NOT WIGJ DAND jwnfKAFWn
+    errorDist = cos(angleDifference) * errorDist;
+
     // cheap fix, but if the target angle changes over 135
     // from the original target angle then robot probably
     // went over the goal and we can reverse direction
     // (maybe cross product??)
-    double angleDifference = M_PI - std::fabs(std::fabs(targetAngle - (current.radians)) - M_PI);
-    // printf("angle difference: %.3f\n", angleDifference);
-    if (angleDifference > 3.0 * M_PI / 4.0)
-    {
-        printf("NEGATING!!!!\n");
-        targetAngle -= M_PI;
-        errorDist *= -1;
-    }
+    // if (angleDifference > 3.0 * M_PI / 4.0)
+    // {
+    //     printf("NEGATING!!!!\n");
+    //     // targetAngle -= M_PI;
+    //     errorDist *= -1;
+    // }
 
     headingController.setGoal(targetAngle);
 
