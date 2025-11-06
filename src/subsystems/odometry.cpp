@@ -42,7 +42,7 @@ void Odometry::updatePose()
     prevRotationRad = newRotationRad;
 
     // double dBDist = dBackDist;
-    double dBDist = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL); // TODO: UNCOMMENT, FOR TESTING
+    double dBDist = 0;
     double dRDist = dRightDist;
     Pose currentPose = pose;
     mutex.unlock();
