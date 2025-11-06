@@ -83,7 +83,7 @@ private:
     void setNewEncoderDistances(double rightDist, double backDist);
 
 public:
-    static constexpr double WHEEL_RADIUS_INCHES = 2.0 / 2.0; // 2.75 / 2.0;
+    static constexpr double WHEEL_RADIUS_INCHES = 0.991; // 2.75 / 2.0;
     // TODO: will remove later, but for testing the back wheel has a different radius
     static constexpr double BACK_WHEEL_RADIUS_INCHES = 1.9;
 
@@ -108,12 +108,12 @@ public:
         return newPose;
     }
 
-    int getRightDist()
+    double getRightDist()
     {
         return rightDist;
     }
 
-    int getBackDist()
+    double getBackDist()
     {
         return backDist;
     }

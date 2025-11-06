@@ -102,7 +102,7 @@ void Odometry::updatePose()
     mutex.unlock();
 
     // printf("%.3f\n", dRightDist - (-deltaTheta * DIST_CENTER_TO_RIGHT_WHEEL));
-    printf("DIST_TO_RIGHT: %.3f\n", DIST_CENTER_TO_RIGHT_WHEEL);
+    // printf("DIST_TO_RIGHT: %.3f\n", DIST_CENTER_TO_RIGHT_WHEEL);
 }
 
 void Odometry::update()

@@ -15,7 +15,6 @@ using namespace vex;
 // A global instance of competition
 competition Competition;
 Robot robot;
-timer loopTimer;
 
 // define your global instances of motors and other devices here
 
@@ -77,16 +76,7 @@ void usercontrol(void)
     // update your motors, etc.
     // ........................................................................
     robot.usercontrolPeriodic();
-
-    // try to ensure that each loop is 20 ms
-    double loopTimeMSec = loopTimer.value() * 1000;
-    loopTimer.reset();
-    if (loopTimeMSec > 20)
-    {
-      std::printf("loop overrun! %.3f milliseconds.\n", loopTimeMSec - 20);
-      loopTimeMSec = 20;
-    }
-    wait(loopTimeMSec - 20, msec); 
+    wait(20, msec);
   }
 }
 
