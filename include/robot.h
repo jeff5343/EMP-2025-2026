@@ -15,13 +15,13 @@ private:
     PidDrive pidDrive{
         drivetrain,
         // turning pid constants
-        PidConstants{0.25, 0.0, 0.0},
+        PidConstants{0.4, 0.0, 0.0},
         // straight pid constants
         PidConstants{0.05, 0.0, 0.0},
         // turning profile constraints
-        TrapezoidProfile::Constraints{M_PI, M_PI},
+        TrapezoidProfile::Constraints{2 * M_PI, 4 * M_PI},
         // straight profile constraints
-        TrapezoidProfile::Constraints{10, 10},
+        TrapezoidProfile::Constraints{60, 120},
     };
 
     const vex::controller controller{};

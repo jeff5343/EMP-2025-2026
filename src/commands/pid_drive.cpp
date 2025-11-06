@@ -12,8 +12,10 @@ void PidDrive::setTargetPose(Pose pose)
     hasReachedAngle = false;
 
     straightController.setGoal(0);
+    straightController.reset(calculateErrorDist(current));
     headingController.setGoal(startingTargetAngle);
     headingController.reset(current.radians);
+    headingController.calculate(current.radians);
 }
 
 double PidDrive::calculateTargetAngle(Pose current)
@@ -39,18 +41,20 @@ void PidDrive::update()
     double targetAngle = calculateTargetAngle(current);
     double errorDist = calculateErrorDist(current);
 
-    headingController.setGoal(targetAngle);
-
     // cheap fix, but if the target angle changes over 135
     // from the original target angle then robot probably
     // went over the goal and we can reverse direction
     // (maybe cross product??)
-    double angleDifference = 180 - std::fabs(std::fabs(targetAngle - startingTargetAngle) - 180);
+    double angleDifference = M_PI - std::fabs(std::fabs(targetAngle - (current.radians)) - M_PI);
+    // printf("angle difference: %.3f\n", angleDifference);
     if (angleDifference > 3.0 * M_PI / 4.0)
     {
         printf("NEGATING!!!!\n");
+        targetAngle -= M_PI;
         errorDist *= -1;
     }
+
+    headingController.setGoal(targetAngle);
 
     // output values to left and right wheels
     double leftOut = 0, rightOut = 0;
@@ -59,13 +63,19 @@ void PidDrive::update()
     if (!straightController.isAtGoal())
     {
         // first point to pose
-        if (!headingController.isAtGoal() && errorDist > 0)
+        if ((!headingController.isAtGoal() && std::fabs(errorDist) > 1.0) && !hasReachedAngle)
         {
             printf("angling!!!\n");
-            double turnOut = headingController.calculate(targetAngle);
+            if (hasReachedAngle)
+            {
+                headingController.reset(current.radians);
+                hasReachedAngle = false;
+            }
+            printf("setpoint: %.3f, goal: %.3f\n", headingController.getSetpoint().position, headingController.getGoalState().position);
+            printf("current: %.3f\n", current.radians);
+            double turnOut = headingController.calculate(current.radians);
             leftOut = -turnOut;
             rightOut = turnOut;
-            hasReachedAngle = false;
         }
         // drive to pose
         else
@@ -76,12 +86,15 @@ void PidDrive::update()
                 straightController.reset(errorDist);
                 hasReachedAngle = true;
             }
-            double straightOut = straightController.calculate(errorDist);
+            printf("setpoint: %.3f, goal: %.3f\n", straightController.getSetpoint().position, straightController.getGoalState().position);
+            double straightOut = -straightController.calculate(errorDist);
             leftOut = straightOut;
             rightOut = straightOut;
         }
     }
 
+    printf("heading error: %.3f\n", headingController.getError());
+    printf("out: %.3f\n", leftOut);
     drivetrain.setPercentOut(leftOut, rightOut);
 
     // printf("target angle: %.3f\n", Angle::toDegrees(targetAngle));

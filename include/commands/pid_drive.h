@@ -25,7 +25,7 @@ public:
     PidDrive(Drivetrain &drivetrain, PidConstants headingPidConstants, PidConstants straightPidConstants,
              TrapezoidProfile::Constraints headingProfileConstraints,
              TrapezoidProfile::Constraints straightProfileConstraints)
-        : drivetrain(drivetrain), headingController(headingPidConstants, headingProfileConstraints),
+        : drivetrain(drivetrain), headingController(headingPidConstants, headingProfileConstraints, 0.01),
           straightController(straightPidConstants, straightProfileConstraints)
     {
         headingController.enableContinuousInput(true);

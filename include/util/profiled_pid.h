@@ -13,8 +13,8 @@
 class ProfiledPid
 {
 public:
-    ProfiledPid(PidConstants pidConstants, TrapezoidProfile::Constraints profileConstraints)
-        : controller(pidConstants), profile(profileConstraints) {};
+    ProfiledPid(PidConstants pidConstants, TrapezoidProfile::Constraints profileConstraints, double setpointTolerance = 0.05)
+        : controller(pidConstants, setpointTolerance), profile(profileConstraints) {};
 
     void enableContinuousInput(bool continuous)
     {
@@ -50,12 +50,21 @@ public:
 
     bool isAtGoal()
     {
+        if (controller.isContinuousInputEnabled())
+        {
+            double angleDifference = M_PI - std::fabs(std::fabs(profile.getGoalState().position - setpoint.position) - M_PI);
+            return isAtSetpoint() && angleDifference < 0.05;
+        }
         return isAtSetpoint() && setpoint.position == profile.getGoalState().position && setpoint.velocity == profile.getGoalState().velocity;
     }
 
     bool isAtSetpoint()
     {
         return controller.isAtSetpoint();
+    }
+
+    double getError() {
+        return controller.getError();
     }
 
     TrapezoidProfile::State getSetpoint()
