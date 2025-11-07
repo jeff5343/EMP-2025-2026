@@ -1,4 +1,5 @@
 #include "robot.h"
+#include "util/angle.h"
 #include <cmath>
 
 void Robot::init()
@@ -93,8 +94,10 @@ void Robot::log()
     /* brain logging */
     brain.Screen.clearLine();
 
-    brain.Screen.print("rightD: ");
-    brain.Screen.print(drivetrain.getOdometry().getRightDist());
+    // brain.Screen.print("rightD: ");
+    // brain.Screen.print(drivetrain.getOdometry().getRightDist());
+    brain.Screen.print("heading: ");
+    brain.Screen.print(Angle::toDegrees(std::fabs(inertial.heading(vex::rotationUnits::rev) - 1.0) * 2 * M_PI));
     brain.Screen.print(", x: ");
     brain.Screen.print(drivetrain.getPose().x);
     brain.Screen.print(", y: ");

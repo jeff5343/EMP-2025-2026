@@ -22,11 +22,12 @@ private:
     double calculateErrorDist(Pose current);
 
 public:
-    PidDrive(Drivetrain &drivetrain, PidConstants headingPidConstants, PidConstants straightPidConstants,
+    PidDrive(Drivetrain &drivetrain, PidConstants headingPidConstants, double headingSetpointTolerance,
+             PidConstants straightPidConstants, double straightSetpointTolerance,
              TrapezoidProfile::Constraints headingProfileConstraints,
              TrapezoidProfile::Constraints straightProfileConstraints)
-        : drivetrain(drivetrain), headingController(headingPidConstants, headingProfileConstraints, 0.01),
-          straightController(straightPidConstants, straightProfileConstraints)
+        : drivetrain(drivetrain), headingController(headingPidConstants, headingProfileConstraints, headingSetpointTolerance),
+          straightController(straightPidConstants, straightProfileConstraints, straightSetpointTolerance)
     {
         headingController.enableContinuousInput(true);
     };

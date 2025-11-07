@@ -44,7 +44,7 @@ void PidDrive::update()
     double angleDifference = M_PI - std::fabs(std::fabs(targetAngle - (current.radians)) - M_PI);
     // HEHEHE I THINK I FIGURE IT OUT!!! ONG UYAY IF THIS DOESNT
     // WORK I WILL DO SOMETHING!!! AND NOT WIGJ DAND jwnfKAFWn
-    errorDist = cos(angleDifference) * errorDist;
+    double dotErrorDist = cos(angleDifference) * errorDist;
 
     // cheap fix, but if the target angle changes over 135
     // from the original target angle then robot probably
@@ -66,7 +66,7 @@ void PidDrive::update()
     if (!straightController.isAtGoal())
     {
         // first point to pose
-        if ((!headingController.isAtGoal() && std::fabs(errorDist) > 1.0) && !hasReachedAngle)
+        if (!headingController.isAtGoal() && std::fabs(errorDist) && !hasReachedAngle)
         {
             printf("angling!!!\n");
             if (hasReachedAngle)
@@ -86,11 +86,11 @@ void PidDrive::update()
             printf("straighting!!!\n");
             if (!hasReachedAngle)
             {
-                straightController.reset(errorDist);
+                straightController.reset(dotErrorDist);
                 hasReachedAngle = true;
             }
             printf("setpoint: %.3f, goal: %.3f\n", straightController.getSetpoint().position, straightController.getGoalState().position);
-            double straightOut = -straightController.calculate(errorDist);
+            double straightOut = -straightController.calculate(dotErrorDist);
             leftOut = straightOut;
             rightOut = straightOut;
         }

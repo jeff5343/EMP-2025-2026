@@ -16,15 +16,17 @@ private:
         drivetrain,
         // turning pid constants
         PidConstants{0.4, 0.0, 0.0},
+        // turning pid setpoint tolerance
+        0.01,
         // straight pid constants
         PidConstants{0.05, 0.0, 0.0},
+        // straight pid setpoint tolerance
+        0.05,
         // turning profile constraints
         TrapezoidProfile::Constraints{2 * M_PI, 4 * M_PI},
         // straight profile constraints
         TrapezoidProfile::Constraints{60, 120},
     };
-
-    const vex::controller controller{};
 
     // for testing
     const Pose poseSetpoints[4] = {

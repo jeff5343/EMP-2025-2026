@@ -35,8 +35,12 @@ private:
      *   read distance of right wheel traveled
      *     (dRightDist / deltaTheta) = (dRightDist / ((M_PI * 2) * 10))
      */
+    // -0.491 from hand measurement
     static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 0; // whatwhjfawf
     static constexpr double DIST_CENTER_TO_BOT_WHEEL = 0;
+
+    /* for one rotation of the heading, the difference in the actual and reported */
+    static constexpr double headingDriftPerRotation = -0.004325; // 0.0065722;
 
     // distances based on encoders
     double rightDist = 0;
