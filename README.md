@@ -1,3 +1,3 @@
-# VEX-Odometry-Bot
+# EMP-2025
 
-Currently has functions for tracking odometry and driving a tank drive robot.
+Code for the EMP team during the VEX 2025-2026 season.
