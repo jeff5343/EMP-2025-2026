@@ -13,28 +13,42 @@ inline extern vex::brain brain{};
 inline const vex::controller controller{};
 
 // encoders
-inline extern vex::rotation rightEncoder{vex::PORT10, true};
-inline extern vex::rotation backEncoder{vex::PORT16, false};
+inline extern vex::rotation rightEncoder{vex::PORT9, true};
+inline extern vex::rotation backEncoder{vex::PORT10, false};
 
 // motors (top motors are the elevate ones)
 constexpr bool LEFT_MOTORS_INVERTED = true;
 constexpr bool RIGHT_MOTORS_INVERTED = false;
-inline extern vex::motor frontLeftMotor{
-    vex::PORT4, vex::ratio6_1, LEFT_MOTORS_INVERTED};
-inline extern vex::motor topLeftMotor{
-    vex::PORT6, vex::ratio6_1, !LEFT_MOTORS_INVERTED};
-inline extern vex::motor backLeftMotor{
+
+// LEFT MOTORS
+inline extern vex::motor botFrontLeftMotor{
     vex::PORT5, vex::ratio6_1, LEFT_MOTORS_INVERTED};
-inline extern vex::motor frontRightMotor{
+inline extern vex::motor botBackLeftMotor{
+    vex::PORT6, vex::ratio6_1, LEFT_MOTORS_INVERTED};
+inline extern vex::motor topFrontLeftMotor{
+    vex::PORT7, vex::ratio6_1, !LEFT_MOTORS_INVERTED};
+inline extern vex::motor topBackLeftMotor{
+    vex::PORT8, vex::ratio6_1, !LEFT_MOTORS_INVERTED};
+
+// RIGHT MOTORS
+inline extern vex::motor botFrontRightMotor{
     vex::PORT1, vex::ratio6_1, RIGHT_MOTORS_INVERTED};
-inline extern vex::motor topRightMotor{
-    vex::PORT3, vex::ratio6_1, !RIGHT_MOTORS_INVERTED};
-inline extern vex::motor backRightMotor{
+inline extern vex::motor botBackRightMotor{
     vex::PORT2, vex::ratio6_1, RIGHT_MOTORS_INVERTED};
+inline extern vex::motor topFrontRightMotor{
+    vex::PORT3, vex::ratio6_1, !RIGHT_MOTORS_INVERTED};
+inline extern vex::motor topBackRightMotor{
+    vex::PORT4, vex::ratio6_1, !RIGHT_MOTORS_INVERTED};
 
 // motor groups
-inline extern vex::motor_group leftMotorGroup{frontLeftMotor, topLeftMotor, backLeftMotor};
-inline extern vex::motor_group rightMotorGroup{frontRightMotor, topRightMotor, backRightMotor};
+inline extern vex::motor_group leftMotorGroup{botFrontLeftMotor, botBackLeftMotor, topFrontLeftMotor, topBackLeftMotor};
+inline extern vex::motor_group rightMotorGroup{botFrontRightMotor, botBackRightMotor, topFrontRightMotor, topBackRightMotor};
+
+// intake motors
+inline extern vex::motor intakeLeftMotor{
+    vex::PORT11, vex::ratio6_1, true};
+inline extern vex::motor intakeRightMotor{
+    vex::PORT12, vex::ratio6_1, false};
 
 // IMU
 inline extern vex::inertial inertial{vex::PORT19};
