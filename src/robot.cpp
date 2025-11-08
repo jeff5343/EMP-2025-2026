@@ -15,7 +15,7 @@ void Robot::init()
         vex::this_thread::sleep_for(100);
     }
     inertial.resetHeading();
-    drivetrain.startOdometry();
+    // drivetrain.startOdometry(); TODO: UNCOMMENT, new drivetrain has no odom pods yet
     isCalibrating = false;
     printf("done calibrating!\n");
 };
@@ -27,6 +27,22 @@ void Robot::usercontrolPeriodic()
         return;
 
     /* TELEOP DRIVING: */
+
+    if (controller.ButtonR1.pressing())
+    {
+        intakeRightMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
+        intakeLeftMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
+    }
+    else if (controller.ButtonL1.pressing())
+    {
+        intakeRightMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
+        intakeLeftMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
+    }
+    else
+    {
+        intakeRightMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
+        intakeLeftMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
+    }
 
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
