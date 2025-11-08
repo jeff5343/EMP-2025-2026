@@ -37,19 +37,16 @@ void Odometry::updatePose()
 {
     mutex.lock();
     // find delta heading
-    double newHeading = (inertial.heading(vex::rotationUnits::rev) * 2 * M_PI);
-    double newRotation = (inertial.rotation(vex::rotationUnits::rev) * 2 * M_PI);
-    // double deltaTheta = (std::fmod(std::fmod(newHeading - pose.radians, 2 * M_PI) + M_PI, 2 * M_PI) - M_PI);
-    // TODO: learn how this subtraction works whtwht
-    double deltaTheta = newRotation - prevRotation;
-    prevRotation = newRotation;
+    double newRotationRad = (inertial.rotation(vex::rotationUnits::rev) * 2 * M_PI);
+    double deltaTheta = newRotationRad - prevRotationRad;
+    prevRotationRad = newRotationRad;
 
-    // printf("newHeading: %.3f\n", newHeading);
-    // printf("newRotation: %.3f\n", newRotation);
-    // printf("deltaTheta: %.3f\n", deltaTheta);
+    double rotationDelta = deltaTheta / (2 * M_PI);
+    double drift = headingDriftPerRotation * rotationDelta;
+    deltaTheta += drift;
 
     // double dBDist = dBackDist;
-    double dBDist = (-deltaTheta * DIST_CENTER_TO_BOT_WHEEL); // TODO: UNCOMMENT, FOR TESTING
+    double dBDist = 0;
     double dRDist = dRightDist;
     Pose currentPose = pose;
     mutex.unlock();
@@ -107,6 +104,9 @@ void Odometry::updatePose()
     // wrap radians
     pose.radians = Angle::wrapRadians(pose.radians);
     mutex.unlock();
+
+    // printf("%.3f\n", dRightDist - (-deltaTheta * DIST_CENTER_TO_RIGHT_WHEEL));
+    // printf("DIST_TO_RIGHT: %.3f\n", DIST_CENTER_TO_RIGHT_WHEEL);
 }
 
 void Odometry::update()

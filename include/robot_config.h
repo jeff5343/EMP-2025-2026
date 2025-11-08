@@ -4,7 +4,7 @@
 #include "vex.h"
 
 /**
- * I didn't know all your components had to be initalized in one file
+ * All your components have to be initalized in one file
  * with the brain. I wasted so much time rip.
  */
 
@@ -13,7 +13,7 @@ inline extern vex::brain brain{};
 inline const vex::controller controller{};
 
 // encoders
-inline extern vex::rotation rightEncoder{vex::PORT10, false};
+inline extern vex::rotation rightEncoder{vex::PORT10, true};
 inline extern vex::rotation backEncoder{vex::PORT16, false};
 
 // motors (top motors are the elevate ones)
@@ -37,6 +37,6 @@ inline extern vex::motor_group leftMotorGroup{frontLeftMotor, topLeftMotor, back
 inline extern vex::motor_group rightMotorGroup{frontRightMotor, topRightMotor, backRightMotor};
 
 // IMU
-inline extern vex::inertial inertial{vex::PORT19}; // TODO: set correct port
+inline extern vex::inertial inertial{vex::PORT19};
 
 #endif

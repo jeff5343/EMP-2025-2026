@@ -21,6 +21,10 @@ private:
 public:
     Drivetrain();
 
+    Odometry& getOdometry() {
+        return odometry;
+    }
+
     /* Stops all motors */
     void stop();
 
@@ -31,6 +35,13 @@ public:
      * @param y value of y axis of joystick
      */
     void arcadeDrive(double x, double y);
+
+    /**
+     * Controls the drivetrain by setting left and right motors with percent out
+     * @param leftOut percent out for left motors [-1.0, 1.0]
+     * @param rightOut percent out for right motors [-1.0, 1.0]
+     */
+    void setPercentOut(double leftOut, double rightOut);
 
     /**
      * Log stuffs for drivetrain.

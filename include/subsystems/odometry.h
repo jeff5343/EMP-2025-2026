@@ -29,8 +29,18 @@
 class Odometry
 {
 private:
-    static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 2.152634;
-    static constexpr double DIST_CENTER_TO_BOT_WHEEL = -5.695;
+    /**
+     * To tune DIST_CENTER_TO_RIGHT_WHEEL:
+     *   spin robot 10 times (make sure its in the same position after spinning)
+     *   read distance of right wheel traveled
+     *     (dRightDist / deltaTheta) = (dRightDist / ((M_PI * 2) * 10))
+     */
+    // -0.491 from hand measurement
+    static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 0; // whatwhjfawf
+    static constexpr double DIST_CENTER_TO_BOT_WHEEL = 0;
+
+    /* for one rotation of the heading, the difference in the actual and reported */
+    static constexpr double headingDriftPerRotation = -0.004325; // 0.0065722;
 
     // distances based on encoders
     double rightDist = 0;
@@ -38,10 +48,11 @@ private:
     // deltas
     double dRightDist = 0;
     double dBackDist = 0;
-    // rotation from inertial sensor
-    double prevRotation = 0;
+    // rotation from inertial sensor in radians
+    double prevRotationRad = 0;
 
     Pose pose{0, 0, 0};
+    Pose velocity{0, 0, 0}; // TODO: implement velocity?
 
     vex::thread worker;
     vex::mutex mutex;
@@ -59,7 +70,7 @@ private:
         while (workerRunning)
         {
             update();
-            vex::this_thread::sleep_for(10);
+            vex::this_thread::sleep_for(5);
         }
         return 0;
     }
@@ -76,7 +87,7 @@ private:
     void setNewEncoderDistances(double rightDist, double backDist);
 
 public:
-    static constexpr double WHEEL_RADIUS_INCHES = 2.7 / 2.0; // 2.75 / 2.0;
+    static constexpr double WHEEL_RADIUS_INCHES = 0.991; // 2.75 / 2.0;
     // TODO: will remove later, but for testing the back wheel has a different radius
     static constexpr double BACK_WHEEL_RADIUS_INCHES = 1.9;
 
@@ -99,6 +110,16 @@ public:
         Pose newPose = pose;
         mutex.unlock();
         return newPose;
+    }
+
+    double getRightDist()
+    {
+        return rightDist;
+    }
+
+    double getBackDist()
+    {
+        return backDist;
     }
 
     void reset(double x, double y, double rad)
