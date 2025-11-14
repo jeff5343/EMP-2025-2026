@@ -50,6 +50,12 @@ inline extern vex::motor intakeLeftMotor{
 inline extern vex::motor intakeRightMotor{
     vex::PORT12, vex::ratio6_1, false};
 
+// arm
+inline extern vex::digital_out armPneumatic{brain.ThreeWirePort.B};
+
+// flap
+inline extern vex::digital_out flapPneumatic{brain.ThreeWirePort.C};
+
 // IMU
 inline extern vex::inertial inertial{vex::PORT19};
 

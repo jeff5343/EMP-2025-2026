@@ -2,6 +2,8 @@
 #define __ROBOT_H_INCLUDED__
 
 #include "subsystems/drivetrain.h"
+#include "subsystems/arm.h"
+#include "subsystems/flap.h"
 #include "commands/pid_drive.h"
 #include "util/pose.h"
 #include "util/trapezoid_profile.h"
@@ -11,6 +13,8 @@ class Robot
 private:
     // subsystems
     Drivetrain drivetrain{};
+    Arm arm;
+    Flap flap;
 
     PidDrive pidDrive{
         drivetrain,
