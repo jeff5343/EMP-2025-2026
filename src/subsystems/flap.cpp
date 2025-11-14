@@ -3,8 +3,10 @@
 
 void Flap::open() {
     armPneumatic.set(true);
+    isOpen = true;
 }
 
 void Flap::close() {
     armPneumatic.set(false);
+    isOpen = false;
 }

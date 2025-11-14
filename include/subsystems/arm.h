@@ -6,8 +6,10 @@ class Arm
 public:
     void lowerPosition();
     void upperPosition();
+    bool isUpperPosition();
 
 private:
+    bool isUpperPosition = false;
 };
 
 #endif

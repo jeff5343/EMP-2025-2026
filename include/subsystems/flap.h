@@ -6,8 +6,10 @@ class Flap
 public:
     void open();
     void close();
+    bool isOpen();
 
 private:
+    bool isOpen = false;
 };
 
 #endif

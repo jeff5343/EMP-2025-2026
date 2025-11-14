@@ -4,9 +4,11 @@
 void Arm::lowerPosition()
 {
     armPneumatic.set(false);
+    isUpperPosition = false;
 }
 
 void Arm::upperPosition()
 {
     armPneumatic.set(true);
+    isUpperPosition = true;
 }
