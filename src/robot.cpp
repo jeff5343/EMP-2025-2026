@@ -30,6 +30,22 @@ void Robot::usercontrolPeriodic()
 
     if (controller.ButtonR1.pressing())
     {
+        intake.intake(); //intake();
+        throughtake.intake();
+    }
+    else if(controller.ButtonR2.pressing())
+    {
+        intake.reverse();
+        throughtake.reverse();
+    }
+    else 
+    {
+        intake.stop();
+        throughtake.stop();
+    }
+
+    /*if (controller.ButtonR1.pressing())
+    {
         intakeRightMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
         intakeLeftMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
     }
@@ -42,7 +58,7 @@ void Robot::usercontrolPeriodic()
     {
         intakeRightMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
         intakeLeftMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
-    }
+    }*/
 
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
