@@ -54,6 +54,17 @@ inline extern vex::motor intakeRightMotor{
 inline extern vex::motor throughTakeMotor{
     vex::PORT13, vex::ratio6_1, true};
 
+    //outtake
+inline extern vex::motor outTakeMotor{
+    vex::PORT14, vex::ratio6_1,true
+};
+    //intake
+inline extern vex::motor inTakeMotor{
+    vex::PORT15, vex::ratio6_1, true
+};
+inline extern vex::digital_out mouth{
+    brain.ThreeWirePort.A
+};
 
 // IMU
 inline extern vex::inertial inertial{vex::PORT19};

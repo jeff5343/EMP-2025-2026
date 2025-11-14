@@ -12,3 +12,7 @@ void ThroughTake::reverse()
 {
     setPercent(REVERSE_SPEED);
 }
+void ThroughTake::stop()
+{
+    setPercent(0);
+}

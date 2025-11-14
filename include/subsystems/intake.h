@@ -1,15 +1,17 @@
-#ifndef __THROUGHTAKE_H_INCLUDED__
-#define __THROUGHTAKE_H_INCLUDED__
+#ifndef __INTAKE_H_INCLUDED__
+#define __INTAKE_H_INCLUDED__
 
 #include "vex.h"
 #include "odometry.h"
 
-class ThroughTake
+class InTake
 {
 
 public:
     void intake();
     void reverse();
+    void clamp();
+    void unclamp();
     void stop();
 
 private:
