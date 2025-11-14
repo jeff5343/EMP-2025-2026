@@ -2,6 +2,10 @@
 #define __ROBOT_H_INCLUDED__
 
 #include "subsystems/drivetrain.h"
+#include "subsystems/intake.h"
+#include "subsystems/outtake.h"
+#include "subsystems/throughtake.h"
+
 #include "commands/pid_drive.h"
 #include "util/pose.h"
 #include "util/trapezoid_profile.h"
@@ -11,6 +15,9 @@ class Robot
 private:
     // subsystems
     Drivetrain drivetrain{};
+    InTake intake{};
+    OutTake outtake{};
+    ThroughTake throughtake{};
 
     PidDrive pidDrive{
         drivetrain,
