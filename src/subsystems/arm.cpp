@@ -12,3 +12,8 @@ void Arm::upperPosition()
     armPneumatic.set(true);
     isUpperPosition = true;
 }
+
+bool Arm::isAtUpperPosition()
+{
+    return isAtUpperPosition();
+}

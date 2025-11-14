@@ -56,6 +56,10 @@ inline extern vex::digital_out armPneumatic{brain.ThreeWirePort.B};
 // flap
 inline extern vex::digital_out flapPneumatic{brain.ThreeWirePort.C};
 
+// poop chute
+inline extern vex::digital_out poopChute{brain.ThreeWirePort.D};
+inline extern vex::optical colorSensor{vex::PORT15};
+
 // IMU
 inline extern vex::inertial inertial{vex::PORT19};
 

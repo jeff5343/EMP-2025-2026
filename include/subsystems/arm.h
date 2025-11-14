@@ -6,7 +6,7 @@ class Arm
 public:
     void lowerPosition();
     void upperPosition();
-    bool isUpperPosition();
+    bool isAtUpperPosition();
 
 private:
     bool isUpperPosition = false;

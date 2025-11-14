@@ -4,6 +4,7 @@
 #include "subsystems/drivetrain.h"
 #include "subsystems/arm.h"
 #include "subsystems/flap.h"
+#include "subsystems/poop_chute.h"
 #include "commands/pid_drive.h"
 #include "util/pose.h"
 #include "util/trapezoid_profile.h"
@@ -13,8 +14,9 @@ class Robot
 private:
     // subsystems
     Drivetrain drivetrain{};
-    Arm arm;
-    Flap flap;
+    Arm arm{};
+    Flap flap{};
+    PoopChute poopChute{};
 
     PidDrive pidDrive{
         drivetrain,
