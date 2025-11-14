@@ -38,12 +38,25 @@ void Robot::usercontrolPeriodic()
         intake.reverse();
         throughtake.reverse();
     }
-    else 
+    
+    else if(controller.ButtonL1.pressing())
+    {
+        intake.intake();
+        throughtake.intake();
+        outtake.intake();
+    }
+    else if (controller.ButtonL2.pressing())
+    {
+        intake.reverse();
+        throughtake.reverse();
+        outtake.eject();
+    }
+    else
     {
         intake.stop();
         throughtake.stop();
+        outtake.stop();
     }
-
     /*if (controller.ButtonR1.pressing())
     {
         intakeRightMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
