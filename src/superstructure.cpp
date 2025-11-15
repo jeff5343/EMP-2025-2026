@@ -1,10 +1,18 @@
 #include "vex.h"
 #include "superstructure.h"
-void Superstructure::Intake()
+void Superstructure::chuteIntake()
 {
     intake.intake();
     throughtake.intake();
     outtake.intake();
+    intake.clamp();
+};
+void Superstructure::groundIntake()
+{
+    intake.intake();
+    throughtake.intake();
+    outtake.intake();
+    intake.unclamp();
 };
 void Superstructure::poop()
 {
@@ -19,9 +27,7 @@ void Superstructure::bottomScoring()
 };
 void Superstructure::raisedScoreingPosition()
 {
-    // Jefferson do I include: isAtUpperPosition() as well?
     arm.upperPosition();
-    // arm.isAtUpperPosition();
 };
 void Superstructure::levelScoringPosition()
 {

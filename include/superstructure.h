@@ -24,7 +24,8 @@ private:
     PoopChute poopChute{};
 
 public:
-    void Intake();
+    void chuteIntake();
+    void groundIntake();
     void poop();
     void bottomScoring();
     void raisedScoreingPosition();
