@@ -30,32 +30,33 @@ void Robot::usercontrolPeriodic()
 
     if (controller.ButtonR1.pressing())
     {
-        intake.intake();
-        throughtake.intake();
+        superstructure.groundIntake();
     }
     else if (controller.ButtonR2.pressing())
     {
-        intake.reverse();
-        throughtake.reverse();
+        superstructure.bottomScoringOut();
     }
 
     else if (controller.ButtonL1.pressing())
     {
-        intake.intake();
-        throughtake.intake();
-        outtake.intake();
+        superstructure.armScoringOut();
     }
     else if (controller.ButtonL2.pressing())
     {
-        intake.reverse();
-        throughtake.reverse();
-        outtake.eject();
+        if (hasBeenPressed==false and superstructure.isArmUp()){
+            superstructure.raisedScoreingPosition();
+            hasBeenPressed=true;
+        }
+        else if (hasBeenPressed==false and !superstructure.isArmUp())
+        {
+            superstructure.levelScoringPosition();
+            hasBeenPressed=true;
+        }
+    
     }
     else
     {
-        intake.stop();
-        throughtake.stop();
-        outtake.stop();
+        superstructure.stopAllMotors();
     }
 
     // TODO: find out how to bind functions to events??

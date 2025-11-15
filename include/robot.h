@@ -1,14 +1,7 @@
 #ifndef __ROBOT_H_INCLUDED__
 #define __ROBOT_H_INCLUDED__
 
-#include "subsystems/drivetrain.h"
-#include "subsystems/intake.h"
-#include "subsystems/outtake.h"
-#include "subsystems/throughtake.h"
-
-#include "subsystems/arm.h"
-#include "subsystems/flap.h"
-#include "subsystems/poop_chute.h"
+#include "superstructure.h"
 #include "commands/pid_drive.h"
 #include "util/pose.h"
 #include "util/trapezoid_profile.h"
@@ -17,13 +10,9 @@ class Robot
 {
 private:
     // subsystems
-    Drivetrain drivetrain{};
-    InTake intake{};
-    OutTake outtake{};
-    ThroughTake throughtake{};
-    Arm arm{};
-    Flap flap{};
-    PoopChute poopChute{};
+    Superstructure superstructure{};
+    bool hasBeenPressed{false};
+    
 
     PidDrive pidDrive{
         drivetrain,

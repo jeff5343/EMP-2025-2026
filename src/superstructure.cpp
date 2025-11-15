@@ -19,7 +19,7 @@ void Superstructure::poop()
     intake.intake();
     poopChute.poop();
 };
-void Superstructure::bottomScoring()
+void Superstructure::bottomScoringOut()
 {
     intake.reverse();
     throughtake.reverse();

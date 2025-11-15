@@ -27,7 +27,7 @@ public:
     void chuteIntake();
     void groundIntake();
     void poop();
-    void bottomScoring();
+    void bottomScoringOut();
     void raisedScoreingPosition();
     void levelScoringPosition();
     void armScoringOut();
@@ -35,6 +35,10 @@ public:
     void stopAllMotors();
 
     void arcadeDrive(double x, double y);
+
+    bool isArmUp(){
+        return arm.isAtUpperPosition();
+    }
 
     Drivetrain& getDrivetrain() {
         return drivetrain;
