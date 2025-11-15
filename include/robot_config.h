@@ -50,6 +50,10 @@ inline extern vex::motor intakeLeftMotor{
 inline extern vex::motor intakeRightMotor{
     vex::PORT12, vex::ratio6_1, false};
 
+// throughtake
+inline extern vex::motor throughTakeMotor{
+    vex::PORT13, vex::ratio6_1, true};
+
 // IMU
 inline extern vex::inertial inertial{vex::PORT19};
 
