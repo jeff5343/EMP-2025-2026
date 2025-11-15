@@ -1,3 +1,6 @@
+#ifndef __SUPERSTRUCTURE_H_INCLUDED__
+#define __SUPERSTRUCTURE_H_INCLUDED__
+
 #include "vex.h"
 #include "subsystems/drivetrain.h"
 #include "subsystems/intake.h"
@@ -29,4 +32,12 @@ public:
     void armScoringOut();
     void travelPosition();
     void stopAllMotors();
+
+    void arcadeDrive(double x, double y);
+
+    Drivetrain& getDrivetrain() {
+        return drivetrain;
+    }
 };
+
+#endif

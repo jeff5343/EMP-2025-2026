@@ -45,3 +45,7 @@ void Superstructure::stopAllMotors()
 {
 
 };
+
+void Superstructure::arcadeDrive(double x, double y) {
+    drivetrain.arcadeDrive(x, y);
+}
