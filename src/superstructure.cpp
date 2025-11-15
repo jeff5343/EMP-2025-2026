@@ -35,17 +35,22 @@ void Superstructure::armScoringOut()
     intake.intake();
     throughtake.intake();
     outtake.intake();
-    
+    flap.open(); //add arm
 };
 void Superstructure::travelPosition()
 {
-
+    flap.close();
+    arm.lowerPosition();
 };
 void Superstructure::stopAllMotors()
 {
+    intake.stop();
+    throughtake.stop();
+    outtake.stop();
 
 };
 
 void Superstructure::arcadeDrive(double x, double y) {
     drivetrain.arcadeDrive(x, y);
 }
+    
