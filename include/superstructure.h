@@ -21,11 +21,12 @@ private:
     PoopChute poopChute{};
 
 public:
-    void intake();
+    void Intake();
     void poop();
     void bottomScoring();
     void raisedScoreingPosition();
     void levelScoringPosition();
     void armScoringOut();
     void travelPosition();
+    void stopAllMotors();
 };
