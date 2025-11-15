@@ -10,8 +10,6 @@ void Superstructure::poop()
 {
     intake.intake();
     poopChute.poop();
-
-
 };
 void Superstructure::bottomScoring()
 {
@@ -21,10 +19,9 @@ void Superstructure::bottomScoring()
 };
 void Superstructure::raisedScoreingPosition()
 {
-    //Jefferson do I include: isAtUpperPosition() as well?
+    // Jefferson do I include: isAtUpperPosition() as well?
     arm.upperPosition();
-    //arm.isAtUpperPosition();
-
+    // arm.isAtUpperPosition();
 };
 void Superstructure::levelScoringPosition()
 {
@@ -35,7 +32,7 @@ void Superstructure::armScoringOut()
     intake.intake();
     throughtake.intake();
     outtake.intake();
-    flap.open(); //add arm
+    flap.open(); // add arm
 };
 void Superstructure::travelPosition()
 {
@@ -47,10 +44,9 @@ void Superstructure::stopAllMotors()
     intake.stop();
     throughtake.stop();
     outtake.stop();
-
 };
 
-void Superstructure::arcadeDrive(double x, double y) {
+void Superstructure::arcadeDrive(double x, double y)
+{
     drivetrain.arcadeDrive(x, y);
 }
-    
