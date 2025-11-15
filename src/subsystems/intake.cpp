@@ -2,7 +2,8 @@
 
 void InTake::setPercent(double out)
 {
-    throughTakeMotor.spin(vex::forward, (out * MAX_RPM), vex::rpm);
+    intakeLeftMotor.spin(vex::forward, (out * MAX_RPM), vex::rpm);
+    intakeRightMotor.spin(vex::forward, (out * MAX_RPM), vex::rpm);
 }
 void InTake::intake()
 {
@@ -15,12 +16,10 @@ void InTake::reverse()
 void InTake::clamp()
 {
     mouth.set(true);
-
 }
 void InTake::unclamp()
 {
     mouth.set(false);
-
 }
 void InTake::stop()
 {

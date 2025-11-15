@@ -49,22 +49,17 @@ inline extern vex::motor intakeLeftMotor{
     vex::PORT11, vex::ratio6_1, true};
 inline extern vex::motor intakeRightMotor{
     vex::PORT12, vex::ratio6_1, false};
+inline extern vex::digital_out mouth{
+    brain.ThreeWirePort.A};
 
-    //throughtake
+// throughtake
 inline extern vex::motor throughTakeMotor{
     vex::PORT13, vex::ratio6_1, true};
 
-    //outtake
+// outtake
 inline extern vex::motor outTakeMotor{
-    vex::PORT14, vex::ratio6_1,true
-};
-    //intake
-inline extern vex::motor inTakeMotor{
-    vex::PORT15, vex::ratio6_1, true
-};
-inline extern vex::digital_out mouth{
-    brain.ThreeWirePort.A
-};
+    vex::PORT14, vex::ratio6_1, true};
+
 // arm
 inline extern vex::digital_out armPneumatic{brain.ThreeWirePort.B};
 

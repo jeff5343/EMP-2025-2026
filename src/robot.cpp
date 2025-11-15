@@ -30,16 +30,16 @@ void Robot::usercontrolPeriodic()
 
     if (controller.ButtonR1.pressing())
     {
-        intake.intake(); 
+        intake.intake();
         throughtake.intake();
     }
-    else if(controller.ButtonR2.pressing())
+    else if (controller.ButtonR2.pressing())
     {
         intake.reverse();
         throughtake.reverse();
     }
-    
-    else if(controller.ButtonL1.pressing())
+
+    else if (controller.ButtonL1.pressing())
     {
         intake.intake();
         throughtake.intake();
