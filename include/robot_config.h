@@ -65,6 +65,15 @@ inline extern vex::motor inTakeMotor{
 inline extern vex::digital_out mouth{
     brain.ThreeWirePort.A
 };
+// arm
+inline extern vex::digital_out armPneumatic{brain.ThreeWirePort.B};
+
+// flap
+inline extern vex::digital_out flapPneumatic{brain.ThreeWirePort.C};
+
+// poop chute
+inline extern vex::digital_out poopChute{brain.ThreeWirePort.D};
+inline extern vex::optical colorSensor{vex::PORT15};
 
 // IMU
 inline extern vex::inertial inertial{vex::PORT19};

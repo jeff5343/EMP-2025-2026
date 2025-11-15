@@ -6,6 +6,9 @@
 #include "subsystems/outtake.h"
 #include "subsystems/throughtake.h"
 
+#include "subsystems/arm.h"
+#include "subsystems/flap.h"
+#include "subsystems/poop_chute.h"
 #include "commands/pid_drive.h"
 #include "util/pose.h"
 #include "util/trapezoid_profile.h"
@@ -18,6 +21,9 @@ private:
     InTake intake{};
     OutTake outtake{};
     ThroughTake throughtake{};
+    Arm arm{};
+    Flap flap{};
+    PoopChute poopChute{};
 
     PidDrive pidDrive{
         drivetrain,
