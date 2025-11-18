@@ -112,12 +112,12 @@ void Robot::log()
 
     // brain.Screen.print("rightD: ");
     // brain.Screen.print(drivetrain.getOdometry().getRightDist());
-    brain.Screen.print("heading: ");
+    brain.Screen.print(", heading: ");
     brain.Screen.print(Angle::toDegrees(drivetrain.getPose().radians));
-    // brain.Screen.print(", x: ");
-    // brain.Screen.print(drivetrain.getPose().x);
-    // brain.Screen.print(", y: ");
-    // brain.Screen.print(drivetrain.getPose().y);
-    brain.Screen.print(", total deg: ");
-    brain.Screen.print(Angle::toDegrees(drivetrain.getOdometry().getTotalRadians()));
+    brain.Screen.print(", x: ");
+    brain.Screen.print(drivetrain.getPose().x);
+    brain.Screen.print(", y: ");
+    brain.Screen.print(drivetrain.getPose().y);
+    // brain.Screen.print(", total deg: ");
+    // brain.Screen.print(Angle::toDegrees(drivetrain.getOdometry().getTotalRadians()));
 }
