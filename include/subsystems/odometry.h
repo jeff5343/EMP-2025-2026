@@ -39,8 +39,9 @@ private:
     static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 0; // whatwhjfawf
     static constexpr double DIST_CENTER_TO_BOT_WHEEL = 0;
 
-    /* for one rotation of the heading, the difference in the actual and reported */
-    static constexpr double headingDriftPerRotation = -0.004325; // 0.0065722;
+    /* for one rotation of the heading, the scalar to be multiplied in rad */
+    static constexpr double HEADING_DRIFT_SCALAR_RAD =  1.008140736;
+    double totalRadians = 0;
 
     // distances based on encoders
     double rightDist = 0;
@@ -132,6 +133,16 @@ public:
         mutex.unlock();
 
         setNewEncoderDistances(0, 0);
+        totalRadians = 0;
+    }
+
+    double getTotalRadians()
+    {
+        mutex.lock();
+        double total = totalRadians;
+        mutex.unlock();
+        printf("%.3f\n", total);
+        return total;
     }
 
     ~Odometry()

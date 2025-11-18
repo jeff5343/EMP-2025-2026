@@ -41,9 +41,11 @@ void Odometry::updatePose()
     double deltaTheta = newRotationRad - prevRotationRad;
     prevRotationRad = newRotationRad;
 
-    double rotationDelta = deltaTheta / (2 * M_PI);
-    double drift = headingDriftPerRotation * rotationDelta;
-    deltaTheta += drift;
+    // for logging
+    totalRadians -= deltaTheta;
+
+    // apply drift scalar
+    deltaTheta *= HEADING_DRIFT_SCALAR_RAD;
 
     // double dBDist = dBackDist;
     double dBDist = 0;
