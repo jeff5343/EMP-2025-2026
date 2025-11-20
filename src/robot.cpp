@@ -15,7 +15,7 @@ void Robot::init()
         vex::this_thread::sleep_for(100);
     }
     inertial.resetHeading();
-    // drivetrain.startOdometry(); TODO: UNCOMMENT, new drivetrain has no odom pods yet
+    drivetrain.startOdometry();
     isCalibrating = false;
     printf("done calibrating!\n");
 };
@@ -112,12 +112,12 @@ void Robot::log()
 
     // brain.Screen.print("rightD: ");
     // brain.Screen.print(drivetrain.getOdometry().getRightDist());
-    brain.Screen.print("heading: ");
-    brain.Screen.print(Angle::toDegrees(std::fabs(inertial.heading(vex::rotationUnits::rev) - 1.0) * 2 * M_PI));
+    brain.Screen.print(", heading: ");
+    brain.Screen.print(Angle::toDegrees(drivetrain.getPose().radians));
     brain.Screen.print(", x: ");
     brain.Screen.print(drivetrain.getPose().x);
     brain.Screen.print(", y: ");
     brain.Screen.print(drivetrain.getPose().y);
-    brain.Screen.print(", deg: ");
-    brain.Screen.print(drivetrain.getPose().radians * (180 / M_PI));
+    // brain.Screen.print(", total deg: ");
+    // brain.Screen.print(Angle::toDegrees(drivetrain.getOdometry().getTotalRadians()));
 }

@@ -13,8 +13,8 @@ inline extern vex::brain brain{};
 inline const vex::controller controller{};
 
 // encoders
-inline extern vex::rotation rightEncoder{vex::PORT9, true};
-inline extern vex::rotation backEncoder{vex::PORT10, false};
+inline extern vex::rotation rightEncoder{vex::PORT9, false};
+inline extern vex::rotation backEncoder{vex::PORT10, true};
 
 // motors (top motors are the elevate ones)
 constexpr bool LEFT_MOTORS_INVERTED = true;

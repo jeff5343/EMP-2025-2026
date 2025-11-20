@@ -9,12 +9,10 @@
 void Odometry::updateEncoderDistances()
 {
     double wheelCircumference = 2 * M_PI * WHEEL_RADIUS_INCHES;
-    // TODO: remove after improved odom because they will all have the same radius
-    double backWheelCircumference = 2 * M_PI * BACK_WHEEL_RADIUS_INCHES;
 
     mutex.lock();
     double rightD = rightEncoder.position(vex::rev) * wheelCircumference;
-    double backD = backEncoder.position(vex::rev) * backWheelCircumference;
+    double backD = backEncoder.position(vex::rev) * wheelCircumference;
     mutex.unlock();
 
     setNewEncoderDistances(rightD, backD);
@@ -41,12 +39,14 @@ void Odometry::updatePose()
     double deltaTheta = newRotationRad - prevRotationRad;
     prevRotationRad = newRotationRad;
 
-    double rotationDelta = deltaTheta / (2 * M_PI);
-    double drift = headingDriftPerRotation * rotationDelta;
-    deltaTheta += drift;
+    // for logging
+    totalRadians -= deltaTheta;
 
-    // double dBDist = dBackDist;
-    double dBDist = 0;
+    // apply drift scalar
+    deltaTheta *= HEADING_DRIFT_SCALAR_RAD;
+
+    double dBDist = dBackDist;
+    // double dBDist = 0; // for testing, make sure DIST_TO_BOT_WHEEL is 0 as well
     double dRDist = dRightDist;
     Pose currentPose = pose;
     mutex.unlock();
