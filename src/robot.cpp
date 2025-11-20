@@ -43,19 +43,21 @@ void Robot::usercontrolPeriodic()
     }
     else if (controller.ButtonL2.pressing())
     {
-        if (hasBeenPressed==false and superstructure.isArmUp()){
+        if (hasBeenPressed == false and superstructure.isArmUp())
+        {
             superstructure.raisedScoreingPosition();
-            hasBeenPressed=true;
+            hasBeenPressed = true;
         }
-        else if (hasBeenPressed==false and !superstructure.isArmUp())
+        else if (hasBeenPressed == false and !superstructure.isArmUp())
         {
             superstructure.levelScoringPosition();
-            hasBeenPressed=true;
+            hasBeenPressed = true;
         }
-    
     }
     else
+
     {
+        hasBeenPressed = false;
         superstructure.stopAllMotors();
     }
 
