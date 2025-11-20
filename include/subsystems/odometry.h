@@ -36,11 +36,12 @@ private:
      *     (dRightDist / deltaTheta) = (dRightDist / ((M_PI * 2) * 10))
      */
     // -0.491 from hand measurement
-    static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = 0; // whatwhjfawf
-    static constexpr double DIST_CENTER_TO_BOT_WHEEL = 0;
+    static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = -0.4430;
+    static constexpr double DIST_CENTER_TO_BOT_WHEEL = -5.7505;
 
-    /* for one rotation of the heading, the difference in the actual and reported */
-    static constexpr double headingDriftPerRotation = -0.004325; // 0.0065722;
+    /* for one rotation of the heading, the scalar to be multiplied in rad */
+    static constexpr double HEADING_DRIFT_SCALAR_RAD =  1.008140736;
+    double totalRadians = 0;
 
     // distances based on encoders
     double rightDist = 0;
@@ -87,9 +88,7 @@ private:
     void setNewEncoderDistances(double rightDist, double backDist);
 
 public:
-    static constexpr double WHEEL_RADIUS_INCHES = 0.991; // 2.75 / 2.0;
-    // TODO: will remove later, but for testing the back wheel has a different radius
-    static constexpr double BACK_WHEEL_RADIUS_INCHES = 1.9;
+    static constexpr double WHEEL_RADIUS_INCHES = 0.9925; // 2.75 / 2.0;
 
     Odometry()
     {
@@ -132,6 +131,16 @@ public:
         mutex.unlock();
 
         setNewEncoderDistances(0, 0);
+        totalRadians = 0;
+    }
+
+    double getTotalRadians()
+    {
+        mutex.lock();
+        double total = totalRadians;
+        mutex.unlock();
+        printf("%.3f\n", total);
+        return total;
     }
 
     ~Odometry()
