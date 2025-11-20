@@ -55,7 +55,6 @@ void Robot::usercontrolPeriodic()
         }
     }
     else
-
     {
         hasBeenPressed = false;
         superstructure.stopAllMotors();
