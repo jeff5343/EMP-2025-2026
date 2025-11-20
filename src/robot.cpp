@@ -36,7 +36,6 @@ void Robot::usercontrolPeriodic()
     {
         superstructure.bottomScoringOut();
     }
-
     else if (controller.ButtonL1.pressing())
     {
         superstructure.armScoringOut();
