@@ -39,6 +39,7 @@ void Superstructure::levelScoringPosition()
 {
     arm.lowerPosition();
 };
+
 void Superstructure::armScoringOut()
 {
     intake.intake();
@@ -58,7 +59,7 @@ void Superstructure::stopAllMotors()
     intake.stop();
     throughtake.stop();
     outtake.stop();
-};
+}
 
 void Superstructure::arcadeDrive(double x, double y)
 {
