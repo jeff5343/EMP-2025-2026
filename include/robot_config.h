@@ -49,6 +49,26 @@ inline extern vex::motor intakeLeftMotor{
     vex::PORT11, vex::ratio6_1, true};
 inline extern vex::motor intakeRightMotor{
     vex::PORT12, vex::ratio6_1, false};
+inline extern vex::digital_out mouth{
+    brain.ThreeWirePort.A};
+
+// throughtake
+inline extern vex::motor throughTakeMotor{
+    vex::PORT13, vex::ratio6_1, true};
+
+// outtake
+inline extern vex::motor outTakeMotor{
+    vex::PORT14, vex::ratio6_1, true};
+
+// arm
+inline extern vex::digital_out armPneumatic{brain.ThreeWirePort.B};
+
+// flap
+inline extern vex::digital_out flapPneumatic{brain.ThreeWirePort.C};
+
+// poop chute
+inline extern vex::digital_out poopChute{brain.ThreeWirePort.D};
+inline extern vex::optical colorSensor{vex::PORT15};
 
 // IMU
 inline extern vex::inertial inertial{vex::PORT19};

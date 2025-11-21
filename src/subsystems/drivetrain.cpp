@@ -68,7 +68,8 @@ void Drivetrain::arcadeDrive(double x, double y)
     setPercentOut(leftOut, rightOut);
 }
 
-void Drivetrain::setPercentOut(double leftOut, double rightOut) {
+void Drivetrain::setPercentOut(double leftOut, double rightOut)
+{
     setVelocityLeftMotors(leftOut * Drivetrain::MAX_RPM);
     setVelocityRightMotors(rightOut * Drivetrain::MAX_RPM);
 }
