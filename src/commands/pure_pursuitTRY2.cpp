@@ -12,7 +12,7 @@ struct Point {
 
 // 2. Define the distance helper function (Euclidean distance)
 double pt_to_pt_distance(Point p1, Point p2) {
-    return std::sqrt(std::pow(p2.x - p1.x, 2) + std::pow(p2.y - p1.y, 2));
+    return std::sqrt(std::pow(p2.x - p1.x, 2) + std::pow(p2.x - p1.y, 2));
 }
 
 int sgn(double num)
@@ -45,6 +45,7 @@ void pure_pursuit_step (double path[][2], double currentPos[], int currentHeadin
     //extract current X and current Y
     double currentX=currentPos[0];
     double currentY=currentPos[1];
+    
 
     //use for loop to search intersections
     int lastFoundIndex =LastFoundindex;
@@ -70,6 +71,33 @@ void pure_pursuit_step (double path[][2], double currentPos[], int currentHeadin
             double sol_x2 = (D*dy - sgn(dy) * dx * sqrt (discriminant)) / (dr*dr);
             double sol_y1 = (-D*dx + abs(dy) * sqrt (discriminant)) / (dr*dr);
             double sol_y2 = (-D*dx - abs(dy) * sqrt (discriminant)) / (dr*dr);
+
+            Point sol_pt1 = {(sol_x1 + currentX), (sol_y1+currentY)};
+            Point sol_pt2 = {(sol_x2 + currentX), (sol_y1+currentY)};
+
+            //end of line-circle intersection code
+            double minX = std::min (path[i][0], path[i+1][0]);
+            double minY = std::min (path[i][1], path[i+1][1]);
+            double maxX = std::max (path[i][0], path[i][0]);
+            double maxY = std::max (path[i][1], path[i+1][1]);
+
+            //if one or both of the solutions are in range
+            if ( ((minX <= sol_pt1.x<=maxX) and (minY <= sol_pt1.y <= maxY)) or ((minX<=sol_pt2.x<=maxX) and (minY <= sol_pt2.y <= maxY)))
+            {
+                bool foundIntersection = true;
+                Point nextPoint = {path[i+1][0], path[i+1][1]};
+                 Point goalPt;
+
+                //if both solutions are in range, check which one is better
+                if (pt_to_pt_distance(sol_pt1, nextPoint) < pt_to_pt_distance(sol_pt2, nextPoint))
+                {
+                    goalPt = sol_pt1;
+                }
+                else
+                {
+                    goalPt = sol_pt2;
+                }
+            }
         }
     }
 }
