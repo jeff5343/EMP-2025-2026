@@ -5,19 +5,21 @@
 
 double path1[][2] = {{0.0, 0.0}, {0.571194595265405, -0.4277145118491421}, {1.1417537280142898, -0.8531042347260006}, {1.7098876452457967, -1.2696346390611464}, {2.2705328851607995, -1.6588899151216996}, {2.8121159420106827, -1.9791445882187304}, {3.314589274316711, -2.159795566252656}, {3.7538316863009027, -2.1224619985315876}, {4.112485112342358, -1.8323249172947023}, {4.383456805594431, -1.3292669972090994}, {4.557386228943757, -0.6928302521681386}, {4.617455513800438, 0.00274597627737883}, {4.55408382321606, 0.6984486966257434}, {4.376054025556597, 1.3330664239172116}, {4.096280073621794, 1.827159263675668}, {3.719737492364894, 2.097949296701878}, {3.25277928312066, 2.108933125822431}, {2.7154386886417314, 1.9004760368018616}, {2.1347012144725985, 1.552342808106984}, {1.5324590525923942, 1.134035376721349}, {0.9214084611203568, 0.6867933269918683}, {0.30732366808208345, 0.2295500239189426}, {-0.3075127599907512, -0.2301742560363831}, {-0.9218413719658775, -0.6882173194028102}, {-1.5334674079795052, -1.1373288016589413}, {-2.1365993767877467, -1.5584414896876835}, {-2.7180981380280307, -1.9086314914221845}, {-3.2552809639439704, -2.1153141204181285}, {-3.721102967810494, -2.0979137913841046}, {-4.096907306768644, -1.8206318841755131}};
 
-struct Point {
+struct Point
+{
     double x;
     double y;
 };
 
 // 2. Define the distance helper function (Euclidean distance)
-double pt_to_pt_distance(Point p1, Point p2) {
-    return std::sqrt(std::pow(p2.x - p1.x, 2) + std::pow(p2.x - p1.y, 2));
+double pt_to_pt_distance(Point p1, Point p2)
+{
+    return std::sqrt(std::pow(p2.x - p1.x, 2) + std::pow(p2.y - p1.y, 2));
 }
 
 int sgn(double num)
 {
-    if (num>=0)
+    if (num >= 0)
     {
         return 1;
     }
@@ -27,45 +29,44 @@ int sgn(double num)
     }
 }
 
-Point point1{0,0};
+Point point1{0, 0};
 double currentPos[] = {point1.x, point1.y};
-double currentHeading =330;
-int lastFoundIndex =0;
+double currentHeading = 330;
+int lastFoundIndex = 0;
 double lookAheadDis = 0.8;
-int linearVel =100;
+int linearVel = 100;
 
-//if using rotations set to true
+// if using rotations set to true
 bool using_rotation = false;
 
-//determines how long this will occur
-int numOfFrames =400;
+// determines how long this will occur
+int numOfFrames = 400;
 
-void pure_pursuit_step (double path[][2], double currentPos[], int currentHeading, double lookAheadDis, int LastFoundindex)
+void pure_pursuit_step(double path[][2], double currentPos[], int currentHeading, double lookAheadDis, int LastFoundindex)
 {
-    //extract current X and current Y
-    double currentX=currentPos[0];
-    double currentY=currentPos[1];
-    
+    // extract current X and current Y
+    double currentX = currentPos[0];
+    double currentY = currentPos[1];
 
-    //use for loop to search intersections
-    int lastFoundIndex =LastFoundindex;
+    // use for loop to search intersections
+    int lastFoundIndex = LastFoundindex;
     bool intersectFound = false;
     int startingIndex = lastFoundIndex;
     int lastIndex{};
 
-    for (int i =0; i<lastIndex;i++)
+    for (int i = 0; i < lastIndex; i++)
     {
-        double x1 = path [i][0] - currentX;
-        double y1 = path [i][1]-currentY;
-        double x2 = path [i+1][0] - currentX;
-        double y2 = path [i+1][1] - currentY;
-        double dx = x2-x1;
-        double dy = y2-y1;
-        double dr = sqrt(dx*dx + dy*dy);
-        double D = x1*y2 -x2*y1; 
-        double discriminant = ((lookAheadDis*lookAheadDis)* (dr*dr)*(D*D));
+        double x1 = path[i][0] - currentX;
+        double y1 = path[i][1] - currentY;
+        double x2 = path[i + 1][0] - currentX;
+        double y2 = path[i + 1][1] - currentY;
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double dr = sqrt(dx * dx + dy * dy);
+        double D = x1 * y2 - x2 * y1;
+        double discriminant = ((lookAheadDis * lookAheadDis) * (dr * dr) * (D * D));
 
-        if (discriminant >=0)
+        if (discriminant >= 0)
         {
             double sol_x1 = (D*dy + sgn(dy) * dx * sqrt (discriminant)) / (dr*dr);
             double sol_x2 = (D*dy - sgn(dy) * dx * sqrt (discriminant)) / (dr*dr);
@@ -100,4 +101,27 @@ void pure_pursuit_step (double path[][2], double currentPos[], int currentHeadin
             }
         }
     }
+}
+
+void PurePursuit::followGoalPoint(double[2] goalPt)
+{
+    Pose pose = drivetrain.getPose();
+
+    double absTargetAngle = atan2(goalPt[1] - pose.y, goalPt[0] - pose.x);
+    if (absTargetAngle < 0)
+    {
+        absTargetAngle += M_PI * 2.0;
+    }
+
+    double turnError = absTargetAngle - pose.radians;
+    if (turnError > M_PI || turnError < -M_PI)
+    {
+        turnError = -1 * std::copysign(1.0, turnError) * (M_PI std::abs(turnError));
+    }
+    double linearError = std::sqrt(std::pow(goalPt[1] - pose.y, 2) +
+                                   std::pow(goalPt[0] - pose.x, 2));
+
+    double turnVel = kP * turnError;
+    double linearVel = kP * linearError;
+    drivetrain.setPercentOut(linearVel - turnVel, linearVel + turnVel);
 }
