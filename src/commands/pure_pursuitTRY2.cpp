@@ -14,7 +14,7 @@ struct Point
 // 2. Define the distance helper function (Euclidean distance)
 double pt_to_pt_distance(Point p1, Point p2)
 {
-    return std::sqrt(std::pow(p2.x - p1.x, 2) + std::pow(p2.x - p1.y, 2));
+    return std::sqrt(std::pow(p2.x - p1.x, 2) + std::pow(p2.y - p1.y, 2));
 }
 
 int sgn(double num)
@@ -140,4 +140,27 @@ Point pure_pursuit_step(double path[][2], double currentPos[], int currentHeadin
         }
     }
     return goalPt;
+}
+
+void PurePursuit::followGoalPoint(double[2] goalPt)
+{
+    Pose pose = drivetrain.getPose();
+
+    double absTargetAngle = atan2(goalPt[1] - pose.y, goalPt[0] - pose.x);
+    if (absTargetAngle < 0)
+    {
+        absTargetAngle += M_PI * 2.0;
+    }
+
+    double turnError = absTargetAngle - pose.radians;
+    if (turnError > M_PI || turnError < -M_PI)
+    {
+        turnError = -1 * std::copysign(1.0, turnError) * (M_PI std::abs(turnError));
+    }
+    double linearError = std::sqrt(std::pow(goalPt[1] - pose.y, 2) +
+                                   std::pow(goalPt[0] - pose.x, 2));
+
+    double turnVel = kP * turnError;
+    double linearVel = kP * linearError;
+    drivetrain.setPercentOut(linearVel - turnVel, linearVel + turnVel);
 }
