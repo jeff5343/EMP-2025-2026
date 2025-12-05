@@ -75,6 +75,8 @@ public:
     double pt_to_pt_distance(double current_pt_x, double current_pt_y, double goal_pt_x, double goal_pt_y);
     double sgn (double num);
     double goal_pt_search(double path[], double current_pt_x, double current_pt_y, const double lookaheadDistance, int lastFoundIndex);
+    double find_min_angle();
+    
 
     /*
     int get_target_point(double current_x, double current_y, double goal_x, double goal_y);
@@ -87,7 +89,7 @@ public:
 
     //void setTargetPose(Pose pose);
     void update();
-    bool isAtTarget();
+    //bool isAtTarget();
 };
 
 #endif

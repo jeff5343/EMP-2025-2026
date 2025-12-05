@@ -135,7 +135,7 @@ double pt_to_pt_distance (double pt1 [], double pt2[])
     return distance;
 }
 
-double goal_pt_search (double path[], double current_position_x, double current_position_y, double lookaheadDistance, int lastFoundIndex)
+double goal_pt_search (double path[][], double current_position_x, double current_position_y, double lookaheadDistance, int lastFoundIndex)
 {
     //initialize goalPt in case no intersection is found
     double goalPt = [0.0,0.0]; //????
