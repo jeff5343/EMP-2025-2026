@@ -40,7 +40,7 @@ bool using_rotation = false;
 //determines how long this will occur
 int numOfFrames =400;
 
-void pure_pursuit_step (double path[][2], double currentPos[], int currentHeading, double lookAheadDis, int LastFoundindex)
+Point pure_pursuit_step (double path[][2], double currentPos[], int currentHeading, double lookAheadDis, int LastFoundindex)
 {
     //extract current X and current Y
     double currentX=currentPos[0];
@@ -52,6 +52,7 @@ void pure_pursuit_step (double path[][2], double currentPos[], int currentHeadin
     bool intersectFound = false;
     int startingIndex = lastFoundIndex;
     int lastIndex{};
+    Point goalPt;
 
     for (int i =0; i<lastIndex;i++)
     {
@@ -64,6 +65,9 @@ void pure_pursuit_step (double path[][2], double currentPos[], int currentHeadin
         double dr = sqrt(dx*dx + dy*dy);
         double D = x1*y2 -x2*y1; 
         double discriminant = ((lookAheadDis*lookAheadDis)* (dr*dr)*(D*D));
+
+        bool foundIntersection;
+       
 
         if (discriminant >=0)
         {
@@ -80,13 +84,16 @@ void pure_pursuit_step (double path[][2], double currentPos[], int currentHeadin
             double minY = std::min (path[i][1], path[i+1][1]);
             double maxX = std::max (path[i][0], path[i][0]);
             double maxY = std::max (path[i][1], path[i+1][1]);
+            
+            Point nextPoint = {path[i+1][0], path[i+1][1]};
+            
 
             //if one or both of the solutions are in range
             if ( ((minX <= sol_pt1.x<=maxX) and (minY <= sol_pt1.y <= maxY)) or ((minX<=sol_pt2.x<=maxX) and (minY <= sol_pt2.y <= maxY)))
             {
-                bool foundIntersection = true;
-                Point nextPoint = {path[i+1][0], path[i+1][1]};
-                 Point goalPt;
+                foundIntersection = true;
+                
+                 
 
                 //if both solutions are in range, check which one is better
                 if (pt_to_pt_distance(sol_pt1, nextPoint) < pt_to_pt_distance(sol_pt2, nextPoint))
@@ -98,6 +105,43 @@ void pure_pursuit_step (double path[][2], double currentPos[], int currentHeadin
                     goalPt = sol_pt2;
                 }
             }
+            //if not both solutions are in range, take the one that's in range
+            else
+            {
+                //if solution pt1 is in range, set that as goal point
+                if ((minX<= sol_pt1.x <=maxX) and (minY<=sol_pt1.y<=maxY))
+                {
+                    goalPt= sol_pt1;
+                }
+                else 
+                {
+                    goalPt = sol_pt2;
+                }
+            }
+            //only exit loop if the solution pt found is closer to the next pt in path than the current pos
+            Point current {currentX, currentY};
+            if (pt_to_pt_distance(goalPt, nextPoint)< pt_to_pt_distance(current, nextPoint))
+            {
+                //update lastFoundIndex and exit
+                lastFoundIndex =i;
+                break;
+            }
+
+            else
+            {
+                //in case for some reason the robot cannot find intersection in the next path, 
+                //but we also don't want it to go backward
+                lastFoundIndex=i+1;
+            }
+       
         }
+         else
+        {
+            foundIntersection = false;
+            //no new intersection found, potentially deviated from the path
+            //follow path [lastFoundIndex]
+            goalPt = {path1[lastFoundIndex][0], path1[lastFoundIndex][1]};
+        } 
     }
+    return goalPt;
 }
