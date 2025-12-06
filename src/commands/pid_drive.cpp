@@ -10,6 +10,7 @@ void PidDrive::setTargetPose(Pose pose)
     // calculate starting target angle
     startingTargetAngle = calculateTargetAngle(current);
     hasReachedAngle = false;
+    hasReachedPose = false;
 
     straightController.setGoal(0);
     straightController.reset(calculateErrorDist(current));
@@ -53,7 +54,7 @@ void PidDrive::update()
     double leftOut = 0, rightOut = 0;
 
     // moving to pose
-    if (!straightController.isAtGoal())
+    if (!straightController.isAtGoal() && !hasReachedPose == false)
     {
         // first point to pose
         if (!headingController.isAtGoal() && std::fabs(errorDist) && !hasReachedAngle)
@@ -85,6 +86,20 @@ void PidDrive::update()
             rightOut = straightOut;
         }
     }
+    else if (!hasReachedPose)
+    {
+        hasReachedPose = true;
+        headingController.setGoal(target.radians);
+        headingController.reset(current.radians);
+    }
+
+    if (hasReachedPose && headingController.isAtSetpoint())
+    {
+        headingController.calculate(current.radians);
+        double turnOut = headingController.calculate(current.radians);
+        leftOut = -turnOut;
+        rightOut = turnOut;
+    }
 
     printf("heading error: %.3f\n", headingController.getError());
     printf("out: %.3f\n", leftOut);
@@ -98,9 +113,6 @@ void PidDrive::update()
     // printf("leftOut: %.3f\n", leftOut);
 
     // TODO: add rotating to pose defined angle at the end!
-    // if (headingController.isAtSetpoint()) {
-    //     headingController.setSetpoint(target.radians);
-    // }
 }
 
 bool PidDrive::isAtTargetPose()

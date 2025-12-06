@@ -17,6 +17,7 @@ private:
 
     double startingTargetAngle;
     bool hasReachedAngle = false;
+    bool hasReachedPose = false;
 
     double calculateTargetAngle(Pose current);
     double calculateErrorDist(Pose current);
