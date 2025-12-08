@@ -134,17 +134,17 @@ Point pure_pursuit_step(double path[][2], double currentPos[], int currentHeadin
             foundIntersection = false;
             // no new intersection found, potentially deviated from the path
             // follow path [lastFoundIndex]
-            goalPt = {path1[lastFoundIndex][0], path1[lastFoundIndex][1]};
+            goalPt = {path[lastFoundIndex][0], path[lastFoundIndex][1]};
         }
     }
     return goalPt;
 }
 
-void PurePursuit::followGoalPoint(double[2] goalPt)
+void PurePursuit::followGoalPoint(Point goalPt)
 {
     Pose pose = drivetrain.getPose();
 
-    double absTargetAngle = atan2(goalPt[1] - pose.y, goalPt[0] - pose.x);
+    double absTargetAngle = atan2(goalPt.y - pose.y, goalPt.x - pose.x);
     if (absTargetAngle < 0)
     {
         absTargetAngle += M_PI * 2.0;
@@ -153,10 +153,10 @@ void PurePursuit::followGoalPoint(double[2] goalPt)
     double turnError = absTargetAngle - pose.radians;
     if (turnError > M_PI || turnError < -M_PI)
     {
-        turnError = -1 * std::copysign(1.0, turnError) * (M_PI std::abs(turnError));
+        turnError = -1 * std::copysign(1.0, turnError) * ((2*M_PI) - std::abs(turnError)); 
     }
-    double linearError = std::sqrt(std::pow(goalPt[1] - pose.y, 2) +
-                                   std::pow(goalPt[0] - pose.x, 2));
+    double linearError = std::sqrt(std::pow(goalPt.y - pose.y, 2) +
+                                   std::pow(goalPt.x - pose.x, 2));
 
     double turnVel = kP * turnError;
     double linearVel = kP * linearError;
