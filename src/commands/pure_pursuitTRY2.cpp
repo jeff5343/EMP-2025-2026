@@ -10,12 +10,12 @@ struct Point
 };
 
 // 2. Define the distance helper function (Euclidean distance)
-double pt_to_pt_distance(Point p1, Point p2)
+double PurePursuit::pt_to_pt_distance(Point p1, Point p2)
 {
     return std::sqrt(std::pow(p2.x - p1.x, 2) + std::pow(p2.y - p1.y, 2));
 }
 
-int sgn(double num)
+int PurePursuit::sgn(double num)
 {
     if (num >= 0)
     {
@@ -40,14 +40,14 @@ bool using_rotation = false;
 // determines how long this will occur
 int numOfFrames = 400;
 
-Point pure_pursuit_step(double path[][2], double currentPos[], int currentHeading, double lookAheadDis, int LastFoundindex)
+Point PurePursuit::goal_point_search()
 {
     // extract current X and current Y
     double currentX = currentPos[0];
     double currentY = currentPos[1];
 
     // use for loop to search intersections
-    int lastFoundIndex = LastFoundindex;
+    int lastFoundIndex = lastFoundIndex;
     bool intersectFound = false;
     int startingIndex = lastFoundIndex;
     int lastIndex{};
@@ -91,7 +91,7 @@ Point pure_pursuit_step(double path[][2], double currentPos[], int currentHeadin
                 foundIntersection = true;
 
                 // if both solutions are in range, check which one is better
-                if (pt_to_pt_distance(sol_pt1, nextPoint) < pt_to_pt_distance(sol_pt2, nextPoint))
+                if (PurePursuit::pt_to_pt_distance(sol_pt1, nextPoint) < pt_to_pt_distance(sol_pt2, nextPoint))
                 {
                     goalPt = sol_pt1;
                 }
@@ -162,3 +162,11 @@ void PurePursuit::followGoalPoint(Point goalPt)
     double linearVel = kP * linearError;
     drivetrain.setPercentOut(linearVel - turnVel, linearVel + turnVel);
 }
+
+    void PurePursuit::update()
+    {
+        //:)
+        Point goalPt = goal_point_search();
+        followGoalPoint(goalPt);
+
+    }
