@@ -1,9 +1,12 @@
 #ifndef __ROBOT_H_INCLUDED__
 #define __ROBOT_H_INCLUDED__
 
+#include <vector>
+#include <string>
 #include "subsystems/drivetrain.h"
 #include "commands/pid_drive.h"
 #include "util/pose.h"
+#include "util/path.h"
 #include "util/trapezoid_profile.h"
 
 class Robot
@@ -38,6 +41,10 @@ private:
     int poseSetpointsLength = 1;
     int poseSetpointIndex = 0;
     bool isPoseSetpointSet = false;
+
+    // for paths
+    const std::vector<std::string> pathFileNames = {"path1.txt"};
+    std::vector<Path> paths = {};
 
     bool isCalibrating = true;
 

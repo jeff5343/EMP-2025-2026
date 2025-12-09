@@ -1,52 +1,68 @@
 #ifdef __TESTING__
 #include "../../include/util/path_parser.h"
+#include "../../include/util/angle.h"
 #else
 #include "util/path_parser.h"
+#include "util/angle.h"
 #endif
 #include <fstream>
 #include <sstream>
+#include <stdlib.h>
 
-std::vector<std::array<double, 2>> PathParser::parsePath(std::string filePath)
+Path PathParser::loadPath(std::string filePath)
 {
-    std::vector<std::array<double, 2>> path;
-    std::ifstream f(filePath);
+    std::vector<std::array<double, 2>> points;
+    double startHeading = 0;
+    double lastHeading = 0;
 
-    if (!f.is_open()) {
+    std::ifstream f(filePath);
+    if (!f.is_open())
+    {
         printf("unable to open %s!", filePath.c_str());
-        return {};
+        return Path{{}, 0, 0};
     }
 
-    std::string s;
     bool pathStarts = false;
-    while (std::getline(f, s))
+    int pointCount = 0;
+    std::string line;
+    while (std::getline(f, line))
     {
-        if (s.find("#PATH-POINTS-START Path") != std::string::npos)
+        if (line.find("#PATH-POINTS-START Path") != std::string::npos)
         {
             pathStarts = true;
             continue;
         }
-        if (s.find("#PATH.JERRYIO-DATA") != std::string::npos)
+        if (line.find("#PATH.JERRYIO-DATA") != std::string::npos)
             break;
         if (!pathStarts)
             continue;
 
-        std::stringstream input{s};
+        std::stringstream input{line};
         int i = 0;
         std::array<double, 2> nums;
-        for (std::string line; std::getline(input, line, ',') && i < 2; i++)
+        for (std::string chunk; std::getline(input, chunk, ',') && i < 2; i++)
         {
-            nums[i] = std::stod(s);
+            nums[i] = atof(line.c_str());
         }
-        path.push_back(nums);
+
+        if (!input.eof())
+        {
+            // add heading
+            std::string heading;
+            std::getline(input, heading);
+            double headingRad = atof(heading.c_str());
+            if (pointCount == 0)
+            {
+                startHeading = Angle::toRadians(headingRad);
+            }
+            else
+            {
+                lastHeading = Angle::toRadians(atof(heading.c_str()));
+            }
+        }
+        points.push_back(nums);
+        pointCount++;
     }
     f.close();
-    return path;
-}
-
-std::string PathParser::readSDCardFile(std::string filePath)
-{
-    std::ifstream file(filePath);
-    std::string data{std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
-    file.close();
-    return data;
+    return Path{points, startHeading, lastHeading};
 }

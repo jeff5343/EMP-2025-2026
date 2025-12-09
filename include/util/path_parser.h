@@ -1,17 +1,12 @@
 #ifndef __PATH_PARSER__
 #define __PATH_PARSER__
 
-#include <vector>
-#include <array>
-#include <string>
+#include "path.h"
 
 class PathParser
 {
 public:
-    std::vector<std::array<double, 2>> parsePath(std::string filePath);
-
-private:
-    std::string readSDCardFile(std::string filePath);
+    static Path loadPath(std::string filePath);
 };
 
 #endif
