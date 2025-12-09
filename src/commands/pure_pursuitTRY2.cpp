@@ -98,7 +98,7 @@ Point PurePursuit::goal_point_search()
             else
             {
                 // if solution pt1 is in range, set that as goal point
-                if ((minX <= sol_pt1.x <= maxX) and (minY <= sol_pt1.y <= maxY))
+                if ((minX <= sol_pt1.x && sol_pt1.x <= maxX) and (minY <= sol_pt1.y && sol_pt1.y <= maxY))
                 {
                     goalPt = sol_pt1;
                 }
