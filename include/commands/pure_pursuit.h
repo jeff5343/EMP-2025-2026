@@ -31,7 +31,7 @@ private:
     const double MAX_PERCENT_OUTPUT = 0.3;
 
     // do we need these?
-    const double lookaheadDistance = 1;
+    const double LOOK_AHEAD_DISTANCE = 1;
     const double wheelbaseLength = 0;
 
     Drivetrain drivetrain;

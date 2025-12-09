@@ -21,33 +21,19 @@ int PurePursuit::sgn(double num)
     }
 }
 
-Point point1{0, 0};
-double currentPos[] = {point1.x, point1.y};
-double currentHeading = 330;
-int lastFoundIndex = 0;
-double lookAheadDis = 0.8;
-int linearVel = 100;
-
-// if using rotations set to true
-bool using_rotation = false;
-
-// determines how long this will occur
-int numOfFrames = 400;
-
 Point PurePursuit::goal_point_search()
 {
     // extract current X and current Y
-    double currentX = currentPos[0];
-    double currentY = currentPos[1];
+    Pose pose = drivetrain.getPose();
+    double currentX = pose.x;
+    double currentY = pose.y;
 
     // use for loop to search intersections
-    int lastFoundIndex = lastFoundIndex;
     bool intersectFound = false;
     int startingIndex = lastFoundIndex;
-    int lastIndex{};
-    Point goalPt;
+    Point goalPt = {path[lastFoundIndex][0], path[lastFoundIndex][1]};
 
-    for (int i = 0; i < lastIndex; i++)
+    for (int i = startingIndex; i < path.size() - 1; i++)
     {
         double x1 = path[i][0] - currentX;
         double y1 = path[i][1] - currentY;
@@ -57,7 +43,7 @@ Point PurePursuit::goal_point_search()
         double dy = y2 - y1;
         double dr = sqrt(dx * dx + dy * dy);
         double D = x1 * y2 - x2 * y1;
-        double discriminant = ((lookAheadDis * lookAheadDis) * (dr * dr) * (D * D));
+        double discriminant = (LOOK_AHEAD_DISTANCE * LOOK_AHEAD_DISTANCE) * (dr * dr) - (D * D);
 
         bool foundIntersection;
 
@@ -65,57 +51,58 @@ Point PurePursuit::goal_point_search()
         {
             double sol_x1 = (D * dy + sgn(dy) * dx * sqrt(discriminant)) / (dr * dr);
             double sol_x2 = (D * dy - sgn(dy) * dx * sqrt(discriminant)) / (dr * dr);
-            double sol_y1 = (-D * dx + abs(dy) * sqrt(discriminant)) / (dr * dr);
-            double sol_y2 = (-D * dx - abs(dy) * sqrt(discriminant)) / (dr * dr);
+            double sol_y1 = (-D * dx + fabs(dy) * sqrt(discriminant)) / (dr * dr);
+            double sol_y2 = (-D * dx - fabs(dy) * sqrt(discriminant)) / (dr * dr);
 
-            Point sol_pt1 = {(sol_x1 + currentX), (sol_y1 + currentY)};
-            Point sol_pt2 = {(sol_x2 + currentX), (sol_y1 + currentY)};
+            Point sol_pt1{(sol_x1 + currentX), (sol_y1 + currentY)};
+            Point sol_pt2{(sol_x2 + currentX), (sol_y2 + currentY)};
+            Point current{currentX, currentY};
+            Point nextPoint{path[i + 1][0], path[i + 1][1]};
 
             // end of line-circle intersection code
             double minX = std::min(path[i][0], path[i + 1][0]);
             double minY = std::min(path[i][1], path[i + 1][1]);
-            double maxX = std::max(path[i][0], path[i][0]);
+            double maxX = std::max(path[i][0], path[i + 1][0]);
             double maxY = std::max(path[i][1], path[i + 1][1]);
 
-            Point nextPoint = {path[i + 1][0], path[i + 1][1]};
-
+            bool isSolPt1InRange = (minX <= sol_pt1.x && sol_pt1.x <= maxX) and (minY <= sol_pt1.y && sol_pt1.y <= maxY);
+            bool isSolPt2InRange = (minX <= sol_pt2.x && sol_pt2.x <= maxX) and (minY <= sol_pt2.y && sol_pt2.y <= maxY);
             // if one or both of the solutions are in range
-            if (((minX <= sol_pt1.x && sol_pt1.x <= maxX) and (minY <= sol_pt1.y && sol_pt1.y <= maxY)) or ((minX <= sol_pt2.x && sol_pt2.x <= maxX) and (minY <= sol_pt2.y && sol_pt2.y <= maxY)))
+            if (isSolPt1InRange or isSolPt2InRange)
             {
-                foundIntersection = true;
+                if (isSolPt1InRange and isSolPt2InRange)
+                {
+                    // if both solutions are in range, check which one is better
+                    if (PurePursuit::pt_to_pt_distance(sol_pt1, nextPoint) < pt_to_pt_distance(sol_pt2, nextPoint))
+                    {
+                        goalPt = sol_pt1;
+                    }
+                    else
+                    {
+                        goalPt = sol_pt2;
+                    }
+                }
+                else
+                { // if not both solutions are in range, take the one that's in range
+                    // if solution pt1 is in range, set that as goal point
+                    if (isSolPt1InRange)
+                    {
+                        goalPt = sol_pt1;
+                    }
+                    else
+                    {
+                        goalPt = sol_pt2;
+                    }
+                }
+            }
 
-                // if both solutions are in range, check which one is better
-                if (PurePursuit::pt_to_pt_distance(sol_pt1, nextPoint) < pt_to_pt_distance(sol_pt2, nextPoint))
-                {
-                    goalPt = sol_pt1;
-                }
-                else
-                {
-                    goalPt = sol_pt2;
-                }
-            }
-            // if not both solutions are in range, take the one that's in range
-            else
-            {
-                // if solution pt1 is in range, set that as goal point
-                if ((minX <= sol_pt1.x && sol_pt1.x <= maxX) and (minY <= sol_pt1.y && sol_pt1.y <= maxY))
-                {
-                    goalPt = sol_pt1;
-                }
-                else
-                {
-                    goalPt = sol_pt2;
-                }
-            }
             // only exit loop if the solution pt found is closer to the next pt in path than the current pos
-            Point current{currentX, currentY};
             if (pt_to_pt_distance(goalPt, nextPoint) < pt_to_pt_distance(current, nextPoint))
             {
                 // update lastFoundIndex and exit
                 lastFoundIndex = i;
                 break;
             }
-
             else
             {
                 // in case for some reason the robot cannot find intersection in the next path,
@@ -125,7 +112,6 @@ Point PurePursuit::goal_point_search()
         }
         else
         {
-            foundIntersection = false;
             // no new intersection found, potentially deviated from the path
             // follow path [lastFoundIndex]
             goalPt = {path[lastFoundIndex][0], path[lastFoundIndex][1]};
