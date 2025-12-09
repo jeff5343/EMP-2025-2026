@@ -3,12 +3,6 @@
 #include "util/angle.h"
 #include <cmath>
 
-struct Point
-{
-    double x;
-    double y;
-};
-
 // 2. Define the distance helper function (Euclidean distance)
 double PurePursuit::pt_to_pt_distance(Point p1, Point p2)
 {

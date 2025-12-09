@@ -7,6 +7,12 @@
 #include "vex.h"
 #include <array>
 
+struct Point
+{
+    double x;
+    double y;
+};
+
 class PurePursuit
 {
 private:
@@ -24,8 +30,8 @@ private:
     const double kP = 3;
 
     // do we need these?
-    const double lookaheadDistance=1;
-    const double wheelbaseLength=0;
+    const double lookaheadDistance = 1;
+    const double wheelbaseLength = 0;
 
     Drivetrain drivetrain;
 
@@ -44,7 +50,6 @@ public:
     double pt_to_pt_distance(Point p1, Point p2);
     int sgn(double num);
     Point goal_point_search();
-
 
     // void setTargetPose(Pose pose);
     void update();
