@@ -80,7 +80,7 @@ Point PurePursuit::goal_point_search()
             Point nextPoint = {path[i + 1][0], path[i + 1][1]};
 
             // if one or both of the solutions are in range
-            if (((minX <= sol_pt1.x && sol_pt1.x<= maxX) and (minY <= sol_pt1.y && sol_pt1.y<= maxY)) or ((minX <= sol_pt2.x && sol_pt2.x <= maxX) and (minY <= sol_pt2.y && sol_pt2.y <= maxY)))
+            if (((minX <= sol_pt1.x && sol_pt1.x <= maxX) and (minY <= sol_pt1.y && sol_pt1.y <= maxY)) or ((minX <= sol_pt2.x && sol_pt2.x <= maxX) and (minY <= sol_pt2.y && sol_pt2.y <= maxY)))
             {
                 foundIntersection = true;
 
@@ -147,20 +147,22 @@ void PurePursuit::followGoalPoint(Point goalPt)
     double turnError = absTargetAngle - pose.radians;
     if (turnError > M_PI || turnError < -M_PI)
     {
-        turnError = -1 * std::copysign(1.0, turnError) * ((2*M_PI) - std::abs(turnError)); 
+        turnError = -1 * std::copysign(1.0, turnError) * ((2 * M_PI) - std::abs(turnError));
     }
     double linearError = std::sqrt(std::pow(goalPt.y - pose.y, 2) +
                                    std::pow(goalPt.x - pose.x, 2));
 
     double turnVel = kP * turnError;
-    double linearVel = kP * linearError;
-    drivetrain.setPercentOut(linearVel - turnVel, linearVel + turnVel);
+    double linearVel = 10;
+    // double linearVel = kP * linearError;
+    double leftPercentOut = MathUtil::clamp((linearVel - turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
+    double rightPercentOut = MathUtil::clamp((linearVel + turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
+    drivetrain.setPercentOut(leftPercentOut, rightPercentOut);
 }
 
-    void PurePursuit::update()
-    {
-        //:)
-        Point goalPt = goal_point_search();
-        followGoalPoint(goalPt);
-
-    }
+void PurePursuit::update()
+{
+    //:)
+    Point goalPt = goal_point_search();
+    followGoalPoint(goalPt);
+}

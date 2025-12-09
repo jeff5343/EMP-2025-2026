@@ -28,6 +28,7 @@ private:
     // variables to keep track where we are
     int lastFoundIndex;
     const double kP = 3;
+    const double MAX_PERCENT_OUTPUT = 0.3;
 
     // do we need these?
     const double lookaheadDistance = 1;
