@@ -5,8 +5,8 @@
 #include <string>
 #include "subsystems/drivetrain.h"
 #include "commands/pid_drive.h"
-#include "util/pose.h"
-#include "util/path.h"
+#include "util/structs/pose.h"
+#include "util/structs/path.h"
 #include "util/trapezoid_profile.h"
 
 class Robot

@@ -1,7 +1,7 @@
 #ifndef __PATH_PARSER__
 #define __PATH_PARSER__
 
-#include "path.h"
+#include "structs/path.h"
 
 class PathParser
 {
