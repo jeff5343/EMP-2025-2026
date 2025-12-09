@@ -80,7 +80,7 @@ Point PurePursuit::goal_point_search()
             Point nextPoint = {path[i + 1][0], path[i + 1][1]};
 
             // if one or both of the solutions are in range
-            if (((minX <= sol_pt1.x <= maxX) and (minY <= sol_pt1.y <= maxY)) or ((minX <= sol_pt2.x <= maxX) and (minY <= sol_pt2.y <= maxY)))
+            if (((minX <= sol_pt1.x && sol_pt1.x<= maxX) and (minY <= sol_pt1.y && sol_pt1.y<= maxY)) or ((minX <= sol_pt2.x && sol_pt2.x <= maxX) and (minY <= sol_pt2.y && sol_pt2.y <= maxY)))
             {
                 foundIntersection = true;
 
