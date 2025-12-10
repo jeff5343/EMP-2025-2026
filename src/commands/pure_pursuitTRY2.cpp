@@ -73,6 +73,7 @@ Point PurePursuit::goal_point_search()
             // if one or both of the solutions are in range
             if (isSolPt1InRange or isSolPt2InRange)
             {
+                foundIntersection = true;
                 if (isSolPt1InRange and isSolPt2InRange)
                 {
                     // if both solutions are in range, check which one is better
@@ -115,6 +116,7 @@ Point PurePursuit::goal_point_search()
         }
         else
         {
+            foundIntersection = false;
             // no new intersection found, potentially deviated from the path
             // follow path [lastFoundIndex]
             goalPt = {path[lastFoundIndex][0], path[lastFoundIndex][1]};
