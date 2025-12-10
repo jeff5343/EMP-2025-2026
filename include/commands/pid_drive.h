@@ -1,7 +1,7 @@
 #ifndef __PID_DRIVE_H_INCLUDED__
 #define __PID_DRIVE_H_INCLUDED__
 
-#include "util/pid_constants.h"
+#include "util/structs/pid_constants.h"
 #include "util/profiled_pid.h"
 #include "subsystems/drivetrain.h"
 #include "vex.h"

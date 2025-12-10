@@ -3,10 +3,10 @@
 
 #ifdef __TESTING__
 #include "../../tests/mock_vex.h"
-#include "../util/pose.h"
+#include "../util/structs/pose.h"
 #else
 #include "vex.h"
-#include "util/pose.h"
+#include "util/structs/pose.h"
 #endif
 
 /**
