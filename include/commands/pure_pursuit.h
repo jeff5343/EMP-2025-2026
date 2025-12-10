@@ -33,6 +33,8 @@ private:
     const double wheelbaseLength = 0;
     int lastFoundIndex = 0;
 
+    // TODO: tune Kp, turn up the ratio for points!
+
     Drivetrain &drivetrain;
     std::vector<std::array<double, 2>> path = {};
 
