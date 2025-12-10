@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <stdlib.h>
+#include "robot_config.h"
 
 Path PathParser::loadPath(std::string filePath)
 {
@@ -18,7 +19,7 @@ Path PathParser::loadPath(std::string filePath)
     std::ifstream f(filePath);
     if (!f.is_open())
     {
-        printf("unable to open %s!", filePath.c_str());
+        printf("unable to open %s!\n", filePath.c_str());
         return Path{{}, 0, 0};
     }
 
@@ -32,6 +33,7 @@ Path PathParser::loadPath(std::string filePath)
             pathStarts = true;
             continue;
         }
+        // TODO: handle multiple paths!
         if (line.find("#PATH.JERRYIO-DATA") != std::string::npos)
             break;
         if (!pathStarts)
@@ -44,6 +46,8 @@ Path PathParser::loadPath(std::string filePath)
         {
             nums[i] = atof(line.c_str());
         }
+
+        // printf("[%.3f, %.3f]\n", nums[0], nums[1]);
 
         if (!input.eof())
         {

@@ -23,7 +23,7 @@ void Robot::init()
     for (std::string pathFileName : pathFileNames) {
         paths.push_back(PathParser::loadPath(pathFileName));
     }
-    printf("done loading %du paths!\n", paths.size());
+    printf("done loading %lu paths!\n", paths.size());
 };
 
 void Robot::usercontrolPeriodic()
