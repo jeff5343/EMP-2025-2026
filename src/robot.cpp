@@ -20,9 +20,11 @@ void Robot::init()
     isCalibrating = false;
     printf("done calibrating!\n");
 
-    for (std::string pathFileName : pathFileNames) {
+    for (std::string pathFileName : pathFileNames)
+    {
         paths.push_back(PathParser::loadPath(pathFileName));
     }
+    purePursuit.setPath(paths[0].points);
     printf("done loading %lu paths!\n", paths.size());
 };
 
@@ -64,6 +66,15 @@ void Robot::usercontrolPeriodic()
             isPoseSetpointSet = true;
         }
         pidDrive.update();
+    }
+    else if (controller.ButtonY.pressing())
+    {
+        if (!isPoseSetpointSet)
+        {
+            isPoseSetpointSet = true;
+            purePursuit.reset();
+        }
+        purePursuit.update();
     }
     else
     {

@@ -5,6 +5,7 @@
 #include <string>
 #include "subsystems/drivetrain.h"
 #include "commands/pid_drive.h"
+#include "commands/pure_pursuit.h"
 #include "util/structs/pose.h"
 #include "util/structs/path.h"
 #include "util/trapezoid_profile.h"
@@ -14,6 +15,8 @@ class Robot
 private:
     // subsystems
     Drivetrain drivetrain{};
+
+    PurePursuit purePursuit{drivetrain};
 
     PidDrive pidDrive{
         drivetrain,
