@@ -1,5 +1,6 @@
 #include "robot.h"
 #include "util/angle.h"
+#include "util/path_parser.h"
 #include <cmath>
 
 void Robot::init()
@@ -18,6 +19,11 @@ void Robot::init()
     drivetrain.startOdometry();
     isCalibrating = false;
     printf("done calibrating!\n");
+
+    for (std::string pathFileName : pathFileNames) {
+        paths.push_back(PathParser::loadPath(pathFileName));
+    }
+    printf("done loading %lu paths!\n", paths.size());
 };
 
 void Robot::usercontrolPeriodic()
@@ -85,21 +91,6 @@ void Robot::usercontrolPeriodic()
 
 void Robot::autonomousPeriodic()
 {
-    if (!isPoseSetpointSet)
-    {
-        pidDrive.setTargetPose(poseSetpoints[poseSetpointIndex]);
-        isPoseSetpointSet = true;
-    }
-    pidDrive.update();
-
-    if (pidDrive.isAtTargetPose())
-    {
-        poseSetpointIndex += 1;
-        if (poseSetpointIndex >= poseSetpointsLength)
-        {
-            poseSetpointIndex = 0;
-        }
-    }
 }
 
 void Robot::log()

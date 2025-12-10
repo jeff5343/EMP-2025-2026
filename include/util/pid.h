@@ -1,7 +1,7 @@
 #ifndef __PID_H_INCLUDED__
 #define __PID_H_INCLUDED__
 
-#include "pid_constants.h"
+#include "structs/pid_constants.h"
 #include <cmath>
 
 /* very crude implementation, can be a lot more sophisticated */
