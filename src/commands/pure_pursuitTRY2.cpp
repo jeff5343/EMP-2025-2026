@@ -27,13 +27,11 @@ Point PurePursuit::goal_point_search()
     Pose pose = drivetrain.getPose();
     double currentX = pose.x;
     double currentY = pose.y;
-    printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
 
     // use for loop to search intersections
     bool intersectFound = false;
     int startingIndex = lastFoundIndex;
     Point goalPt = {path[lastFoundIndex][0], path[lastFoundIndex][1]};
-    printf("starting: %d\n", startingIndex);
 
     for (int i = startingIndex; i < path.size() - 1; i++)
     {
@@ -48,7 +46,6 @@ Point PurePursuit::goal_point_search()
         double discriminant = (LOOK_AHEAD_DISTANCE * LOOK_AHEAD_DISTANCE) * (dr * dr) - (D * D);
 
         bool foundIntersection;
-        printf("discriminant: %.3f\n", discriminant);
 
         if (discriminant >= 0)
         {
@@ -155,6 +152,12 @@ void PurePursuit::update()
 {
     //:)
     Point goalPt = goal_point_search();
+    Pose pose = drivetrain.getPose();
+    double currentX = pose.x;
+    double currentY = pose.y;
     printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
+    printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
+    printf("currentIndex: %d\n", lastFoundIndex);
+
     followGoalPoint(goalPt);
 }
