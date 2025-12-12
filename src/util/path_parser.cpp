@@ -8,7 +8,6 @@
 #include <fstream>
 #include <sstream>
 #include <stdlib.h>
-#include "robot_config.h"
 
 Path PathParser::loadPath(std::string filePath)
 {
@@ -41,10 +40,11 @@ Path PathParser::loadPath(std::string filePath)
 
         std::stringstream input{line};
         int i = 0;
-        std::array<double, 2> nums;
-        for (std::string chunk; std::getline(input, chunk, ',') && i < 2; i++)
+        std::array<double, 2> nums{};
+        for (std::string chunk; i < 2; i++)
         {
-            nums[i] = atof(line.c_str());
+            std::getline(input, chunk, ',');
+            nums[i] = atof(chunk.c_str());
         }
 
         // printf("[%.3f, %.3f]\n", nums[0], nums[1]);
