@@ -10,20 +10,24 @@ int main()
 {
     PathParser pathParser{};
 
-    Path path = pathParser.loadPath("../path1.txt");
     std::ofstream fileOutput{"vector_output.txt", std::ofstream::out | std::ofstream::trunc};
     if (!fileOutput.is_open())
     {
         printf("unable to open file!");
         return -1;
     }
-    fileOutput << "startHeading: " << path.startHeadingRadians << ", endHeading: " << path.endHeadingRadians << "\n";
-    fileOutput << "{\n";
-    for (const auto &point : path.points)
+
+    std::vector<Path> paths = pathParser.loadPaths("../path1.txt");
+    for (Path &path : paths)
     {
-        fileOutput << "{" << point[0] << ", " << point[1] << "}\n";
+        fileOutput << "startHeading: " << path.startHeadingRadians << ", endHeading: " << path.endHeadingRadians << "\n";
+        fileOutput << "{\n";
+        for (const auto &point : path.points)
+        {
+            fileOutput << "{" << point[0] << ", " << point[1] << "}\n";
+        }
+        fileOutput << "}\n";
     }
-    fileOutput << "}\n";
     fileOutput.close();
 
     return 0;

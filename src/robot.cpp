@@ -20,10 +20,7 @@ void Robot::init()
     isCalibrating = false;
     printf("done calibrating!\n");
 
-    for (std::string pathFileName : pathFileNames)
-    {
-        paths.push_back(PathParser::loadPath(pathFileName));
-    }
+    paths = PathParser::loadPaths(pathFileName);
     purePursuit.setPath(paths[0].points);
     printf("done loading %lu paths!\n", paths.size());
 };

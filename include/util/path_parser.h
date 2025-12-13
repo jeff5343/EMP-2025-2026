@@ -6,7 +6,7 @@
 class PathParser
 {
 public:
-    static Path loadPath(std::string filePath);
+    static std::vector<Path> loadPaths(std::string filePath);
 };
 
 #endif
