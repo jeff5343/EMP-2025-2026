@@ -9,34 +9,42 @@
 #include <sstream>
 #include <stdlib.h>
 
-Path PathParser::loadPath(std::string filePath)
+std::vector<Path> PathParser::loadPaths(std::string filePath)
 {
-    std::vector<std::array<double, 2>> points;
-    double startHeading = 0;
-    double lastHeading = 0;
+    std::vector<Path> paths;
 
     std::ifstream f(filePath);
     if (!f.is_open())
     {
         printf("unable to open %s!\n", filePath.c_str());
-        return Path{{}, 0, 0};
+        return paths;
     }
 
-    bool pathStarts = false;
-    int pointCount = 0;
+    std::vector<std::array<double, 2>> points;
+    double startHeading = 0;
+    double lastHeading = 0;
+
+    int pathCount = 0;
+
     std::string line;
     while (std::getline(f, line))
     {
-        if (line.find("#PATH-POINTS-START Path") != std::string::npos)
+        if (line.find("#PATH-POINTS-START") != std::string::npos)
         {
-            pathStarts = true;
+            if (pathCount > 0)
+            {
+                paths.push_back(Path{points, startHeading, lastHeading});
+                points = {};
+            }
+            pathCount++;
             continue;
         }
-        // TODO: handle multiple paths!
+
         if (line.find("#PATH.JERRYIO-DATA") != std::string::npos)
+        {
+            paths.push_back(Path{points, startHeading, lastHeading});
             break;
-        if (!pathStarts)
-            continue;
+        }
 
         std::stringstream input{line};
         int i = 0;
@@ -47,15 +55,13 @@ Path PathParser::loadPath(std::string filePath)
             nums[i] = atof(chunk.c_str());
         }
 
-        // printf("[%.3f, %.3f]\n", nums[0], nums[1]);
-
         if (!input.eof())
         {
             // add heading
             std::string heading;
             std::getline(input, heading);
             double headingRad = atof(heading.c_str());
-            if (pointCount == 0)
+            if (points.size() == 0)
             {
                 startHeading = Angle::toRadians(headingRad);
             }
@@ -65,8 +71,8 @@ Path PathParser::loadPath(std::string filePath)
             }
         }
         points.push_back(nums);
-        pointCount++;
     }
+
     f.close();
-    return Path{points, startHeading, lastHeading};
+    return paths;
 }

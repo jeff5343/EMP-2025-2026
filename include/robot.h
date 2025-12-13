@@ -46,7 +46,7 @@ private:
     bool isPoseSetpointSet = false;
 
     // for paths
-    const std::vector<std::string> pathFileNames = {"path1.txt"};
+    const std::string pathFileName = "path1.txt";
     std::vector<Path> paths = {};
 
     bool isCalibrating = true;

@@ -30,7 +30,8 @@ private:
     const double MAX_PERCENT_OUTPUT = 0.3;
     // do we need these?
     const double LOOK_AHEAD_DISTANCE = 8.4;
-    const double wheelbaseLength = 0;
+    const double MAX_LINEAR_PERCENT_OUT = 20.0;
+
     int lastFoundIndex = 0;
 
     // TODO: tune Kp, turn up the ratio for points!
@@ -54,6 +55,7 @@ public:
     void update();
     void setPath(const std::vector<std::array<double, 2>> &path)
     {
+        lastFoundIndex = 0;
         this->path = path;
     }
     void reset()
