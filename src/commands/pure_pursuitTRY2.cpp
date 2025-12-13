@@ -152,10 +152,11 @@ void PurePursuit::checkIfLast(Point goalPt)
 {
     Pose pose = drivetrain.getPose();
     //current position and goal position
-    double distanceToGoalX = abs(goalPt.x-pose.x);
-    double distanceToGoalY = abs(goalPt.y-pose.y);
-    std::size_t lastVector = path.size();
-    if (lastFoundIndex == lastVector && distanceToGoalX<=2 && distanceToGoalY<=2);
+    Point currentPosition = {pose.x, pose.y};
+    double distanceToGoal = pt_to_pt_distance(goalPt, currentPosition);
+
+    std::size_t lastVector = path.size()-2; // finds last index in vector
+    if (lastFoundIndex == lastVector && distanceToGoal<=2);
     {
         drivetrain.setPercentOut(0,0);
     }
