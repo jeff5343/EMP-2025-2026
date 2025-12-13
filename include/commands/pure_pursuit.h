@@ -45,7 +45,7 @@ private:
     double pt_to_pt_distance(Point p1, Point p2);
     int sgn(double num);
     Point goal_point_search();
-    void checkIfLast(Point goalPoint);
+    void checkIfLast();
 
 public:
     // figure out what i need to send into pure pursuit constructor??
