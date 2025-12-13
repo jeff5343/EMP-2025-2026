@@ -141,7 +141,7 @@ void PurePursuit::followGoalPoint(Point goalPt)
                                    std::pow(goalPt.x - pose.x, 2));
 
     double turnVel = kP * turnError;
-    double linearVel = 10;
+    double linearVel = MAX_LINEAR_PERCENT_OUT;
     // double linearVel = kP * linearError;
     double leftPercentOut = MathUtil::clamp((linearVel - turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
     double rightPercentOut = MathUtil::clamp((linearVel + turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
