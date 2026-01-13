@@ -148,19 +148,19 @@ void PurePursuit::followGoalPoint(Point goalPt)
     drivetrain.setPercentOut(leftPercentOut, rightPercentOut);
 }
 
-void PurePursuit::checkIfLast(Point goalPt)
+void PurePursuit::checkIfLast()
 {
     Pose pose = drivetrain.getPose();
-    //current position and goal position
+    // current position and goal position
     Point currentPosition = {pose.x, pose.y};
-    double distanceToGoal = pt_to_pt_distance(goalPt, currentPosition);
+    Point endPoint = {path[path.size() - 1][0], path[path.size() - 1][1]};
+    double distanceToGoal = pt_to_pt_distance(currentPosition, endPoint);
 
-    std::size_t lastVector = path.size()-2; // finds last index in vector
-    if (lastFoundIndex == lastVector && distanceToGoal<=2);
+    std::size_t lastVector = path.size() - 2; // finds last index in vector
+    if (distanceToGoal <= 5)
     {
-        drivetrain.setPercentOut(0,0);
+        drivetrain.setPercentOut(0, 0);
     }
-    
 }
 
 void PurePursuit::update()
@@ -175,5 +175,5 @@ void PurePursuit::update()
     printf("currentIndex: %d\n", lastFoundIndex);
 
     followGoalPoint(goalPt);
-    checkIfLast(goalPt);
+    checkIfLast();
 }

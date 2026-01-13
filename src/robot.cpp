@@ -32,7 +32,6 @@ void Robot::usercontrolPeriodic()
         return;
 
     /* TELEOP DRIVING: */
-
     if (controller.ButtonR1.pressing())
     {
         intakeRightMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
@@ -82,7 +81,9 @@ void Robot::usercontrolPeriodic()
         double x = static_cast<double>(controller.Axis1.position()) / 100.0;
         double y = static_cast<double>(controller.Axis3.position()) / 100.0;
 
-        double deadband = 0.01;
+        printf("x: %.3f, y: %.3f\n", x, y);
+
+        double deadband = 0.05;
         if (std::fabs(x) <= deadband)
             x = 0;
         if (std::fabs(y) <= deadband)
