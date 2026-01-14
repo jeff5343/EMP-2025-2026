@@ -31,6 +31,7 @@ private:
     // do we need these?
     const double LOOK_AHEAD_DISTANCE = 8.4;
     const double MAX_LINEAR_PERCENT_OUT = 20.0;
+    bool backwards = false;
 
     int lastFoundIndex = 0;
 
@@ -40,8 +41,6 @@ private:
     std::vector<std::array<double, 2>> path = {};
 
     void followGoalPoint(
-        Point goalPt);
-    void followGoalPointBackwards(
         Point goalPt);
     // helper functions:
     double pt_to_pt_distance(Point p1, Point p2);
@@ -55,10 +54,13 @@ public:
 
                                           };
     void update();
-    void setPath(const std::vector<std::array<double, 2>> &path)
+    void setPath(const std::vector<std::array<double, 2>> &path, bool backwards)
     {
         lastFoundIndex = 0;
         this->path = path;
+       
+        this->backwards = backwards;
+
     }
     void reset()
     {

@@ -126,53 +126,54 @@ void PurePursuit::followGoalPoint(Point goalPt)
 {
     Pose pose = drivetrain.getPose();
 
-    double absTargetAngle = atan2(goalPt.y - pose.y, goalPt.x - pose.x);
+    double dx = goalPt.x - pose.x;
+    double dy = goalPt.y - pose.y;
+
+    // 1. Calculate Target Angle
+    // If moving backwards, we invert the direction vector (-dy, -dx).
+    // This calculates the angle for the FRONT of the robot to face AWAY from the goal.
+    double absTargetAngle;
+    if (backwards) {
+        absTargetAngle = atan2(-dy, -dx);
+    } else {
+        absTargetAngle = atan2(dy, dx);
+    }
+
+    // Normalize angle to [0, 2PI] to match your existing logic
     if (absTargetAngle < 0)
     {
         absTargetAngle += M_PI * 2.0;
     }
 
+    // 2. Calculate Turn Error
     double turnError = absTargetAngle - pose.radians;
+
+    // Normalize error to [-PI, PI] for shortest turn
     if (turnError > M_PI || turnError < -M_PI)
     {
         turnError = -1 * std::copysign(1.0, turnError) * ((2 * M_PI) - std::abs(turnError));
     }
-    double linearError = std::sqrt(std::pow(goalPt.y - pose.y, 2) +
-                                   std::pow(goalPt.x - pose.x, 2));
+
+    double linearError = std::sqrt(std::pow(dy, 2) + std::pow(dx, 2));
 
     double turnVel = kP * turnError;
-    double linearVel = MAX_LINEAR_PERCENT_OUT;
-    // double linearVel = kP * linearError;
+    
+    // 3. Set Linear Velocity
+    // If backwards, we use negative velocity.
+    double linearVel = backwards ? -MAX_LINEAR_PERCENT_OUT : MAX_LINEAR_PERCENT_OUT;
+
+    // Optional: If using PID for linear velocity (currently commented out in your code):
+    // if (backwards) linearVel = -1 * kP_linear * linearError;
+
+    // 4. Calculate Motor Output
+    // Note: The mixing logic (L = V - T, R = V + T) usually works for reverse 
+    // automatically provided turnVel is calculated correctly relative to the new heading.
     double leftPercentOut = MathUtil::clamp((linearVel - turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
     double rightPercentOut = MathUtil::clamp((linearVel + turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
+
     drivetrain.setPercentOut(leftPercentOut, rightPercentOut);
 }
 
-void PurePursuit::followGoalPointBackwards(Point goalPt)
-{
-    Pose pose = drivetrain.getPose();
-
-    double absTargetAngle = atan2(goalPt.y - pose.y, goalPt.x - pose.x);
-    if (absTargetAngle < 0)
-    {
-        absTargetAngle += M_PI * 2.0;
-    }
-
-    double turnError = absTargetAngle - pose.radians;
-    if (turnError > M_PI || turnError < -M_PI)
-    {
-        turnError = -1 * std::copysign(1.0, turnError) * ((2 * M_PI) - std::abs(turnError));
-    }
-    double linearError = std::sqrt(std::pow(goalPt.y - pose.y, 2) +
-                                   std::pow(goalPt.x - pose.x, 2));
-
-    double turnVel = kP * turnError;
-    double linearVel = MAX_LINEAR_PERCENT_OUT;
-    // double linearVel = kP * linearError;
-    double leftPercentOut = MathUtil::clamp((linearVel - turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
-    double rightPercentOut = MathUtil::clamp((linearVel + turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
-    drivetrain.setPercentOut(leftPercentOut, rightPercentOut);
-}
 
 void PurePursuit::checkIfLast()
 {
@@ -196,6 +197,7 @@ void PurePursuit::update()
     Pose pose = drivetrain.getPose();
     double currentX = pose.x;
     double currentY = pose.y;
+    bool backwards = 1;
     printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
     printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
     printf("currentIndex: %d\n", lastFoundIndex);
