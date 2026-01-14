@@ -148,6 +148,32 @@ void PurePursuit::followGoalPoint(Point goalPt)
     drivetrain.setPercentOut(leftPercentOut, rightPercentOut);
 }
 
+void PurePursuit::followGoalPointBackwards(Point goalPt)
+{
+    Pose pose = drivetrain.getPose();
+
+    double absTargetAngle = atan2(goalPt.y - pose.y, goalPt.x - pose.x);
+    if (absTargetAngle < 0)
+    {
+        absTargetAngle += M_PI * 2.0;
+    }
+
+    double turnError = absTargetAngle - pose.radians;
+    if (turnError > M_PI || turnError < -M_PI)
+    {
+        turnError = -1 * std::copysign(1.0, turnError) * ((2 * M_PI) - std::abs(turnError));
+    }
+    double linearError = std::sqrt(std::pow(goalPt.y - pose.y, 2) +
+                                   std::pow(goalPt.x - pose.x, 2));
+
+    double turnVel = kP * turnError;
+    double linearVel = MAX_LINEAR_PERCENT_OUT;
+    // double linearVel = kP * linearError;
+    double leftPercentOut = MathUtil::clamp((linearVel - turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
+    double rightPercentOut = MathUtil::clamp((linearVel + turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
+    drivetrain.setPercentOut(leftPercentOut, rightPercentOut);
+}
+
 void PurePursuit::checkIfLast()
 {
     Pose pose = drivetrain.getPose();

@@ -41,6 +41,8 @@ private:
 
     void followGoalPoint(
         Point goalPt);
+    void followGoalPointBackwards(
+        Point goalPt);
     // helper functions:
     double pt_to_pt_distance(Point p1, Point p2);
     int sgn(double num);
