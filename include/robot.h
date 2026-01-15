@@ -48,6 +48,7 @@ private:
     // for paths
     const std::string pathFileName = "path1.txt";
     std::vector<Path> paths = {};
+    std::vector<bool> backwards = {false, true};
     int pathIndex = 0;
 
     bool isCalibrating = true;

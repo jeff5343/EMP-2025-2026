@@ -71,11 +71,11 @@ void Robot::usercontrolPeriodic()
             pathIndex = 0;
             if (paths.size() > 0)
             {
-                purePursuit.setPath(paths[0].points);
+                purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
             }
             purePursuit.reset();
         }
-        purePursuit.update();
+        followPaths();
     }
     else
     {
@@ -115,7 +115,7 @@ void Robot::followPaths()
         pathIndex++;
         if (pathIndex >= paths.size())
             return;
-        purePursuit.setPath(paths[pathIndex + 1].points);
+        purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
     }
 
     purePursuit.update();
@@ -129,7 +129,7 @@ void Robot::autonomousPeriodic()
         pathIndex = 0;
         if (paths.size() > 0)
         {
-            purePursuit.setPath(paths[0].points);
+            purePursuit.setPath(paths[0].points, backwards[pathIndex]);
         }
         purePursuit.reset();
     }
