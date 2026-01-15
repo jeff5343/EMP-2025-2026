@@ -46,6 +46,7 @@ private:
     double pt_to_pt_distance(Point p1, Point p2);
     int sgn(double num);
     Point goal_point_search();
+    
     void checkIfLast();
 
 public:
@@ -54,6 +55,7 @@ public:
 
                                           };
     void update();
+    bool isAtGoal(); //new function for sequential path finding
     void setPath(const std::vector<std::array<double, 2>> &path, bool backwards)
     {
         lastFoundIndex = 0;

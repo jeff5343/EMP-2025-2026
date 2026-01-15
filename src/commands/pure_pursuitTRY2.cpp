@@ -133,9 +133,12 @@ void PurePursuit::followGoalPoint(Point goalPt)
     // If moving backwards, we invert the direction vector (-dy, -dx).
     // This calculates the angle for the FRONT of the robot to face AWAY from the goal.
     double absTargetAngle;
-    if (backwards) {
+    if (backwards)
+    {
         absTargetAngle = atan2(-dy, -dx);
-    } else {
+    }
+    else
+    {
         absTargetAngle = atan2(dy, dx);
     }
 
@@ -157,7 +160,7 @@ void PurePursuit::followGoalPoint(Point goalPt)
     double linearError = std::sqrt(std::pow(dy, 2) + std::pow(dx, 2));
 
     double turnVel = kP * turnError;
-    
+
     // 3. Set Linear Velocity
     // If backwards, we use negative velocity.
     double linearVel = backwards ? -MAX_LINEAR_PERCENT_OUT : MAX_LINEAR_PERCENT_OUT;
@@ -166,7 +169,7 @@ void PurePursuit::followGoalPoint(Point goalPt)
     // if (backwards) linearVel = -1 * kP_linear * linearError;
 
     // 4. Calculate Motor Output
-    // Note: The mixing logic (L = V - T, R = V + T) usually works for reverse 
+    // Note: The mixing logic (L = V - T, R = V + T) usually works for reverse
     // automatically provided turnVel is calculated correctly relative to the new heading.
     double leftPercentOut = MathUtil::clamp((linearVel - turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
     double rightPercentOut = MathUtil::clamp((linearVel + turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
@@ -174,6 +177,23 @@ void PurePursuit::followGoalPoint(Point goalPt)
     drivetrain.setPercentOut(leftPercentOut, rightPercentOut);
 }
 
+bool PurePursuit::isAtGoal()
+{
+    // code this function:
+    //  need isAtGoal function, isAtGoal will return bool either true or false
+    //  depending on how far we are to the goal
+    Pose pose = drivetrain.getPose();
+    // current position and goal position
+    Point currentPosition = {pose.x, pose.y};
+    Point endPoint = {path[path.size() - 1][0], path[path.size() - 1][1]};
+    double distanceToGoal = pt_to_pt_distance(currentPosition, endPoint);
+
+    std::size_t lastVector = path.size() - 2; // finds last index in vector
+    if (distanceToGoal <= 5)
+        return true;
+    else
+        return false;
+}
 
 void PurePursuit::checkIfLast()
 {
