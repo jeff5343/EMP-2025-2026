@@ -43,11 +43,12 @@ private:
     };
     int poseSetpointsLength = 1;
     int poseSetpointIndex = 0;
-    bool isPoseSetpointSet = false;
+    bool pathFollowingStarted = false;
 
     // for paths
     const std::string pathFileName = "path1.txt";
     std::vector<Path> paths = {};
+    int pathIndex = 0;
 
     bool isCalibrating = true;
 
@@ -57,6 +58,9 @@ public:
 
     /* called every 20ms in autonomous */
     void autonomousPeriodic();
+
+    /* follow path */
+    void followPaths();
 
     /* called every 20ms in usercontrol */
     void usercontrolPeriodic();

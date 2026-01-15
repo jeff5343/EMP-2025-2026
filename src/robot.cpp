@@ -56,18 +56,23 @@ void Robot::usercontrolPeriodic()
 
     if (controller.ButtonB.pressing())
     {
-        if (!isPoseSetpointSet)
+        if (!pathFollowingStarted)
         {
             pidDrive.setTargetPose(poseSetpoints[poseSetpointIndex]);
-            isPoseSetpointSet = true;
+            pathFollowingStarted = true;
         }
         pidDrive.update();
     }
     else if (controller.ButtonY.pressing())
     {
-        if (!isPoseSetpointSet)
+        if (!pathFollowingStarted)
         {
-            isPoseSetpointSet = true;
+            pathFollowingStarted = true;
+            pathIndex = 0;
+            if (paths.size() > 0)
+            {
+                purePursuit.setPath(paths[0].points);
+            }
             purePursuit.reset();
         }
         purePursuit.update();
@@ -75,7 +80,7 @@ void Robot::usercontrolPeriodic()
     else
     {
         // so that setTargetPose is ran when b is pressed ahfwahf
-        isPoseSetpointSet = false;
+        pathFollowingStarted = false;
 
         // convert axis positions to range -1.0 to 1.0
         double x = static_cast<double>(controller.Axis1.position()) / 100.0;
@@ -98,8 +103,37 @@ void Robot::usercontrolPeriodic()
     log();
 }
 
+void Robot::followPaths()
+{
+    if (pathIndex >= paths.size())
+        return;
+
+    // need isAtGoal function, isAtGoal will return bool either true or false
+    // depending on how far we are to the goal
+    if (purePursuit.isAtGoal())
+    {
+        pathIndex++;
+        if (pathIndex >= paths.size())
+            return;
+        purePursuit.setPath(paths[pathIndex + 1].points);
+    }
+
+    purePursuit.update();
+}
+
 void Robot::autonomousPeriodic()
 {
+    if (!pathFollowingStarted)
+    {
+        pathFollowingStarted = true;
+        pathIndex = 0;
+        if (paths.size() > 0)
+        {
+            purePursuit.setPath(paths[0].points);
+        }
+        purePursuit.reset();
+    }
+    purePursuit.update();
 }
 
 void Robot::log()
