@@ -51,7 +51,7 @@ void Robot::usercontrolPeriodic()
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
     {
-        drivetrain.resetOdometry(0, 0, 0);
+        drivetrain.resetOdometry(-47.279, 46.575, M_PI);
     }
 
     if (controller.ButtonB.pressing())
