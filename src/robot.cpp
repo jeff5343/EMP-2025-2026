@@ -21,7 +21,7 @@ void Robot::init()
     printf("done calibrating!\n");
 
     paths = PathParser::loadPaths(pathFileName);
-    purePursuit.setPath(paths[0].points);
+    purePursuit.setPath(paths[0].points, true);
     printf("done loading %lu paths!\n", paths.size());
 };
 
