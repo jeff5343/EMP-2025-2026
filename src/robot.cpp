@@ -21,7 +21,7 @@ void Robot::init()
     printf("done calibrating!\n");
 
     paths = PathParser::loadPaths(pathFileName);
-    purePursuit.setPath(paths[0].points, true);
+    purePursuit.setPath(paths[0].points, false);
     printf("done loading %lu paths!\n", paths.size());
 };
 
@@ -51,7 +51,7 @@ void Robot::usercontrolPeriodic()
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
     {
-        drivetrain.resetOdometry(-47.279, 46.575, M_PI);
+        drivetrain.resetOdometry(-120.09,118.3, M_PI);
     }
 
     if (controller.ButtonB.pressing())
