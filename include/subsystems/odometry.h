@@ -37,7 +37,8 @@ private:
      */
     // -0.491 from hand measurement
     static constexpr double DIST_CENTER_TO_RIGHT_WHEEL = -0.4430;
-    static constexpr double DIST_CENTER_TO_BOT_WHEEL = -5.7505;
+    // static constexpr double DIST_CENTER_TO_BOT_WHEEL = -5.7505;
+    static constexpr double DIST_CENTER_TO_BOT_WHEEL = 0;
 
     /* for one rotation of the heading, the scalar to be multiplied in rad */
     static constexpr double HEADING_DRIFT_SCALAR_RAD =  1.008140736;
