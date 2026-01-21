@@ -27,7 +27,7 @@ private:
     // create variables to store where you want to go, and where you are
     // variables to keep track where we are
     const double kP = 10;
-    const double MAX_PERCENT_OUTPUT = 0.3;
+    const double MAX_PERCENT_OUTPUT = 0.4;
     // do we need these?
     const double LOOK_AHEAD_DISTANCE = 8.4;
     const double MAX_LINEAR_PERCENT_OUT = 20.0;
