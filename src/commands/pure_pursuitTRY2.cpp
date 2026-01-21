@@ -174,6 +174,14 @@ void PurePursuit::followGoalPoint(Point goalPt)
     double leftPercentOut = MathUtil::clamp((linearVel - turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
     double rightPercentOut = MathUtil::clamp((linearVel + turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
 
+    // turnVel = kP (10) * (PI/2) = 15.70
+    // (20 - 15.70) = 4.3
+    // (20 + 15.70) = 35.7
+
+    // turnVel = kP (10) * (PI/4) = 7.85
+    // (20 - 7.85) = 12.15
+    // (20 + 7.85) = 27.85
+
     drivetrain.setPercentOut(leftPercentOut, rightPercentOut);
 }
 
