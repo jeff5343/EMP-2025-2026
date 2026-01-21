@@ -51,7 +51,7 @@ void Robot::usercontrolPeriodic()
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
     {
-        drivetrain.resetOdometry(-120.09,118.3, M_PI);
+        drivetrain.resetOdometry(-120.09, 118.3, M_PI);
     }
 
     if (controller.ButtonB.pressing())
@@ -106,19 +106,23 @@ void Robot::usercontrolPeriodic()
 void Robot::followPaths()
 {
     if (pathIndex >= paths.size())
+    {
+        drivetrain.setPercentOut(0, 0);
         return;
+    }
 
-    // need isAtGoal function, isAtGoal will return bool either true or false
-    // depending on how far we are to the goal
+    purePursuit.update();
+
     if (purePursuit.isAtGoal())
     {
         pathIndex++;
         if (pathIndex >= paths.size())
+        {
+            drivetrain.setPercentOut(0, 0);
             return;
+        }
         purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
     }
-
-    purePursuit.update();
 }
 
 void Robot::autonomousPeriodic()
