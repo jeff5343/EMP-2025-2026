@@ -52,7 +52,7 @@ std::vector<Path> PathParser::loadPaths(std::string filePath)
         for (std::string chunk; i < 2; i++)
         {
             std::getline(input, chunk, ',');
-            nums[i] = atof(chunk.c_str());
+            nums[i] = atof(chunk.c_str()) * CENTIMETERS_TO_INCHES;
         }
 
         if (!input.eof())
