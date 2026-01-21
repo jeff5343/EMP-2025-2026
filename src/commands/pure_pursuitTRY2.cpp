@@ -202,7 +202,7 @@ bool PurePursuit::isAtGoal()
     //  need isAtGoal function, isAtGoal will return bool either true or false
     //  depending on how far we are to the goal
     double distanceToGoal = distanceToGoalPt();
-    if (distanceToGoal <= 5)
+    if (distanceToGoal <= 3)
         return true;
     else
         return false;
