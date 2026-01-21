@@ -177,18 +177,23 @@ void PurePursuit::followGoalPoint(Point goalPt)
     drivetrain.setPercentOut(leftPercentOut, rightPercentOut);
 }
 
-bool PurePursuit::isAtGoal()
+double PurePursuit::distanceToGoalPt()
 {
-    // code this function:
-    //  need isAtGoal function, isAtGoal will return bool either true or false
-    //  depending on how far we are to the goal
     Pose pose = drivetrain.getPose();
     // current position and goal position
     Point currentPosition = {pose.x, pose.y};
     Point endPoint = {path[path.size() - 1][0], path[path.size() - 1][1]};
     double distanceToGoal = pt_to_pt_distance(currentPosition, endPoint);
 
-    std::size_t lastVector = path.size() - 2; // finds last index in vector
+    return distanceToGoal;
+}
+
+bool PurePursuit::isAtGoal()
+{
+    // code this function:
+    //  need isAtGoal function, isAtGoal will return bool either true or false
+    //  depending on how far we are to the goal
+    double distanceToGoal = distanceToGoalPt();
     if (distanceToGoal <= 5)
         return true;
     else
@@ -197,14 +202,8 @@ bool PurePursuit::isAtGoal()
 
 void PurePursuit::checkIfLast()
 {
-    Pose pose = drivetrain.getPose();
-    // current position and goal position
-    Point currentPosition = {pose.x, pose.y};
-    Point endPoint = {path[path.size() - 1][0], path[path.size() - 1][1]};
-    double distanceToGoal = pt_to_pt_distance(currentPosition, endPoint);
-
-    std::size_t lastVector = path.size() - 2; // finds last index in vector
-    if (distanceToGoal <= 5)
+    //checks if is on last point and then stops if within 5 inches
+    if (isAtGoal())
     {
         drivetrain.setPercentOut(0, 0);
     }
