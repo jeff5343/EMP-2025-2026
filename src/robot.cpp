@@ -113,6 +113,7 @@ void Robot::followPaths()
 
     if (purePursuit.isAtGoal())
     {
+        printf("path: %d complete\n", pathIndex);
         pathIndex++;
         if (pathIndex >= paths.size())
         {

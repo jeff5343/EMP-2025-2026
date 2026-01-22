@@ -3,6 +3,7 @@
 
 #include "util/structs/pid_constants.h"
 #include "util/profiled_pid.h"
+#include "util/pid.h"
 #include "subsystems/drivetrain.h"
 #include "vex.h"
 #include <array>
@@ -26,10 +27,11 @@ private:
     Steer: It turns the wheels to match that curvature.*/
     // create variables to store where you want to go, and where you are
     // variables to keep track where we are
-    const double kP = 7;
-    const double MAX_PERCENT_OUTPUT = 0.3;
+    Pid turnPid{PidConstants{10, 0, 0}};
+    Pid linearPid{PidConstants{10, 0, 0}};
+    const double MAX_PERCENT_OUTPUT = 0.4;
     // do we need these?
-    const double LOOK_AHEAD_DISTANCE = 8.4; //need to increase it!
+    const double LOOK_AHEAD_DISTANCE = 14; // need to increase it!
     const double MAX_LINEAR_PERCENT_OUT = 20.0;
     bool backwards = false;
 
@@ -51,18 +53,18 @@ private:
 
 public:
     // figure out what i need to send into pure pursuit constructor??
-    PurePursuit(Drivetrain &drivetrain) : drivetrain(drivetrain) {
-
-                                          };
+    PurePursuit(Drivetrain &drivetrain) : drivetrain(drivetrain)
+    {
+        turnPid.setSetpoint(0);
+        linearPid.setSetpoint(0);
+    }
     void update();
-    bool isAtGoal(); //new function for sequential path finding
+    bool isAtGoal(); // new function for sequential path finding
     void setPath(const std::vector<std::array<double, 2>> &path, bool backwards)
     {
         lastFoundIndex = 0;
         this->path = path;
-       
         this->backwards = backwards;
-
     }
     void reset()
     {

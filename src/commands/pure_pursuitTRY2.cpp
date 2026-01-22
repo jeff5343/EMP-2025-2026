@@ -117,7 +117,7 @@ Point PurePursuit::goal_point_search()
             goalPt = {path[lastFoundIndex][0], path[lastFoundIndex][1]};
         }
     }
-    printf("intersect found: %s\n", intersectFound ? "true" : "false");
+    // printf("intersect found: %s\n", intersectFound ? "true" : "false");
     return goalPt;
 }
 
@@ -156,22 +156,24 @@ void PurePursuit::followGoalPoint(Point goalPt)
         turnError = -1 * std::copysign(1.0, turnError) * ((2 * M_PI) - std::abs(turnError));
     }
 
-    double linearError = std::sqrt(std::pow(dy, 2) + std::pow(dx, 2));
+    double linearError = distanceToGoalPt();
 
-    double turnVel = kP * turnError;
+    double turnVel = -turnPid.calculate(turnError);
+    // printf("turnVel: %.3f, turnError: %.3f\n", turnVel, turnError);
 
+    // printf("linear Error: (%.3f, %.3f)\n", linearError, linearError * kPLinear);
     // 3. Set Linear Velocity
     // If backwards, we use negative velocity.
-    double linearVel = backwards ? -MAX_LINEAR_PERCENT_OUT : MAX_LINEAR_PERCENT_OUT;
-
-    // Optional: If using PID for linear velocity (currently commented out in your code):
-    // if (backwards) linearVel = -1 * kP_linear * linearError;
+    double linearVel = MathUtil::clamp(
+        (backwards ? -1 : 1) * -linearPid.calculate(linearError),
+        -MAX_LINEAR_PERCENT_OUT, MAX_LINEAR_PERCENT_OUT);
 
     // 4. Calculate Motor Output
     // Note: The mixing logic (L = V - T, R = V + T) usually works for reverse
     // automatically provided turnVel is calculated correctly relative to the new heading.
     double leftPercentOut = MathUtil::clamp((linearVel - turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
     double rightPercentOut = MathUtil::clamp((linearVel + turnVel) / 100.0, -MAX_PERCENT_OUTPUT, MAX_PERCENT_OUTPUT);
+    // printf("percent outs: (%.3f, %.3f)\n", leftPercentOut, rightPercentOut);
 
     // turnVel = kP (10) * (PI/2) = 15.70
     // (20 - 15.70) = 4.3
@@ -201,7 +203,7 @@ bool PurePursuit::isAtGoal()
     //  need isAtGoal function, isAtGoal will return bool either true or false
     //  depending on how far we are to the goal
     double distanceToGoal = distanceToGoalPt();
-    if (distanceToGoal <= 1)
+    if (distanceToGoal <= 1.0)
         return true;
     else
         return false;
@@ -224,9 +226,9 @@ void PurePursuit::update()
     double currentX = pose.x;
     double currentY = pose.y;
     bool backwards = 1;
-    printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
-    printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
-    printf("currentIndex: %d\n", lastFoundIndex);
+    // printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
+    // printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
+    // printf("currentIndex: %d\n", lastFoundIndex);
 
     followGoalPoint(goalPt);
     checkIfLast();
