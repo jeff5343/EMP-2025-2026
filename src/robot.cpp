@@ -86,8 +86,6 @@ void Robot::usercontrolPeriodic()
         double x = static_cast<double>(controller.Axis1.position()) / 100.0;
         double y = static_cast<double>(controller.Axis3.position()) / 100.0;
 
-        printf("x: %.3f, y: %.3f\n", x, y);
-
         double deadband = 0.05;
         if (std::fabs(x) <= deadband)
             x = 0;

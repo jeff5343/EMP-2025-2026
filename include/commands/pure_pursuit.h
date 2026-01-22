@@ -29,7 +29,7 @@ private:
     const double kP = 10;
     const double MAX_PERCENT_OUTPUT = 0.3;
     // do we need these?
-    const double LOOK_AHEAD_DISTANCE = 4.2;
+    const double LOOK_AHEAD_DISTANCE = 2.8; //need to increase it!
     const double MAX_LINEAR_PERCENT_OUT = 20.0;
     bool backwards = false;
 
