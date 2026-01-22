@@ -117,7 +117,7 @@ Point PurePursuit::goal_point_search()
             goalPt = {path[lastFoundIndex][0], path[lastFoundIndex][1]};
         }
     }
-    printf("intersect found: %s", intersectFound ? "true" : "false");
+    printf("intersect found: %s\n", intersectFound ? "true" : "false");
     return goalPt;
 }
 
