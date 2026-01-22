@@ -45,8 +45,6 @@ Point PurePursuit::goal_point_search()
         double D = x1 * y2 - x2 * y1;
         double discriminant = (LOOK_AHEAD_DISTANCE * LOOK_AHEAD_DISTANCE) * (dr * dr) - (D * D);
 
-        bool foundIntersection;
-
         if (discriminant >= 0)
         {
             double sol_x1 = (D * dy + sgn(dy) * dx * sqrt(discriminant)) / (dr * dr);
@@ -70,7 +68,7 @@ Point PurePursuit::goal_point_search()
             // if one or both of the solutions are in range
             if (isSolPt1InRange or isSolPt2InRange)
             {
-                foundIntersection = true;
+                intersectFound = true;
                 if (isSolPt1InRange and isSolPt2InRange)
                 {
                     // if both solutions are in range, check which one is better
@@ -113,12 +111,13 @@ Point PurePursuit::goal_point_search()
         }
         else
         {
-            foundIntersection = false;
+            intersectFound = false;
             // no new intersection found, potentially deviated from the path
             // follow path [lastFoundIndex]
             goalPt = {path[lastFoundIndex][0], path[lastFoundIndex][1]};
         }
     }
+    printf("intersect found: %s", intersectFound ? "true" : "false");
     return goalPt;
 }
 
@@ -210,7 +209,7 @@ bool PurePursuit::isAtGoal()
 
 void PurePursuit::checkIfLast()
 {
-    //checks if is on last point and then stops if within 5 inches
+    // checks if is on last point and then stops if within 5 inches
     if (isAtGoal())
     {
         drivetrain.setPercentOut(0, 0);
