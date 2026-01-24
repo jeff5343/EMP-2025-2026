@@ -23,6 +23,21 @@ public:
 
         return input;
     }
+
+    inline static double deadband(double input, double deadband)
+    {
+        if (std::fabs(input) <= deadband)
+        {
+            return 0;
+        }
+        // f(X) = (1st / (1 - deadband)) * (X - (sgn(X) * deadband))
+        return (1.0 / (1.0 - deadband)) * (input - (std::copysign(deadband, input)));
+    }
+
+    inline static double axisPower(double input, double power)
+    {
+        return std::copysign(std::pow(std::fabs(input), power), input);
+    }
 };
 
 #endif
