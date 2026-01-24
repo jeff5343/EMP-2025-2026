@@ -47,6 +47,13 @@ void pre_auton(void)
 
 void autonomous(void)
 {
+  while (1)
+  {
+    robot.autonomousPeriodic();
+    wait(20, msec);
+
+  }
+  
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
