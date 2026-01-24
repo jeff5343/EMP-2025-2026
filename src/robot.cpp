@@ -20,14 +20,11 @@ void Robot::init()
     isCalibrating = false;
     printf("done calibrating!\n");
 
-
-
     paths = PathParser::loadPaths(pathFileName);
     double startX = paths[0].points[0][0];
     double startY = paths[0].points[0][1];
 
-    drivetrain.resetOdometry(startX, startY, M_PI); //need to get starting points of path not just the first path we need to follow
-
+    drivetrain.resetOdometry(startX, startY, M_PI); // need to get starting points of path not just the first path we need to follow
 
     purePursuit.setPath(paths[0].points, true);
     printf("done loading %lu paths!\n", paths.size());
@@ -87,7 +84,7 @@ void Robot::usercontrolPeriodic()
     }
     else
     {
-        // so that setTargetPose is ran when b is pressed ahfwahf
+        // so that setTargetPose is ran when b is pressed
         pathFollowingStarted = false;
 
         // convert axis positions to range -1.0 to 1.0
@@ -140,11 +137,11 @@ void Robot::autonomousPeriodic()
         pathIndex = 0;
         if (paths.size() > 0)
         {
-            purePursuit.setPath(paths[0].points, backwards[pathIndex]);
+            purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
         }
         purePursuit.reset();
     }
-    purePursuit.update();
+    followPaths();
 }
 
 void Robot::log()
