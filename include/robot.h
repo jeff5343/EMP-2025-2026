@@ -51,6 +51,10 @@ private:
     std::vector<bool> backwards = {false, true, false};
     int pathIndex = 0;
 
+    // for paths
+    const std::vector<std::string> pathFileNames = {"path1.txt"};
+    std::vector<Path> paths = {};
+
     bool isCalibrating = true;
 
 public:
