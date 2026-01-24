@@ -20,7 +20,15 @@ void Robot::init()
     isCalibrating = false;
     printf("done calibrating!\n");
 
+
+
     paths = PathParser::loadPaths(pathFileName);
+    double startX = paths[0].points[0][0];
+    double startY = paths[0].points[0][1];
+
+    drivetrain.resetOdometry(startX, startY, M_PI); //need to get starting points of path not just the first path we need to follow
+
+
     purePursuit.setPath(paths[0].points, true);
     printf("done loading %lu paths!\n", paths.size());
 };
