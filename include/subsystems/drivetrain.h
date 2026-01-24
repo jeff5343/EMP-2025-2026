@@ -61,7 +61,7 @@ public:
 
     void resetOdometry(double x, double y, double rad)
     {
-        odometry.reset(0, 0, 0);
+        odometry.reset(x, y, rad);
     }
 };
 

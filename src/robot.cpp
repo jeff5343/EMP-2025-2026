@@ -20,9 +20,8 @@ void Robot::init()
     isCalibrating = false;
     printf("done calibrating!\n");
 
-    for (std::string pathFileName : pathFileNames) {
-        paths.push_back(PathParser::loadPath(pathFileName));
-    }
+    paths = PathParser::loadPaths(pathFileName);
+    purePursuit.setPath(paths[0].points, true);
     printf("done loading %lu paths!\n", paths.size());
 };
 
@@ -33,7 +32,6 @@ void Robot::usercontrolPeriodic()
         return;
 
     /* TELEOP DRIVING: */
-
     if (controller.ButtonR1.pressing())
     {
         intakeRightMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
@@ -53,28 +51,42 @@ void Robot::usercontrolPeriodic()
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
     {
-        drivetrain.resetOdometry(0, 0, 0);
+        drivetrain.resetOdometry(-47.2795, 46.5748, M_PI);
     }
 
     if (controller.ButtonB.pressing())
     {
-        if (!isPoseSetpointSet)
+        if (!pathFollowingStarted)
         {
             pidDrive.setTargetPose(poseSetpoints[poseSetpointIndex]);
-            isPoseSetpointSet = true;
+            pathFollowingStarted = true;
         }
         pidDrive.update();
+    }
+    else if (controller.ButtonY.pressing())
+    {
+        if (!pathFollowingStarted)
+        {
+            pathFollowingStarted = true;
+            pathIndex = 0;
+            if (paths.size() > 0)
+            {
+                purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
+            }
+            purePursuit.reset();
+        }
+        followPaths();
     }
     else
     {
         // so that setTargetPose is ran when b is pressed ahfwahf
-        isPoseSetpointSet = false;
+        pathFollowingStarted = false;
 
         // convert axis positions to range -1.0 to 1.0
         double x = static_cast<double>(controller.Axis1.position()) / 100.0;
         double y = static_cast<double>(controller.Axis3.position()) / 100.0;
 
-        double deadband = 0.01;
+        double deadband = 0.05;
         if (std::fabs(x) <= deadband)
             x = 0;
         if (std::fabs(y) <= deadband)
@@ -89,8 +101,42 @@ void Robot::usercontrolPeriodic()
     log();
 }
 
+void Robot::followPaths()
+{
+    if (pathIndex >= paths.size())
+    {
+        drivetrain.setPercentOut(0, 0);
+        return;
+    }
+
+    purePursuit.update();
+
+    if (purePursuit.isAtGoal())
+    {
+        printf("path: %d complete\n", pathIndex);
+        pathIndex++;
+        if (pathIndex >= paths.size())
+        {
+            drivetrain.setPercentOut(0, 0);
+            return;
+        }
+        purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
+    }
+}
+
 void Robot::autonomousPeriodic()
 {
+    if (!pathFollowingStarted)
+    {
+        pathFollowingStarted = true;
+        pathIndex = 0;
+        if (paths.size() > 0)
+        {
+            purePursuit.setPath(paths[0].points, backwards[pathIndex]);
+        }
+        purePursuit.reset();
+    }
+    purePursuit.update();
 }
 
 void Robot::log()

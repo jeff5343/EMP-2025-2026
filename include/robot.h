@@ -5,6 +5,7 @@
 #include <string>
 #include "subsystems/drivetrain.h"
 #include "commands/pid_drive.h"
+#include "commands/pure_pursuit.h"
 #include "util/structs/pose.h"
 #include "util/structs/path.h"
 #include "util/trapezoid_profile.h"
@@ -14,6 +15,8 @@ class Robot
 private:
     // subsystems
     Drivetrain drivetrain{};
+
+    PurePursuit purePursuit{drivetrain};
 
     PidDrive pidDrive{
         drivetrain,
@@ -40,7 +43,13 @@ private:
     };
     int poseSetpointsLength = 1;
     int poseSetpointIndex = 0;
-    bool isPoseSetpointSet = false;
+    bool pathFollowingStarted = false;
+
+    // for paths
+    const std::string pathFileName = "path1.txt";
+    std::vector<Path> paths = {};
+    std::vector<bool> backwards = {false, true, false};
+    int pathIndex = 0;
 
     // for paths
     const std::vector<std::string> pathFileNames = {"path1.txt"};
@@ -54,6 +63,9 @@ public:
 
     /* called every 20ms in autonomous */
     void autonomousPeriodic();
+
+    /* follow path */
+    void followPaths();
 
     /* called every 20ms in usercontrol */
     void usercontrolPeriodic();
