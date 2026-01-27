@@ -79,9 +79,21 @@ void Robot::usercontrolPeriodic()
     }
     else if (controller.ButtonUp.pressing())
     {
-        if (!pathFollowingStarted) {
+        // point up
+        if (!pathFollowingStarted)
+        {
             pathFollowingStarted = true;
             headingController.setTargetHeading(0);
+        }
+        headingController.update();
+    }
+    else if (controller.ButtonDown.pressing())
+    {
+        // point down
+        if (!pathFollowingStarted)
+        {
+            pathFollowingStarted = true;
+            headingController.setTargetHeading(M_PI);
         }
         headingController.update();
     }
