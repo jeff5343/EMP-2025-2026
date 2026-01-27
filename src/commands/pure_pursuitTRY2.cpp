@@ -149,12 +149,15 @@ void PurePursuit::followGoalPoint(Point goalPt)
 
     // 2. Calculate Turn Error
     double turnError = absTargetAngle - pose.radians;
-
+    
     // Normalize error to [-PI, PI] for shortest turn
     if (turnError > M_PI || turnError < -M_PI)
     {
         turnError = -1 * std::copysign(1.0, turnError) * ((2 * M_PI) - std::abs(turnError));
     }
+    
+    printf("turnError (rad): %.3f\n", turnError);
+
 
     double linearError = distanceToGoalPt();
 

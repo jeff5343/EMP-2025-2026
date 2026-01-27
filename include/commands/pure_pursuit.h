@@ -28,7 +28,7 @@ private:
     // create variables to store where you want to go, and where you are
     // variables to keep track where we are
     Pid turnPid{PidConstants{10, 0, 0}};
-    Pid linearPid{PidConstants{10, 0, 0}};
+    Pid linearPid{PidConstants{2.5, 0, 0}};
     const double MAX_PERCENT_OUTPUT = 0.4;
     // do we need these?
     const double LOOK_AHEAD_DISTANCE = 14; // need to increase it!

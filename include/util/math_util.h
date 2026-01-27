@@ -6,6 +6,7 @@
 class MathUtil
 {
 public:
+//gets a value from minimum to high and recieves a input and sees if it is between numbers 
     inline static double clamp(double value, double low, double high)
     {
         return std::max(low, std::min(value, high));
