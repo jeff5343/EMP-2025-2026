@@ -77,6 +77,14 @@ void Robot::usercontrolPeriodic()
         }
         followPaths();
     }
+    else if (controller.ButtonUp.pressing())
+    {
+        if (!pathFollowingStarted) {
+            pathFollowingStarted = true;
+            headingController.setTargetHeading(0);
+        }
+        headingController.update();
+    }
     else
     {
         // so that setTargetPose is ran when b is pressed ahfwahf
