@@ -15,6 +15,7 @@ using namespace vex;
 // A global instance of competition
 competition Competition;
 Robot robot;
+ALLIANCE alliance = ALLIANCE::RED_TOP;
 
 // define your global instances of motors and other devices here
 
@@ -32,7 +33,7 @@ void pre_auton(void)
 {
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
-  robot.init();
+  robot.init(alliance);
 }
 
 /*---------------------------------------------------------------------------*/

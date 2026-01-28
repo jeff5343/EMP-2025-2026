@@ -4,7 +4,7 @@
 #include <cmath>
 #include "vex.h"
 
-void Robot::init()
+void Robot::init(ALLIANCE alliance)
 {
     /* CALIBRATE INERTIAL SENSOR */
     isCalibrating = true;
@@ -26,8 +26,24 @@ void Robot::init()
     double startY = paths[0].points[0][1];
 
     drivetrain.resetOdometry(startX, startY, M_PI); // need to get starting points of path not just the first path we need to follow
-
     purePursuit.setPath(paths[0].points, true);
+
+    // flip coordinates based on alliance
+    int neg[2] = {1, 1};
+    if (alliance == ALLIANCE::BLUE_BOT || alliance == ALLIANCE::BLUE_TOP)
+        neg[0] = -1;
+    if (alliance == ALLIANCE::RED_BOT || alliance == ALLIANCE::BLUE_BOT)
+        neg[1] = -1;
+
+    for (Path &path : paths)
+    {
+        for (std::array<double, 2> &point : path.points)
+        {
+            point[0] *= neg[0];
+            point[1] *= neg[1];
+        }
+    }
+
     printf("done loading %lu paths!\n", paths.size());
 };
 
@@ -172,23 +188,23 @@ void Robot::log()
 
 void Robot::autonomousRun1()
 {
-    //add intake code here between paths
+    // add intake code here between paths
     autonomousPeriodic(0); // go to tube
-    //add intake code here between paths
+    // add intake code here between paths
 
     vex::wait(200, vex::msec); // wait to fully intake balls
-    autonomousPeriodic(1); //sort bad balls
-    //add reverse intake to spit out balls here between paths
+    autonomousPeriodic(1);     // sort bad balls
+    // add reverse intake to spit out balls here between paths
 
     vex::wait(200, vex::msec); // wait to fully spit out balls
-    autonomousPeriodic(2); // go to the scoring zone
-    //add outtake motors here between paths
+    autonomousPeriodic(2);     // go to the scoring zone
+    // add outtake motors here between paths
 
     autonomousPeriodic(3); // go back to the tube
-    //add intake code here between paths
+    // add intake code here between paths
     vex::wait(200, vex::msec); // wait to fully intake balls
-    
+
     autonomousPeriodic(4); // go to scoring zone
-    //add outtake motors here between paths
+    // add outtake motors here between paths
     vex::wait(200, vex::msec); // wait to fully outtake balls
 }

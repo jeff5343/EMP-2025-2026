@@ -51,7 +51,6 @@ private:
     double distanceToGoalPt();
 
     void checkIfLast();
-    void PurePursuit::follow(int index);
 
 
 public:

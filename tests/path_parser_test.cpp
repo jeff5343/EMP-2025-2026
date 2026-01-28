@@ -18,6 +18,25 @@ int main()
     }
 
     std::vector<Path> paths = pathParser.loadPaths("../path1.txt");
+
+    // negate all the values
+    int neg[2] = {1, 1};
+    // if (alliance == ALLIANCE::BLUE_BOT || alliance == ALLIANCE::BLUE_TOP)
+    if (true)
+        neg[0] = -1;
+    // if (alliance == ALLIANCE::RED_BOT || alliance == ALLIANCE::BLUE_BOT)
+    if (true)
+        neg[1] = -1;
+
+    for (Path &path : paths)
+    {
+        for (std::array<double, 2> &point : path.points)
+        {
+            point[0] *= neg[0];
+            point[1] *= neg[1];
+        }
+    }
+
     for (Path &path : paths)
     {
         fileOutput << "startHeading: " << path.startHeadingRadians << ", endHeading: " << path.endHeadingRadians << "\n";

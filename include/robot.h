@@ -10,6 +10,13 @@
 #include "util/structs/path.h"
 #include "util/trapezoid_profile.h"
 
+enum ALLIANCE {
+    RED_TOP,
+    RED_BOT,
+    BLUE_TOP,
+    BLUE_BOT
+};
+
 class Robot
 {
 private:
@@ -55,7 +62,7 @@ private:
 
 public:
     /* called in pre_auton */
-    void init();
+    void init(ALLIANCE alliance);
 
     /* called every 20ms in autonomous */
     void autonomousPeriodic(int currentPathIndex);
@@ -68,6 +75,8 @@ public:
 
     /* logging statements */
     void log();
+
+    /* auto run 1 */
     void autonomousRun1();
 
 };
