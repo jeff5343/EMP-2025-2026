@@ -49,7 +49,10 @@ private:
     int sgn(double num);
     Point goal_point_search();
     double distanceToGoalPt();
+
     void checkIfLast();
+    void PurePursuit::follow(int index);
+
 
 public:
     // figure out what i need to send into pure pursuit constructor??

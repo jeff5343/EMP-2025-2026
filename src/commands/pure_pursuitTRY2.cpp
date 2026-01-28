@@ -155,7 +155,7 @@ void PurePursuit::followGoalPoint(Point goalPt)
     {
         turnError = -1 * std::copysign(1.0, turnError) * ((2 * M_PI) - std::abs(turnError));
     }
-    
+
     printf("turnError (rad): %.3f\n", turnError);
 
 
@@ -221,6 +221,7 @@ void PurePursuit::checkIfLast()
     }
 }
 
+
 void PurePursuit::update()
 {
     //:)
@@ -228,7 +229,6 @@ void PurePursuit::update()
     Pose pose = drivetrain.getPose();
     double currentX = pose.x;
     double currentY = pose.y;
-    bool backwards = 1;
     // printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
     // printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
     // printf("currentIndex: %d\n", lastFoundIndex);

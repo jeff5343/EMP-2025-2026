@@ -58,7 +58,7 @@ public:
     void init();
 
     /* called every 20ms in autonomous */
-    void autonomousPeriodic();
+    void autonomousPeriodic(int currentPathIndex);
 
     /* follow path */
     void followPaths();
@@ -68,6 +68,8 @@ public:
 
     /* logging statements */
     void log();
+    void autonomousRun1();
+
 };
 
 #endif

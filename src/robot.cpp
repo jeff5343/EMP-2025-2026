@@ -2,6 +2,7 @@
 #include "util/angle.h"
 #include "util/path_parser.h"
 #include <cmath>
+#include "vex.h"
 
 void Robot::init()
 {
@@ -129,19 +130,24 @@ void Robot::followPaths()
     }
 }
 
-void Robot::autonomousPeriodic()
+void Robot::autonomousPeriodic(int currentPathIndex)
 {
-    if (!pathFollowingStarted)
+    // need to 1. determine path we are following
+    // 2. set that path to pure pursuit
+    // 3. follow that path until we reach the end and then stop
+
+    pathIndex = currentPathIndex;
+    if (paths.size() > 0)
     {
-        pathFollowingStarted = true;
-        pathIndex = 0;
-        if (paths.size() > 0)
-        {
-            purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
-        }
-        purePursuit.reset();
+        purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
     }
-    followPaths();
+
+    while (!purePursuit.isAtGoal())
+    {
+        purePursuit.update();
+
+        vex::wait(20, vex::msec);
+    }
 }
 
 void Robot::log()
@@ -162,4 +168,27 @@ void Robot::log()
     brain.Screen.print(drivetrain.getPose().y);
     // brain.Screen.print(", total deg: ");
     // brain.Screen.print(Angle::toDegrees(drivetrain.getOdometry().getTotalRadians()));
+}
+
+void Robot::autonomousRun1()
+{
+    //add intake code here between paths
+    autonomousPeriodic(0); // go to tube
+    //add intake code here between paths
+
+    vex::wait(200, vex::msec); // wait to fully intake balls
+    autonomousPeriodic(1); //sort bad balls
+    //add reverse intake to spit out balls here between paths
+
+    vex::wait(200, vex::msec); // wait to fully spit out balls
+    autonomousPeriodic(2); // go to the scoring zone
+    //add outtake motors here between paths
+
+    autonomousPeriodic(3); // go back to the tube
+    //add intake code here between paths
+    vex::wait(200, vex::msec); // wait to fully intake balls
+    
+    autonomousPeriodic(4); // go to scoring zone
+    //add outtake motors here between paths
+    vex::wait(200, vex::msec); // wait to fully outtake balls
 }
