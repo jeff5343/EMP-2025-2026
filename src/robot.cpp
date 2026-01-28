@@ -11,8 +11,8 @@ void Robot::init(ALLIANCE alliance)
     inertial.calibrate();
     while (inertial.installed() && inertial.isCalibrating())
     {
-        brain.Screen.clearLine();
-        brain.Screen.print("Calibrating inertial sensor...");
+        Brain.Screen.clearLine();
+        Brain.Screen.print("Calibrating inertial sensor...");
         printf("calibrating...\n");
         vex::this_thread::sleep_for(100);
     }
@@ -172,16 +172,16 @@ void Robot::log()
     // drivetrain.log();
 
     /* brain logging */
-    brain.Screen.clearLine();
+    Brain.Screen.clearLine();
 
     // brain.Screen.print("rightD: ");
     // brain.Screen.print(drivetrain.getOdometry().getRightDist());
-    brain.Screen.print(", heading: ");
-    brain.Screen.print(Angle::toDegrees(drivetrain.getPose().radians));
-    brain.Screen.print(", x: ");
-    brain.Screen.print(drivetrain.getPose().x);
-    brain.Screen.print(", y: ");
-    brain.Screen.print(drivetrain.getPose().y);
+    Brain.Screen.print(", heading: ");
+    Brain.Screen.print(Angle::toDegrees(drivetrain.getPose().radians));
+    Brain.Screen.print(", x: ");
+    Brain.Screen.print(drivetrain.getPose().x);
+    Brain.Screen.print(", y: ");
+    Brain.Screen.print(drivetrain.getPose().y);
     // brain.Screen.print(", total deg: ");
     // brain.Screen.print(Angle::toDegrees(drivetrain.getOdometry().getTotalRadians()));
 }

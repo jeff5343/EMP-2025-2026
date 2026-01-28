@@ -8,9 +8,11 @@ using namespace cte;
  * with the brain. I wasted so much time rip.
  */
 
-inline extern vex::brain brain{};
+inline extern vex::brain Brain{};
 
 inline const vex::controller controller{};
+
+inline extern digital_out digout = digital_out(Brain.ThreeWirePort.A);
 
 // encoders
 inline extern vex::rotation rightEncoder{vex::PORT9, false};
