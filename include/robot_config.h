@@ -2,7 +2,7 @@
 #define __ROBOT_CONFIG_H_INCLUDED__
 
 #include "vex.h"
-
+using namespace cte;
 /**
  * All your components have to be initalized in one file
  * with the brain. I wasted so much time rip.
@@ -45,10 +45,21 @@ inline extern vex::motor_group leftMotorGroup{botFrontLeftMotor, botBackLeftMoto
 inline extern vex::motor_group rightMotorGroup{botFrontRightMotor, botBackRightMotor, topFrontRightMotor, topBackRightMotor};
 
 // intake motors
-inline extern vex::motor intakeLeftMotor{
-    vex::PORT11, vex::ratio6_1, true};
-inline extern vex::motor intakeRightMotor{
+inline extern vex::motor intakeMotor{
     vex::PORT12, vex::ratio6_1, false};
+
+//throughtake motor
+inline extern vex::motor throughtakeMotor{
+    vex::PORT15, vex::ratio6_1, false}; // change port as needed
+
+//outtake motors
+inline extern vex::motor outakeMotor{
+    vex::PORT11, vex::ratio6_1, false}; //change port as needed
+
+// pistons
+triport trianglePiston = triport(vex::PORT1);
+triport outtakeElevationPiston = triport(vex::PORT2);
+triport intakeChutePiston = triport(vex::PORT3);
 
 // IMU
 inline extern vex::inertial inertial{vex::PORT19};
