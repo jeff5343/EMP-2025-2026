@@ -38,7 +38,7 @@ private:
     HeadingController headingController{
         drivetrain,
         // turning pid constants
-        PidConstants{0.4, 0.0, 0.0},
+        PidConstants{0.4, 0.0, 0.001},
         // turning pid setpoint tolerance
         0.01,
         // turning profile constraints
