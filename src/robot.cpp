@@ -25,7 +25,7 @@ void Robot::init(ALLIANCE alliance)
     double startX = paths[0].points[0][0];
     double startY = paths[0].points[0][1];
 
-    drivetrain.resetOdometry(startX, startY, M_PI); // need to get starting points of path not just the first path we need to follow
+    drivetrain.resetOdometry(startX, startY, M_PI/2); // need to get starting points of path not just the first path we need to follow
     purePursuit.setPath(paths[0].points, true);
 
     // flip coordinates based on alliance
@@ -72,7 +72,7 @@ void Robot::usercontrolPeriodic()
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
     {
-        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], ((3*M_PI)/2));
+        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], ((M_PI)/2));
     }
 
     if (controller.ButtonB.pressing())
