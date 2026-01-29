@@ -98,7 +98,7 @@ void Odometry::updatePose()
     mutex.lock();
     // update pose object
     pose.x += dX;
-    pose.y += dY;
+    pose.y -= dY;
     // subtracting instead of adding so CCW+ and CW-
     pose.radians -= deltaTheta;
     // wrap radians
