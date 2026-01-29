@@ -84,6 +84,10 @@ public:
     /* auto run 1 */
     void autonomousRun1();
 
+    void logStatements()
+    {
+        purePursuit.logStatements();
+    }
 };
 
 #endif

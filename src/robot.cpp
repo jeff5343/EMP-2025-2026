@@ -4,6 +4,7 @@
 #include <cmath>
 #include "vex.h"
 
+    
 void Robot::init(ALLIANCE alliance)
 {
     /* CALIBRATE INERTIAL SENSOR */
@@ -182,7 +183,7 @@ void Robot::log()
 {
     /* subsystem logging */
     // drivetrain.log();
-
+    
     /* brain logging */
     Brain.Screen.clearLine();
 
@@ -203,20 +204,29 @@ void Robot::autonomousRun1()
     // add intake code here between paths
     autonomousPeriodic(0); // go to tube
     // add intake code here between paths
+    headingController.goToTargetHeadingCommand(paths[0].endHeadingRadians); // make sure we are facing 180 degrees
+     
 
     vex::wait(1000, vex::msec); // wait to fully intake balls
     autonomousPeriodic(1);      // sort bad balls
+    headingController.goToTargetHeadingCommand((3*M_PI)/2); // make sure we are facing 270 degrees
     // add reverse intake to spit out balls here between paths
+    headingController.goToTargetHeadingCommand(paths[1].endHeadingRadians); // make sure we are facing 180 degrees
 
     vex::wait(1000, vex::msec); // wait to fully spit out balls
     autonomousPeriodic(2);      // go to the scoring zone
+    headingController.goToTargetHeadingCommand(paths[2].endHeadingRadians); // make sure we are facing 180 degrees
+
     // add outtake motors here between paths
 
     autonomousPeriodic(3); // go back to the tube
+    headingController.goToTargetHeadingCommand(paths[3].endHeadingRadians); // make sure we are facing 180 degrees
+
     // add intake code here between paths
     vex::wait(1000, vex::msec); // wait to fully intake balls
 
     autonomousPeriodic(4); // go to scoring zone
+    headingController.goToTargetHeadingCommand(paths[4].endHeadingRadians); // make sure we are facing 180 degrees
     // add outtake motors here between paths
     vex::wait(1000, vex::msec); // wait to fully outtake balls
 }

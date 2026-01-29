@@ -28,7 +28,7 @@ private:
     // create variables to store where you want to go, and where you are
     // variables to keep track where we are
     Pid turnPid{PidConstants{9.5, 0, 0}};
-    Pid linearPid{PidConstants{2.5, 0, 0}};
+    Pid linearPid{PidConstants{2.0, 0, 0}};
     const double MAX_PERCENT_OUTPUT = 0.4;
     // do we need these?
     const double LOOK_AHEAD_DISTANCE = 14; // need to increase it!
@@ -49,6 +49,8 @@ private:
     int sgn(double num);
     Point goal_point_search();
     double distanceToGoalPt();
+    
+
 
     void checkIfLast();
 
@@ -72,6 +74,8 @@ public:
     {
         lastFoundIndex = 0;
     }
+
+    void logStatements();
 };
 
 #endif
