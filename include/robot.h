@@ -6,6 +6,7 @@
 #include "subsystems/drivetrain.h"
 #include "commands/pid_drive.h"
 #include "commands/pure_pursuit.h"
+#include "commands/heading_controller.h"
 #include "util/structs/pose.h"
 #include "util/structs/path.h"
 #include "util/trapezoid_profile.h"
@@ -32,6 +33,16 @@ private:
         TrapezoidProfile::Constraints{2 * M_PI, 4 * M_PI},
         // straight profile constraints
         TrapezoidProfile::Constraints{60, 120},
+    };
+
+    HeadingController headingController{
+        drivetrain,
+        // turning pid constants
+        PidConstants{0.4, 0.0, 0.001},
+        // turning pid setpoint tolerance
+        0.01,
+        // turning profile constraints
+        TrapezoidProfile::Constraints{2 * M_PI, 4 * M_PI},
     };
 
     // for testing
