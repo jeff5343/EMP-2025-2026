@@ -1,73 +1,92 @@
-//subsystems for intake and outake mechanisms
 #include "subsystems/intake_outake.h"
-void intake_outake::intake()
+
+/* private functions */
+
+void IntakeOuttake::intake(double percentOut)
 {
-    //insert motors here to run intake mechanism
-    
-    intakeMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
-    
-}
-void intake_outake::throughtake()
-{
-    //insert motors here to run throughtake mechanism
-    throughtakeMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
+    intakeMotor.spin(vex::forward, percentOut * 12.0, vex::voltageUnits::volt);
 }
 
-//public functions
-
-void intake_outake::outake()
+void IntakeOuttake::throughtake(double percentOut)
 {
-    //insert motors here to run outake mechanism which also includes the 
-    //throughtake and intake mechanisms
-    outakeMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
-    intake();
-    throughtake();
+    throughtakeMotor.spin(vex::forward, percentOut * 12.0, vex::voltageUnits::volt);
 }
 
-//two motor subsystems for intake and throughtake
-void intake_outake::startIntakeAndThroughtake()
+void IntakeOuttake::outtake(double percentOut)
 {
-    intake();
-    throughtake();
-}
-void intake_outake::stopIntakeAndThroughtake()
-{
-    //insert motors here to stop both mechanisms
-    intakeMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
-    throughtakeMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
+    outakeMotor.spin(vex::forward, percentOut * 12.0, vex::voltageUnits::volt);
 }
 
-//on startup (only set once)
-void intake_outake::trianglePistonIn()
+/* public functions */
+
+// two motor subsystems for intake and throughtake
+void IntakeOuttake::startIntaking()
 {
-    //insert piston code here to bring triangle piston in
-    
-    trianglePiston.set(true);
-}
-void intake_outake::trianglePistonOut()
-{
-    //insert piston code here to bring triangle piston out 
-    trianglePiston.set(false);
-}
-void intake_outake::outtakeElevationPistonIn()
-{
-    //insert piston code here to bring outtake elevation piston in
-    outtakeElevationPiston.set(true);
-}
-void intake_outake::outtakeElevationPistonOut()
-{
-    //insert piston code here to bring outtake elevation piston out
-    outtakeElevationPiston.set(false);
+    intake(0.8);
+    throughtake(0.8);
 }
 
-//game (set multiple times in a match)
-void intake_outake::intakeChutePistonIn()
+// two motor subsystems for intake and throughtake
+void IntakeOuttake::startReverseIntaking()
 {
-    //insert piston code here to bring intake chute piston in
+    intake(-0.8);
+    throughtake(-0.8);
+}
+
+void IntakeOuttake::startOuttakingHigh()
+{
+    intake(0.8);
+    throughtake(0.8);
+    outtake(0.8);
+}
+
+void IntakeOuttake::startOuttakingMid()
+{
+    intake(0.8);
+    throughtake(0.8);
+    outtake(-0.8);
+}
+
+void IntakeOuttake::stop()
+{
+    intake(0);
+    throughtake(0);
+    outtake(0);
+}
+
+/* pistons */
+
+// game (set multiple times in a match)
+void IntakeOuttake::intakeChutePistonIn()
+{
+    // insert piston code here to bring intake chute piston in
     intakeChutePiston.set(true);
 }
-void intake_outake::intakeChutePistonOut()
+void IntakeOuttake::intakeChutePistonOut()
 {
-    //insert piston code here to bring intake chute piston out
+    // insert piston code here to bring intake chute piston out
     intakeChutePiston.set(false);
+}
+
+// on startup (only set once)
+void IntakeOuttake::trianglePistonIn()
+{
+    // insert piston code here to bring triangle piston in
+
+    trianglePiston.set(true);
+}
+void IntakeOuttake::trianglePistonOut()
+{
+    // insert piston code here to bring triangle piston out
+    trianglePiston.set(false);
+}
+void IntakeOuttake::outtakeElevationPistonIn()
+{
+    // insert piston code here to bring outtake elevation piston in
+    outtakeElevationPiston.set(true);
+}
+void IntakeOuttake::outtakeElevationPistonOut()
+{
+    // insert piston code here to bring outtake elevation piston out
+    outtakeElevationPiston.set(false);
 }
