@@ -2,7 +2,6 @@
 #define __ROBOT_CONFIG_H_INCLUDED__
 
 #include "vex.h"
-using namespace cte;
 /**
  * All your components have to be initalized in one file
  * with the brain. I wasted so much time rip.
@@ -11,8 +10,6 @@ using namespace cte;
 inline extern vex::brain Brain{};
 
 inline const vex::controller controller{};
-
-inline extern digital_out digout = digital_out(Brain.ThreeWirePort.A);
 
 // encoders
 inline extern vex::rotation rightEncoder{vex::PORT9, false};
@@ -59,9 +56,9 @@ inline extern vex::motor outakeMotor{
     vex::PORT11, vex::ratio6_1, false}; //change port as needed
 
 // pistons
-triport trianglePiston = triport(vex::PORT1);
-triport outtakeElevationPiston = triport(vex::PORT2);
-triport intakeChutePiston = triport(vex::PORT3);
+inline extern vex::digital_out trianglePiston = vex::digital_out(Brain.ThreeWirePort.B);
+inline extern vex::digital_out outtakeElevationPiston = vex::digital_out(Brain.ThreeWirePort.C);
+inline extern vex::digital_out intakeChutePiston = vex::digital_out(Brain.ThreeWirePort.D);
 
 // IMU
 inline extern vex::inertial inertial{vex::PORT19};

@@ -56,24 +56,23 @@ void Robot::usercontrolPeriodic()
     /* TELEOP DRIVING: */
     if (controller.ButtonR1.pressing())
     {
-        intakeRightMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
-        intakeLeftMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
+        intakeMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
+        throughtakeMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
     }
     else if (controller.ButtonL1.pressing())
     {
-        intakeRightMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
-        intakeLeftMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
-    }
+        intakeMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
+        throughtakeMotor.spin(vex::forward, -10, vex::voltageUnits::volt);}
     else
     {
-        intakeRightMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
-        intakeLeftMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
+        intakeMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
+        throughtakeMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
     }
 
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
     {
-        drivetrain.resetOdometry(-47.2795, 46.5748, M_PI);
+        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], M_PI);
     }
 
     if (controller.ButtonB.pressing())
