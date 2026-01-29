@@ -149,19 +149,22 @@ void PurePursuit::followGoalPoint(Point goalPt)
 
     // 2. Calculate Turn Error
     double turnError = absTargetAngle - pose.radians;
-    
+
     // Normalize error to [-PI, PI] for shortest turn
     if (turnError > M_PI || turnError < -M_PI)
     {
         turnError = -1 * std::copysign(1.0, turnError) * ((2 * M_PI) - std::abs(turnError));
     }
 
-    printf("turnError (rad): %.3f\n", turnError);
-
+    // printf("turnError (rad): %.3f\n", turnError);
 
     double linearError = distanceToGoalPt();
 
-    double turnVel = -turnPid.calculate(turnError);
+    double turnVel = 0;
+    if (std::fabs(linearError) > 1.5)
+    {
+        turnVel = -turnPid.calculate(turnError);
+    }
     // printf("turnVel: %.3f, turnError: %.3f\n", turnVel, turnError);
 
     // printf("linear Error: (%.3f, %.3f)\n", linearError, linearError * kPLinear);
@@ -221,7 +224,6 @@ void PurePursuit::checkIfLast()
     }
 }
 
-
 void PurePursuit::update()
 {
     //:)
@@ -229,9 +231,9 @@ void PurePursuit::update()
     Pose pose = drivetrain.getPose();
     double currentX = pose.x;
     double currentY = pose.y;
-    printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
-    printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
-    printf("currentIndex: %d\n", lastFoundIndex);
+    // printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
+    // printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
+    // printf("currentIndex: %d\n", lastFoundIndex);
 
     followGoalPoint(goalPt);
     checkIfLast();

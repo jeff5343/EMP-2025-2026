@@ -148,6 +148,7 @@ void Robot::followPaths()
             drivetrain.setPercentOut(0, 0);
             return;
         }
+        printf("now backwards: %s\n", backwards[pathIndex] ? "true" : "false");
         purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
     }
 }
@@ -198,19 +199,19 @@ void Robot::autonomousRun1()
     autonomousPeriodic(0); // go to tube
     // add intake code here between paths
 
-    vex::wait(200, vex::msec); // wait to fully intake balls
+    vex::wait(1000, vex::msec); // wait to fully intake balls
     autonomousPeriodic(1);     // sort bad balls
     // add reverse intake to spit out balls here between paths
 
-    vex::wait(200, vex::msec); // wait to fully spit out balls
+    vex::wait(1000, vex::msec); // wait to fully spit out balls
     autonomousPeriodic(2);     // go to the scoring zone
     // add outtake motors here between paths
 
     autonomousPeriodic(3); // go back to the tube
     // add intake code here between paths
-    vex::wait(200, vex::msec); // wait to fully intake balls
+    vex::wait(1000, vex::msec); // wait to fully intake balls
 
     autonomousPeriodic(4); // go to scoring zone
     // add outtake motors here between paths
-    vex::wait(200, vex::msec); // wait to fully outtake balls
+    vex::wait(1000, vex::msec); // wait to fully outtake balls
 }
