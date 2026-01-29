@@ -160,11 +160,7 @@ void PurePursuit::followGoalPoint(Point goalPt)
 
     double linearError = distanceToGoalPt();
 
-    double turnVel = 0;
-    if (std::fabs(linearError) > 1.5)
-    {
-        turnVel = -turnPid.calculate(turnError);
-    }
+    double turnVel = -turnPid.calculate(turnError);
     // printf("turnVel: %.3f, turnError: %.3f\n", turnVel, turnError);
 
     // printf("linear Error: (%.3f, %.3f)\n", linearError, linearError * kPLinear);
