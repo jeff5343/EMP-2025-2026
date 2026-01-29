@@ -64,7 +64,7 @@ std::vector<Path> PathParser::loadPaths(std::string filePath)
             double headingRad = atof(heading.c_str());
 
             headingRad = Angle::toRadians(headingRad);
-            headingRad = Angle::wrapRadians(((2*M_PI) - headingRad) + (M_PI / 2.0));
+            headingRad = Angle::wrapRadians(((2 * M_PI) - headingRad) + (M_PI / 2.0));
             if (points.size() == 0)
             {
                 startHeading = headingRad;
@@ -79,4 +79,37 @@ std::vector<Path> PathParser::loadPaths(std::string filePath)
 
     f.close();
     return paths;
+}
+
+void PathParser::flipForAlliance(std::vector<Path> &paths, ALLIANCE alliance)
+{
+    int neg[2] = {1, 1};
+    if (alliance == ALLIANCE::BLUE_BOT || alliance == ALLIANCE::BLUE_TOP)
+        neg[0] = -1;
+    if (alliance == ALLIANCE::RED_BOT || alliance == ALLIANCE::BLUE_BOT)
+        neg[1] = -1;
+
+    for (Path &path : paths)
+    {
+        // flip heading on x and y axis (top to bottom)
+        if (neg[1] == -1)
+        {
+            path.startHeadingRadians = Angle::wrapRadians(M_PI - (path.startHeadingRadians - M_PI));
+            path.endHeadingRadians = Angle::wrapRadians(M_PI - (path.endHeadingRadians - M_PI));
+        }
+
+        // flip heading on y axis (red to blue)
+        if (neg[0] == -1)
+        {
+            path.startHeadingRadians = Angle::wrapRadians(M_PI - path.startHeadingRadians);
+            path.endHeadingRadians = Angle::wrapRadians(M_PI - path.endHeadingRadians);
+        }
+
+        // flip coordinates based on alliance/top/bottom
+        for (std::array<double, 2> &point : path.points)
+        {
+            point[0] *= neg[0];
+            point[1] *= neg[1];
+        }
+    }
 }

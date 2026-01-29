@@ -22,27 +22,11 @@ void Robot::init(ALLIANCE alliance)
     printf("done calibrating!\n");
 
     paths = PathParser::loadPaths(pathFileName);
-    double startX = paths[0].points[0][0];
-    double startY = paths[0].points[0][1];
+    PathParser::flipForAlliance(paths, alliance);
 
-    drivetrain.resetOdometry(startX, startY, M_PI/2); // need to get starting points of path not just the first path we need to follow
+    // need to get starting points of path not just the first path we need to follow
+    drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
     purePursuit.setPath(paths[0].points, true);
-
-    // flip coordinates based on alliance
-    // int neg[2] = {1, 1};
-    // if (alliance == ALLIANCE::BLUE_BOT || alliance == ALLIANCE::BLUE_TOP)
-    //     neg[0] = -1;
-    // if (alliance == ALLIANCE::RED_BOT || alliance == ALLIANCE::BLUE_BOT)
-    //     neg[1] = -1;
-
-    // for (Path &path : paths)
-    // {
-    //     for (std::array<double, 2> &point : path.points)
-    //     {
-    //         point[0] *= neg[0];
-    //         point[1] *= neg[1];
-    //     }
-    // }
 
     printf("done loading %lu paths!\n", paths.size());
 };
@@ -62,7 +46,8 @@ void Robot::usercontrolPeriodic()
     else if (controller.ButtonL1.pressing())
     {
         intakeMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
-        throughtakeMotor.spin(vex::forward, -10, vex::voltageUnits::volt);}
+        throughtakeMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
+    }
     else
     {
         intakeMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
@@ -72,7 +57,7 @@ void Robot::usercontrolPeriodic()
     // TODO: find out how to bind functions to events??
     if (controller.ButtonA.pressing())
     {
-        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], ((M_PI)/2));
+        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
     }
 
     if (controller.ButtonB.pressing())
@@ -200,11 +185,11 @@ void Robot::autonomousRun1()
     // add intake code here between paths
 
     vex::wait(1000, vex::msec); // wait to fully intake balls
-    autonomousPeriodic(1);     // sort bad balls
+    autonomousPeriodic(1);      // sort bad balls
     // add reverse intake to spit out balls here between paths
 
     vex::wait(1000, vex::msec); // wait to fully spit out balls
-    autonomousPeriodic(2);     // go to the scoring zone
+    autonomousPeriodic(2);      // go to the scoring zone
     // add outtake motors here between paths
 
     autonomousPeriodic(3); // go back to the tube

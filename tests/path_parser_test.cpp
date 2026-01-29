@@ -18,24 +18,7 @@ int main()
     }
 
     std::vector<Path> paths = pathParser.loadPaths("../path1.txt");
-
-    // negate all the values
-    int neg[2] = {1, 1};
-    // if (alliance == ALLIANCE::BLUE_BOT || alliance == ALLIANCE::BLUE_TOP)
-    if (false)
-        neg[0] = -1;
-    // if (alliance == ALLIANCE::RED_BOT || alliance == ALLIANCE::BLUE_BOT)
-    if (false)
-        neg[1] = -1;
-
-    for (Path &path : paths)
-    {
-        for (std::array<double, 2> &point : path.points)
-        {
-            point[0] *= neg[0];
-            point[1] *= neg[1];
-        }
-    }
+    pathParser.flipForAlliance(paths, ALLIANCE::RED_TOP);
 
     for (Path &path : paths)
     {
