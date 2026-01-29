@@ -2,7 +2,7 @@
 #define __PATH_PARSER__
 
 #include "structs/path.h"
-#include "robot.h"
+#include "alliance.h"
 
 class PathParser
 {

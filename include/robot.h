@@ -9,13 +9,7 @@
 #include "util/structs/pose.h"
 #include "util/structs/path.h"
 #include "util/trapezoid_profile.h"
-
-enum ALLIANCE {
-    RED_TOP,
-    RED_BOT,
-    BLUE_TOP,
-    BLUE_BOT
-};
+#include "util/alliance.h"
 
 class Robot
 {
