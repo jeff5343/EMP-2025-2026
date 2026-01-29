@@ -108,15 +108,22 @@ void Robot::usercontrolPeriodic()
         double x = static_cast<double>(controller.Axis1.position()) / 100.0;
         double y = static_cast<double>(controller.Axis3.position()) / 100.0;
 
-        double deadband = 0.05;
-        if (std::fabs(x) <= deadband)
-            x = 0;
-        if (std::fabs(y) <= deadband)
-            y = 0;
-        if (std::fabs(x) > deadband || std::fabs(y) > deadband)
-            drivetrain.arcadeDrive(x, y);
-        else
-            drivetrain.stop();
+        // printf("ux: %.3f, uy: %.3f", x, y);
+
+        // apply deadband
+        double deadband = 0.03;
+        x = MathUtil::axisPower(MathUtil::deadband(x, deadband), 1.3);
+        y = MathUtil::axisPower(MathUtil::deadband(y, deadband), 1.3);
+
+        double staticFriction = 0.03;
+        if (std::fabs(x) > 0)
+            x += std::copysign(staticFriction, x);
+        if (std::fabs(y) > 0)
+            y += std::copysign(staticFriction, y);
+
+        // printf("x: %.3f, y: %.3f\n", x, y);
+
+        drivetrain.arcadeDrive(MathUtil::deadband(x, deadband), MathUtil::deadband(y, deadband));
     }
 
     /* logging */
