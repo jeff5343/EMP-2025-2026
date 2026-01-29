@@ -229,9 +229,9 @@ void PurePursuit::update()
     Pose pose = drivetrain.getPose();
     double currentX = pose.x;
     double currentY = pose.y;
-    // printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
-    // printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
-    // printf("currentIndex: %d\n", lastFoundIndex);
+    printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
+    printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
+    printf("currentIndex: %d\n", lastFoundIndex);
 
     followGoalPoint(goalPt);
     checkIfLast();
