@@ -59,15 +59,19 @@ std::vector<Path> PathParser::loadPaths(std::string filePath)
         {
             // add heading
             std::string heading;
+            std::getline(input, heading, ',');
             std::getline(input, heading);
             double headingRad = atof(heading.c_str());
+
+            headingRad = Angle::toRadians(headingRad);
+            headingRad = Angle::wrapRadians(((2*M_PI) - headingRad) + (M_PI / 2.0));
             if (points.size() == 0)
             {
-                startHeading = Angle::toRadians(headingRad);
+                startHeading = headingRad;
             }
             else
             {
-                lastHeading = Angle::toRadians(atof(heading.c_str()));
+                lastHeading = headingRad;
             }
         }
         points.push_back(nums);

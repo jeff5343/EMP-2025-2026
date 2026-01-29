@@ -22,10 +22,10 @@ int main()
     // negate all the values
     int neg[2] = {1, 1};
     // if (alliance == ALLIANCE::BLUE_BOT || alliance == ALLIANCE::BLUE_TOP)
-    if (true)
+    if (false)
         neg[0] = -1;
     // if (alliance == ALLIANCE::RED_BOT || alliance == ALLIANCE::BLUE_BOT)
-    if (true)
+    if (false)
         neg[1] = -1;
 
     for (Path &path : paths)
