@@ -29,20 +29,20 @@ void Robot::init(ALLIANCE alliance)
     purePursuit.setPath(paths[0].points, true);
 
     // flip coordinates based on alliance
-    int neg[2] = {1, 1};
-    if (alliance == ALLIANCE::BLUE_BOT || alliance == ALLIANCE::BLUE_TOP)
-        neg[0] = -1;
-    if (alliance == ALLIANCE::RED_BOT || alliance == ALLIANCE::BLUE_BOT)
-        neg[1] = -1;
+    // int neg[2] = {1, 1};
+    // if (alliance == ALLIANCE::BLUE_BOT || alliance == ALLIANCE::BLUE_TOP)
+    //     neg[0] = -1;
+    // if (alliance == ALLIANCE::RED_BOT || alliance == ALLIANCE::BLUE_BOT)
+    //     neg[1] = -1;
 
-    for (Path &path : paths)
-    {
-        for (std::array<double, 2> &point : path.points)
-        {
-            point[0] *= neg[0];
-            point[1] *= neg[1];
-        }
-    }
+    // for (Path &path : paths)
+    // {
+    //     for (std::array<double, 2> &point : path.points)
+    //     {
+    //         point[0] *= neg[0];
+    //         point[1] *= neg[1];
+    //     }
+    // }
 
     printf("done loading %lu paths!\n", paths.size());
 };
