@@ -96,6 +96,8 @@ int main()
   // Run the pre-autonomous function.
   pre_auton();
 
+  timer a = timer();
+
   // Prevent main from exiting with an infinite loop.
   while (true)
   {

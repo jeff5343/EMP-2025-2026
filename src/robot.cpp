@@ -39,26 +39,33 @@ void Robot::usercontrolPeriodic()
         return;
 
     /* TELEOP DRIVING: */
-    if (controller.ButtonR1.pressing())
-    {
-        intakeMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
-        throughtakeMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
-    }
-    else if (controller.ButtonL1.pressing())
-    {
-        intakeMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
-        throughtakeMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
-    }
-    else
-    {
-        intakeMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
-        throughtakeMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
-    }
 
-    // TODO: find out how to bind functions to events??
+    // R1 - intake
+    if (controller.ButtonR1.pressing())
+        intakeOuttake.startIntaking();
+    // R2 - reverse intake (score center goal low)
+    else if (controller.ButtonR2.pressing())
+        intakeOuttake.startReverseIntaking();
+    // L1 - score long goal
+    else if (controller.ButtonL1.pressing())
+        intakeOuttake.startOuttakingHigh();
+    // L2 - score center goal high
+    else if (controller.ButtonL2.pressing())
+        intakeOuttake.startOuttakingMid();
+    else
+        intakeOuttake.stop();
+
+    // A - reset odometry
     if (controller.ButtonA.pressing())
-    {
         drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
+
+    if (controller.ButtonY.pressing()) {
+        if (!hasToggledIntakeChutePiston) {
+            hasToggledIntakeChutePiston = true;
+
+        }
+    } else {
+        hasToggledIntakeChutePiston = false;
     }
 
     if (controller.ButtonB.pressing())
@@ -205,8 +212,8 @@ void Robot::autonomousRun1()
     autonomousPeriodic(0); // go to tube
     // add intake code here between paths
     headingController.goToTargetHeadingCommand(paths[0].endHeadingRadians); // make sure we are facing 180 degrees
-     
 
+    // add intake code here between paths
     vex::wait(1000, vex::msec); // wait to fully intake balls
     autonomousPeriodic(1);      // sort bad balls
     headingController.goToTargetHeadingCommand((3*M_PI)/2); // make sure we are facing 270 degrees

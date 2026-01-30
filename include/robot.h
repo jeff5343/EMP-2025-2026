@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "subsystems/drivetrain.h"
+#include "subsystems/intake_outake.h"
 #include "commands/pid_drive.h"
 #include "commands/pure_pursuit.h"
 #include "commands/heading_controller.h"
@@ -17,6 +18,7 @@ class Robot
 private:
     // subsystems
     Drivetrain drivetrain{};
+    IntakeOuttake intakeOuttake{};
 
     PurePursuit purePursuit{drivetrain};
 
@@ -64,6 +66,7 @@ private:
     int pathIndex = 0;
 
     bool isCalibrating = true;
+    bool hasToggledIntakeChutePiston = false;
 
 public:
     /* called in pre_auton */

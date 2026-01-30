@@ -20,6 +20,7 @@ public:
     // Game (set multiple times in a match)
     void intakeChutePistonIn();  // function to bring intake chute piston in
     void intakeChutePistonOut(); // function to bring intake chute piston out
+    void intakeChutPistonToggle();
 
     // On Startup (only set once)
     void trianglePistonIn();          // function to bring triangle piston in
