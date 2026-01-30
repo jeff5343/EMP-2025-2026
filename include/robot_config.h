@@ -45,15 +45,15 @@ inline extern vex::motor_group rightMotorGroup{botFrontRightMotor, botBackRightM
 
 // intake motors
 inline extern vex::motor intakeMotor{
-    vex::PORT12, vex::ratio6_1, false};
+    vex::PORT11, vex::ratio6_1, false};
 
 //throughtake motor
 inline extern vex::motor throughtakeMotor{
-    vex::PORT15, vex::ratio6_1, false}; // change port as needed
+    vex::PORT12, vex::ratio6_1, false}; // change port as needed
 
 //outtake motors
 inline extern vex::motor outakeMotor{
-    vex::PORT11, vex::ratio6_1, false}; //change port as needed
+    vex::PORT13, vex::ratio6_1, false}; //change port as needed
 
 // pistons
 inline extern vex::digital_out trianglePiston = vex::digital_out(Brain.ThreeWirePort.B);
