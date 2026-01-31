@@ -186,6 +186,13 @@ void Robot::autonomousPeriodic(int currentPathIndex)
     }
 }
 
+void Robot::goForwardSlowly(double timeInMs)
+{
+    drivetrain.setPercentOut(0.05, 0.05);
+    vex::wait(timeInMs, vex::msec);
+    drivetrain.setPercentOut(0, 0);
+}
+
 void Robot::log()
 {
     /* subsystem logging */

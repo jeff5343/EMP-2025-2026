@@ -91,6 +91,7 @@ public:
     {
         purePursuit.logStatements();
     }
+    void goForwardSlowly(double timeInMs);
 };
 
 #endif
