@@ -207,7 +207,7 @@ void Robot::log()
 
 void Robot::goForwardSlowly(double timeInMs)
 {
-    drivetrain.setPercentOut(0.05, 0.05);
+    drivetrain.setPercentOut(0.2, 0.2);
     vex::wait(timeInMs, vex::msec);
     drivetrain.setPercentOut(0, 0);
 }
@@ -220,11 +220,10 @@ void Robot::autonomousRun1()
     headingController.goToTargetHeadingCommand(paths[0].endHeadingRadians); // make sure we are facing 180 degrees
 
     // add intake code here between paths
-    vex::wait(1.0, vex::seconds); // wait to fully intake balls
+    vex::wait(1000, vex::msec); // wait to fully intake balls
     autonomousPeriodic(1);      // sort bad balls
-    headingController.goToTargetHeadingCommand((3*M_PI)/2); // make sure we are facing 270 degrees
-    // add reverse intake to spit out balls here between paths
-    headingController.goToTargetHeadingCommand(paths[1].endHeadingRadians); // make sure we are facing 180 degrees
+    headingController.goToTargetHeadingCommand(paths[1].endHeadingRadians); // make sure we are facing 270 degrees
+    headingController.goToTargetHeadingCommand(M_PI); // make sure we are facing 180 degrees
 
     vex::wait(1000, vex::msec); // wait to fully spit out balls
     autonomousPeriodic(2);      // go to the scoring zone
