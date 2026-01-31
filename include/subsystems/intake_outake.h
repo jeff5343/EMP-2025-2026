@@ -29,16 +29,16 @@ public:
     void startOuttakingMid();
     void stop();  
 
-    // Game (set multiple times in a match)
-    void intakeChutePistonIn();  // function to bring intake chute piston in
-    void intakeChutePistonOut(); // function to bring intake chute piston out
-    void intakeChutePistonToggle();
+//     // Game (set multiple times in a match)
+//     void intakeChutePistonIn();  // function to bring intake chute piston in
+//     void intakeChutePistonOut(); // function to bring intake chute piston out
+//     void intakeChutePistonToggle();
 
-    // On Startup (only set once)
-    void trianglePistonIn();          // function to bring triangle piston in
-    void trianglePistonOut();         // function to bring triangle piston out
-    void outtakeElevationPistonIn();  // function to bring outtake elevation piston in
-    void outtakeElevationPistonOut(); // function to bring outtake elevation piston out
-};
+//     // On Startup (only set once)
+//     void trianglePistonIn();          // function to bring triangle piston in
+//     void trianglePistonOut();         // function to bring triangle piston out
+//     void outtakeElevationPistonIn();  // function to bring outtake elevation piston in
+//     void outtakeElevationPistonOut(); // function to bring outtake elevation piston out
+ };
 
 #endif
