@@ -46,54 +46,54 @@ private:
     //     0.026,
     //     // turning profile constraints
     //     TrapezoidProfile::Constraints{2 * M_PI, 4 * M_PI},
-    };
+    //};
 
     // for testing
-    const Pose poseSetpoints[4] = {
-        Pose{10.0, 0.0, 0.0},
-        Pose{1.0, 1.0, M_PI / 2.0},
-        Pose{0.0, 1.0, M_PI},
-        Pose{0.0, 0.0, -M_PI / 2.0},
-    };
-    int poseSetpointsLength = 1;
-    int poseSetpointIndex = 0;
-    bool pathFollowingStarted = false;
+    // const Pose poseSetpoints[4] = {
+    //     Pose{10.0, 0.0, 0.0},
+    //     Pose{1.0, 1.0, M_PI / 2.0},
+    //     Pose{0.0, 1.0, M_PI},
+    //     Pose{0.0, 0.0, -M_PI / 2.0},
+    // };
+    // int poseSetpointsLength = 1;
+    // int poseSetpointIndex = 0;
+    // bool pathFollowingStarted = false;
 
     // for paths
-    const std::string pathFileName = "path1.txt";
-    std::vector<Path> paths = {};
-    std::vector<bool> backwards = {false, true, true, false, true};
-    int pathIndex = 0;
+    // const std::string pathFileName = "path1.txt";
+    // std::vector<Path> paths = {};
+    // std::vector<bool> backwards = {false, true, true, false, true};
+    // int pathIndex = 0;
 
-    bool isCalibrating = true;
-    bool hasToggledIntakeChutePiston = false;
+    // bool isCalibrating = true;
+    // bool hasToggledIntakeChutePiston = false;
 
 public:
     /* called in pre_auton */
-    void init(ALLIANCE alliance);
+    // void init(ALLIANCE alliance);
 
-    /* called every 20ms in autonomous */
-    void autonomousPeriodic(int currentPathIndex);
+    // /* called every 20ms in autonomous */
+    // void autonomousPeriodic(int currentPathIndex);
 
-    /* follow path */
-    void followPaths();
+    // /* follow path */
+    // void followPaths();
 
     /* called every 20ms in usercontrol */
     void usercontrolPeriodic();
 
-    /* logging statements */
-    void log();
+    // /* logging statements */
+    // void log();
 
-    /* auto run 1 */
-    void autonomousRun1();
+    // /* auto run 1 */
+    // void autonomousRun1();
 
-    // void logStatements()
-    // {
-    //     purePursuit.logStatements();
-    // }
-    void goForwardSlowly(double timeInMs, double speed);
-    void autonomousIntake();
-    void autonomousScoreLongGoal();
+    // // void logStatements()
+    // // {
+    // //     purePursuit.logStatements();
+    // // }
+    // void goForwardSlowly(double timeInMs, double speed);
+    // void autonomousIntake();
+    // void autonomousScoreLongGoal();
 };
 
 #endif

@@ -34,7 +34,7 @@ void pre_auton(void)
 {
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
-  robot.init(alliance);
+  //robot.init(alliance);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -49,7 +49,7 @@ void pre_auton(void)
 
 void autonomous(void)
 {
-    robot.autonomousRun1();
+   // robot.autonomousRun1();
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
@@ -89,13 +89,13 @@ void usercontrol(void)
 int main()
 {
   // Set up callbacks for autonomous and driver control periods.
-  Competition.autonomous(autonomous);
+ // Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
   timer stopwatch;
   stopwatch = timer();
 
   // Run the pre-autonomous function.
-  pre_auton();
+  //pre_auton();
 
   timer a = timer();
 
