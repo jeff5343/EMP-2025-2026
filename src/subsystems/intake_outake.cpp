@@ -67,6 +67,11 @@ void IntakeOuttake::intakeChutePistonOut()
     // insert piston code here to bring intake chute piston out
     intakeChutePiston.set(false);
 }
+void IntakeOuttake::intakeChutePistonToggle()
+{
+    intakeChuteOut = !intakeChuteOut;
+    intakeChutePiston.set(intakeChuteOut);
+}
 
 // on startup (only set once)
 void IntakeOuttake::trianglePistonIn()

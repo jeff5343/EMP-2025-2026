@@ -8,6 +8,8 @@ private:
     void intake(double percentOut);
     void throughtake(double percentOut); 
     void outtake(double percentOut);
+
+    bool intakeChuteOut = false;
     
 public:
     // 3 Motor Subsystems
@@ -20,7 +22,7 @@ public:
     // Game (set multiple times in a match)
     void intakeChutePistonIn();  // function to bring intake chute piston in
     void intakeChutePistonOut(); // function to bring intake chute piston out
-    void intakeChutPistonToggle();
+    void intakeChutePistonToggle();
 
     // On Startup (only set once)
     void trianglePistonIn();          // function to bring triangle piston in
