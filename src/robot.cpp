@@ -183,6 +183,9 @@ void Robot::autonomousPeriodic(int currentPathIndex)
 
         vex::wait(20, vex::msec);
     }
+
+    // make sure we are facing correct end position
+    headingController.goToTargetHeadingCommand(paths[currentPathIndex].endHeadingRadians);
 }
 
 void Robot::log()
@@ -205,40 +208,58 @@ void Robot::log()
     // brain.Screen.print(Angle::toDegrees(drivetrain.getOdometry().getTotalRadians()));
 }
 
-void Robot::goForwardSlowly(double timeInMs)
+void Robot::goForwardSlowly(double timeInMs, double speed)
 {
-    drivetrain.setPercentOut(0.2, 0.2);
+    drivetrain.setPercentOut(speed, speed);
     vex::wait(timeInMs, vex::msec);
     drivetrain.setPercentOut(0, 0);
 }
 
+void Robot::autonomousIntake()
+{
+    intakeOuttake.startIntaking();
+    goForwardSlowly(1000, 0.1);
+    vex::wait(1000, vex::msec);
+    intakeOuttake.stop();
+}
+
+void Robot::autonomousScoreLongGoal()
+{
+    goForwardSlowly(1000, -0.1);
+    intakeOuttake.startOuttakingHigh();
+    vex::wait(1000, vex::msec);
+    intakeOuttake.stop();
+}
+
 void Robot::autonomousRun1()
 {
-    // add intake code here between paths
     autonomousPeriodic(0); // go to tube
-    // add intake code here between paths
-    headingController.goToTargetHeadingCommand(paths[0].endHeadingRadians); // make sure we are facing 180 degrees
+    // intake
+    autonomousIntake();
 
-    // add intake code here between paths
-    vex::wait(1000, vex::msec); // wait to fully intake balls
-    autonomousPeriodic(1);      // sort bad balls
-    headingController.goToTargetHeadingCommand(paths[1].endHeadingRadians); // make sure we are facing 270 degrees
-    headingController.goToTargetHeadingCommand(M_PI); // make sure we are facing 180 degrees
+    // go to mid scoring zone
+    autonomousPeriodic(1);
 
-    vex::wait(1000, vex::msec); // wait to fully spit out balls
-    autonomousPeriodic(2);      // go to the scoring zone
-    headingController.goToTargetHeadingCommand(paths[2].endHeadingRadians); // make sure we are facing 180 degrees
+    // spit out bad balls
+    intakeOuttake.startReverseIntaking();
+    vex::wait(1000, vex::msec);
+    intakeOuttake.stop();
 
-    // add outtake motors here between paths
+    // make sure we are facing 180 degrees
+    headingController.goToTargetHeadingCommand(M_PI);
 
-    autonomousPeriodic(3); // go back to the tube
-    headingController.goToTargetHeadingCommand(paths[3].endHeadingRadians); // make sure we are facing 180 degrees
+    // go to the scoring zone
+    autonomousPeriodic(2);
+    // score
+    autonomousScoreLongGoal();
 
-    // add intake code here between paths
-    vex::wait(1000, vex::msec); // wait to fully intake balls
+    // go back to the tube
+    autonomousPeriodic(3);
+    // intake
+    autonomousIntake();
 
-    autonomousPeriodic(4); // go to scoring zone
-    headingController.goToTargetHeadingCommand(paths[4].endHeadingRadians); // make sure we are facing 180 degrees
-    // add outtake motors here between paths
-    vex::wait(1000, vex::msec); // wait to fully outtake balls
+    // go to scoring zone
+    autonomousPeriodic(4);
+    // score
+    autonomousScoreLongGoal();
 }

@@ -10,8 +10,18 @@ private:
     void outtake(double percentOut);
 
     bool intakeChuteOut = false;
+
+    static bool constexpr REVERSE_INTAKE_MOTOR = false;
+    static bool constexpr REVERSE_THROUGHTAKE_MOTOR = false;
+    static bool constexpr REVERSE_OUTTAKE_MOTOR = false;
     
 public:
+    IntakeOuttake() {
+        intakeMotor.setReversed(REVERSE_INTAKE_MOTOR);
+        throughtakeMotor.setReversed(REVERSE_THROUGHTAKE_MOTOR);
+        outakeMotor.setReversed(REVERSE_OUTTAKE_MOTOR);
+    }
+
     // 3 Motor Subsystems
     void startIntaking();
     void startReverseIntaking();

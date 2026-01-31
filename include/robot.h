@@ -91,7 +91,9 @@ public:
     {
         purePursuit.logStatements();
     }
-    void goForwardSlowly(double timeInMs);
+    void goForwardSlowly(double timeInMs, double speed);
+    void autonomousIntake();
+    void autonomousScoreLongGoal();
 };
 
 #endif
