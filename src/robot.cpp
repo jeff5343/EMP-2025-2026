@@ -185,13 +185,6 @@ void Robot::autonomousPeriodic(int currentPathIndex)
     }
 }
 
-void Robot::goForwardSlowly(double timeInMs)
-{
-    drivetrain.setPercentOut(0.05, 0.05);
-    vex::wait(timeInMs, vex::msec);
-    drivetrain.setPercentOut(0, 0);
-}
-
 void Robot::log()
 {
     /* subsystem logging */
@@ -212,6 +205,13 @@ void Robot::log()
     // brain.Screen.print(Angle::toDegrees(drivetrain.getOdometry().getTotalRadians()));
 }
 
+void Robot::goForwardSlowly(double timeInMs)
+{
+    drivetrain.setPercentOut(0.05, 0.05);
+    vex::wait(timeInMs, vex::msec);
+    drivetrain.setPercentOut(0, 0);
+}
+
 void Robot::autonomousRun1()
 {
     // add intake code here between paths
@@ -220,7 +220,7 @@ void Robot::autonomousRun1()
     headingController.goToTargetHeadingCommand(paths[0].endHeadingRadians); // make sure we are facing 180 degrees
 
     // add intake code here between paths
-    vex::wait(1000, vex::msec); // wait to fully intake balls
+    vex::wait(1.0, vex::seconds); // wait to fully intake balls
     autonomousPeriodic(1);      // sort bad balls
     headingController.goToTargetHeadingCommand((3*M_PI)/2); // make sure we are facing 270 degrees
     // add reverse intake to spit out balls here between paths
