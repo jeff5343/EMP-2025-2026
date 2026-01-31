@@ -5,9 +5,9 @@
 #include <string>
 #include "subsystems/drivetrain.h"
 #include "subsystems/intake_outake.h"
-#include "commands/pid_drive.h"
-#include "commands/pure_pursuit.h"
-#include "commands/heading_controller.h"
+// #include "commands/pid_drive.h"
+// #include "commands/pure_pursuit.h"
+// #include "commands/heading_controller.h"
 #include "util/structs/pose.h"
 #include "util/structs/path.h"
 #include "util/trapezoid_profile.h"
@@ -22,30 +22,30 @@ private:
 
    // PurePursuit purePursuit{drivetrain};
 
-    PidDrive pidDrive{
-        drivetrain,
-        // turning pid constants
-        PidConstants{0.4, 0.0, 0.0},
-        // turning pid setpoint tolerance
-        0.01,
-        // straight pid constants
-        PidConstants{0.05, 0.0, 0.0},
-        // straight pid setpoint tolerance
-        0.05,
-        // turning profile constraints
-        TrapezoidProfile::Constraints{2 * M_PI, 4 * M_PI},
-        // straight profile constraints
-        TrapezoidProfile::Constraints{60, 120},
-    };
+    // PidDrive pidDrive{
+    //     drivetrain,
+    //     // turning pid constants
+    //     PidConstants{0.4, 0.0, 0.0},
+    //     // turning pid setpoint tolerance
+    //     0.01,
+    //     // straight pid constants
+    //     PidConstants{0.05, 0.0, 0.0},
+    //     // straight pid setpoint tolerance
+    //     0.05,
+    //     // turning profile constraints
+    //     TrapezoidProfile::Constraints{2 * M_PI, 4 * M_PI},
+    //     // straight profile constraints
+    //     TrapezoidProfile::Constraints{60, 120},
+    // };
 
-    HeadingController headingController{
-        drivetrain,
-        // turning pid constants
-        PidConstants{0.4, 0.0, 0.001},
-        // turning pid setpoint tolerance (~1.5 deg)
-        0.026,
-        // turning profile constraints
-        TrapezoidProfile::Constraints{2 * M_PI, 4 * M_PI},
+    // HeadingController headingController{
+    //     drivetrain,
+    //     // turning pid constants
+    //     PidConstants{0.4, 0.0, 0.001},
+    //     // turning pid setpoint tolerance (~1.5 deg)
+    //     0.026,
+    //     // turning profile constraints
+    //     TrapezoidProfile::Constraints{2 * M_PI, 4 * M_PI},
     };
 
     // for testing
