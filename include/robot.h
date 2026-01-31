@@ -20,7 +20,7 @@ private:
     Drivetrain drivetrain{};
     IntakeOuttake intakeOuttake{};
 
-    PurePursuit purePursuit{drivetrain};
+   // PurePursuit purePursuit{drivetrain};
 
     PidDrive pidDrive{
         drivetrain,
@@ -87,10 +87,10 @@ public:
     /* auto run 1 */
     void autonomousRun1();
 
-    void logStatements()
-    {
-        purePursuit.logStatements();
-    }
+    // void logStatements()
+    // {
+    //     purePursuit.logStatements();
+    // }
     void goForwardSlowly(double timeInMs, double speed);
     void autonomousIntake();
     void autonomousScoreLongGoal();

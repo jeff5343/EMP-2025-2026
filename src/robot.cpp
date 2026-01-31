@@ -1,6 +1,6 @@
 #include "robot.h"
 #include "util/angle.h"
-#include "util/path_parser.h"
+// #include "util/path_parser.h"
 #include <cmath>
 #include "vex.h"
 
@@ -21,12 +21,12 @@ void Robot::init(ALLIANCE alliance)
     isCalibrating = false;
     printf("done calibrating!\n");
 
-    paths = PathParser::loadPaths(pathFileName);
-    PathParser::flipForAlliance(paths, alliance);
+    // paths = PathParser::loadPaths(pathFileName);
+    // PathParser::flipForAlliance(paths, alliance);
 
     // need to get starting points of path not just the first path we need to follow
     drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
-    purePursuit.setPath(paths[0].points, true);
+    //purePursuit.setPath(paths[0].points, true);
 
     printf("done loading %lu paths!\n", paths.size());
 
@@ -60,10 +60,10 @@ void Robot::usercontrolPeriodic()
         intakeOuttake.stop();
 
     // A - reset odometry
-    if (controller.ButtonA.pressing())
-    {
-        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
-    }
+    // if (controller.ButtonA.pressing())
+    // {
+    //     drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
+    // }
 
     // TODO: uncomment
     // Y - toggle intake chute piston
@@ -85,9 +85,9 @@ void Robot::usercontrolPeriodic()
             pathIndex = 0;
             if (paths.size() > 0)
             {
-                purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
+               // purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
             }
-            purePursuit.reset();
+           // purePursuit.reset();
         }
         followPaths();
     }
@@ -150,20 +150,20 @@ void Robot::followPaths()
         return;
     }
 
-    purePursuit.update();
+    //purePursuit.update();
 
-    if (purePursuit.isAtGoal())
-    {
-        printf("path: %d complete\n", pathIndex);
-        pathIndex++;
-        if (pathIndex >= paths.size())
-        {
-            drivetrain.setPercentOut(0, 0);
-            return;
-        }
-        printf("now backwards: %s\n", backwards[pathIndex] ? "true" : "false");
-        purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
-    }
+    // if (purePursuit.isAtGoal())
+    // {
+    //     printf("path: %d complete\n", pathIndex);
+    //     pathIndex++;
+    //     if (pathIndex >= paths.size())
+    //     {
+    //         drivetrain.setPercentOut(0, 0);
+    //         return;
+    //     }
+    //     printf("now backwards: %s\n", backwards[pathIndex] ? "true" : "false");
+    //     purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
+    // }
 }
 
 void Robot::autonomousPeriodic(int currentPathIndex)
@@ -175,15 +175,15 @@ void Robot::autonomousPeriodic(int currentPathIndex)
     pathIndex = currentPathIndex;
     if (paths.size() > 0)
     {
-        purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
+      //  purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
     }
 
-    while (!purePursuit.isAtGoal())
-    {
-        purePursuit.update();
+    // while (!purePursuit.isAtGoal())
+    // {
+    //     purePursuit.update();
 
-        vex::wait(20, vex::msec);
-    }
+    //     vex::wait(20, vex::msec);
+    // }
 
     // make sure we are facing correct end position
     headingController.goToTargetHeadingCommand(paths[currentPathIndex].endHeadingRadians);

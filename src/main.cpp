@@ -104,7 +104,7 @@ int main()
   {
     wait(100, msec);
     if (stopwatch.time()>500){
-      robot.logStatements();
+      //robot.logStatements();
       stopwatch.reset();
     }
   }
