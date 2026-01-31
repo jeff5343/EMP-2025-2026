@@ -24,6 +24,7 @@ void IntakeOuttake::startIntaking()
 {
     intake(0.8);
     throughtake(0.8);
+    outtake(0);
 }
 
 // two motor subsystems for intake and throughtake
@@ -31,6 +32,7 @@ void IntakeOuttake::startReverseIntaking()
 {
     intake(-0.8);
     throughtake(-0.8);
+    outtake(0);
 }
 
 void IntakeOuttake::startOuttakingHigh()

@@ -233,7 +233,8 @@ void Robot::autonomousScoreLongGoal()
 
 void Robot::autonomousRun1()
 {
-    autonomousPeriodic(0); // go to tube
+    // go to tube
+    autonomousPeriodic(0);
     // intake
     autonomousIntake();
 

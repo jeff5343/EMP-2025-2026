@@ -10,10 +10,10 @@
 #endif
 
 /**
- * Calculates position on field using 3 encoders.
+ * Calculates position on field using 2 encoders.
  *
  * - All units are in inches
- * - two encoders on the sides and one encoder in the back
+ * - one encoders on the sides and one encoder in the back
  * - Coordinate system used is based on right hand rule:
  *      X is forward, Y is sideways, Counter Clock Wise (CCW) is positive
  *      https://en.wikipedia.org/wiki/Right-hand_rule#Coordinates
@@ -40,7 +40,7 @@ private:
     static constexpr double DIST_CENTER_TO_BOT_WHEEL = -4.951;
 
     static constexpr bool REVERSE_RIGHT_ENCODER = true;
-    static constexpr bool REVERSE_BACK_ENCODER = false;
+    static constexpr bool REVERSE_BACK_ENCODER = true;
 
     /* for one rotation of the heading, the scalar to be multiplied in rad */
     static constexpr double HEADING_DRIFT_SCALAR_RAD =  1.008140736;

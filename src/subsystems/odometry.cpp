@@ -45,8 +45,8 @@ void Odometry::updatePose()
     // apply drift scalar
     deltaTheta *= HEADING_DRIFT_SCALAR_RAD;
 
-    // double dBDist = dBackDist;
-    double dBDist = 0; // for testing, make sure DIST_TO_BOT_WHEEL is 0 as well
+    double dBDist = dBackDist;
+    // double dBDist = 0; // for testing, make sure DIST_TO_BOT_WHEEL is 0 as well
     double dRDist = dRightDist;
     Pose currentPose = pose;
     mutex.unlock();
