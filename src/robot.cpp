@@ -67,16 +67,16 @@ void Robot::usercontrolPeriodic()
 
     // TODO: uncomment
     // Y - toggle intake chute piston
-    // if (controller.ButtonY.pressing()) {
-    //     if (!hasToggledIntakeChutePiston) {
-    //         hasToggledIntakeChutePiston = true;
-    //         intakeOuttake.intakeChutePistonToggle();
-    //     }
-    // } else {
-    //     hasToggledIntakeChutePiston = false;
-    // }
+    if (controller.ButtonY.pressing()) {
+        if (!hasToggledIntakeChutePiston) {
+            hasToggledIntakeChutePiston = true;
+            intakeOuttake.intakeChutePistonToggle();
+        }
+    } else {
+        hasToggledIntakeChutePiston = false;
+    }
 
-    if (controller.ButtonY.pressing())
+    if (controller.ButtonX.pressing())
     {
         if (!pathFollowingStarted)
         {

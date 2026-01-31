@@ -11,7 +11,7 @@ private:
 
     bool intakeChuteOut = false;
 
-    static bool constexpr REVERSE_INTAKE_MOTOR = false;
+    static bool constexpr REVERSE_INTAKE_MOTOR = true;
     static bool constexpr REVERSE_THROUGHTAKE_MOTOR = false;
     static bool constexpr REVERSE_OUTTAKE_MOTOR = false;
     
