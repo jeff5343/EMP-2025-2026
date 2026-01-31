@@ -48,7 +48,7 @@ void pre_auton(void)
 
 void autonomous(void)
 {
-    robot.autonomousRun1();
+  robot.autonomousRun1();
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................

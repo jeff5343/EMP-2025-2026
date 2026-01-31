@@ -233,16 +233,15 @@ void Robot::autonomousScoreLongGoal()
 
 void Robot::autonomousRun1()
 {
-    // go to tube
+    // go score that one ball ahahaha
     autonomousPeriodic(0);
-    // intake
+    // 
     autonomousIntake();
 
-    // go to mid scoring zone
+    // go get more balls
     autonomousPeriodic(1);
 
     // spit out bad balls
-    intakeOuttake.startReverseIntaking();
     vex::wait(1000, vex::msec);
     intakeOuttake.stop();
 
