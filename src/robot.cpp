@@ -67,19 +67,19 @@ void Robot::usercontrolPeriodic()
     // }
 
     // TODO: uncomment
-    // Y - toggle intake chute piston
+   // Y - toggle intake chute piston
     
-    // if (controller.ButtonY.pressing()) {
-    //     if (!hasToggledIntakeChutePiston) {
-    //         hasToggledIntakeChutePiston = true;
-    //         intakeOuttake.intakeChutePistonToggle();
-    //     }
-    // } else {
-    //     hasToggledIntakeChutePiston = false;
-    // }
+    if (controller.ButtonY.pressing()) {
+        if (!hasToggledIntakeChutePiston) {
+            hasToggledIntakeChutePiston = true;
+            intakeOuttake.intakeChutePistonToggle();
+        }
+    } else {
+        hasToggledIntakeChutePiston = false;
+    }
 
-    if (controller.ButtonX.pressing())
-    {
+    // if (controller.ButtonX.pressing())
+    // {
         // if (!pathFollowingStarted)
         // {
         //     pathFollowingStarted = true;
@@ -91,9 +91,9 @@ void Robot::usercontrolPeriodic()
         //    // purePursuit.reset();
         // }
         // followPaths();
-    }
-    else if (controller.ButtonUp.pressing())
-    {
+    // }
+    // else if (controller.ButtonUp.pressing())
+    // {
         // // point up
         // if (!pathFollowingStarted)
         // {
@@ -101,9 +101,9 @@ void Robot::usercontrolPeriodic()
         //     headingController.setTargetHeading(0);
         // }
         // headingController.update();
-    }
-    else if (controller.ButtonDown.pressing())
-    {
+    // }
+    // else if (controller.ButtonDown.pressing())
+    // {
         // // point down
         // if (!pathFollowingStarted)
         // {
@@ -111,8 +111,8 @@ void Robot::usercontrolPeriodic()
         //     headingController.setTargetHeading(M_PI);
         // }
         // headingController.update();
-    }
-    else
+    //}
+    // else
     {
         // so that setTargetPose is ran when b is pressed
         // pathFollowingStarted = false;

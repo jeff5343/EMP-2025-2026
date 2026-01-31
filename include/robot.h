@@ -66,7 +66,7 @@ private:
     // int pathIndex = 0;
 
     // bool isCalibrating = true;
-    // bool hasToggledIntakeChutePiston = false;
+    bool hasToggledIntakeChutePiston = false;
 
 public:
     /* called in pre_auton */

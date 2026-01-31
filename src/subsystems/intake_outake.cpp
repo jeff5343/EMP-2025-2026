@@ -59,41 +59,41 @@ void IntakeOuttake::stop()
 /* pistons */
 
 // game (set multiple times in a match)
-// void IntakeOuttake::intakeChutePistonIn()
-// {
-//     // insert piston code here to bring intake chute piston in
-//     intakeChutePiston.set(true);
-// }
-// void IntakeOuttake::intakeChutePistonOut()
-// {
-//     // insert piston code here to bring intake chute piston out
-//     intakeChutePiston.set(false);
-// }
-// void IntakeOuttake::intakeChutePistonToggle()
-// {
-//     intakeChuteOut = !intakeChuteOut;
-//     intakeChutePiston.set(intakeChuteOut);
-// }
+void IntakeOuttake::intakeChutePistonIn()
+{
+    // insert piston code here to bring intake chute piston in
+    intakeChutePiston.set(true);
+}
+void IntakeOuttake::intakeChutePistonOut()
+{
+    // insert piston code here to bring intake chute piston out
+    intakeChutePiston.set(false);
+}
+void IntakeOuttake::intakeChutePistonToggle()
+{
+    intakeChuteOut = !intakeChuteOut;
+    intakeChutePiston.set(intakeChuteOut);
+}
 
 // // on startup (only set once)
-// void IntakeOuttake::trianglePistonIn()
-// {
-//     // insert piston code here to bring triangle piston in
+void IntakeOuttake::trianglePistonIn()
+{
+    // insert piston code here to bring triangle piston in
 
-//     trianglePiston.set(true);
-// }
-// void IntakeOuttake::trianglePistonOut()
-// {
-//     // insert piston code here to bring triangle piston out
-//     trianglePiston.set(false);
-// }
-// void IntakeOuttake::outtakeElevationPistonIn()
-// {
-//     // insert piston code here to bring outtake elevation piston in
-//     outtakeElevationPiston.set(true);
-// }
-// void IntakeOuttake::outtakeElevationPistonOut()
-// {
-//     // insert piston code here to bring outtake elevation piston out
-//     outtakeElevationPiston.set(false);
-// }
+    trianglePiston.set(true);
+}
+void IntakeOuttake::trianglePistonOut()
+{
+    // insert piston code here to bring triangle piston out
+    trianglePiston.set(false);
+}
+void IntakeOuttake::outtakeElevationPistonIn()
+{
+    // insert piston code here to bring outtake elevation piston in
+    outtakeElevationPiston.set(true);
+}
+void IntakeOuttake::outtakeElevationPistonOut()
+{
+    // insert piston code here to bring outtake elevation piston out
+    outtakeElevationPiston.set(false);
+}
