@@ -75,5 +75,5 @@ void Drivetrain::setPercentOut(double leftOut, double rightOut) {
 
 void Drivetrain::log()
 {
-    odometry.getPose().print();
+    // odometry.getPose().print();
 }

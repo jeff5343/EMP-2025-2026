@@ -3,7 +3,7 @@
 #define __DRIVETRAIN_H_INCLUDED__
 
 #include "vex.h"
-#include "odometry.h"
+// #include "odometry.h"
 
 class Drivetrain
 {
@@ -13,7 +13,7 @@ private:
     static constexpr bool IS_BRAKE_MODE = true;
 
     // odometry
-    Odometry odometry{};
+    // Odometry odometry{};
 
     void setVelocityLeftMotors(double rpm);
     void setVelocityRightMotors(double rpm);
@@ -21,9 +21,9 @@ private:
 public:
     Drivetrain();
 
-    Odometry& getOdometry() {
-        return odometry;
-    }
+    // Odometry& getOdometry() {
+    //     return odometry;
+    // }
 
     /* Stops all motors */
     void stop();
@@ -49,20 +49,20 @@ public:
      */
     void log();
 
-    void startOdometry()
-    {
-        odometry.startThread();
-    }
+    // void startOdometry()
+    // {
+    //     odometry.startThread();
+    // }
 
-    Pose getPose()
-    {
-        return odometry.getPose();
-    }
+    // Pose getPose()
+    // {
+    //     return odometry.getPose();
+    // }
 
-    void resetOdometry(double x, double y, double rad)
-    {
-        odometry.reset(x, y, rad);
-    }
+    // void resetOdometry(double x, double y, double rad)
+    // {
+    //     odometry.reset(x, y, rad);
+    // }
 };
 
 #endif
