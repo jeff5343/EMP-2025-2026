@@ -227,7 +227,7 @@ void Robot::autonomousScoreLongGoal()
 {
     goForwardSlowly(1000, -0.1);
     intakeOuttake.startOuttakingHigh();
-    vex::wait(1000, vex::msec);
+    vex::wait(10000, vex::msec); //wait 10 seconds to score
     intakeOuttake.stop();
 }
 

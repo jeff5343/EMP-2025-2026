@@ -15,7 +15,7 @@ using namespace vex;
 // A global instance of competition
 competition Competition;
 Robot robot;
-ALLIANCE alliance = ALLIANCE::RED_TOP;
+ALLIANCE alliance = ALLIANCE::BLUE_TOP;
 
 // define your global instances of motors and other devices here
 
