@@ -2,25 +2,25 @@
 #define __HEADING_CONTROLLER_H_INCLUDED__
 
 #include "util/structs/pid_constants.h"
-#include "util/profiled_pid.h"
+// #include "util/profiled_pid.h"
 #include "subsystems/drivetrain.h"
 #include "vex.h"
 
 class HeadingController
 {
 private:
-    ProfiledPid headingController;
+    //ProfiledPid headingController;
     double targetRadians;
 
     Drivetrain &drivetrain;
 
 public:
-    HeadingController(Drivetrain &drivetrain, PidConstants headingPidConstants,
-                      double headingSetpointTolerance, TrapezoidProfile::Constraints headingProfileConstraints)
-        : drivetrain(drivetrain), headingController(headingPidConstants, headingProfileConstraints, headingSetpointTolerance)
-    {
-        headingController.enableContinuousInput(true);
-    };
+    // HeadingController(Drivetrain &drivetrain, PidConstants headingPidConstants,
+    //                   double headingSetpointTolerance, TrapezoidProfile::Constraints headingProfileConstraints)
+    //     : drivetrain(drivetrain), headingController(headingPidConstants, headingProfileConstraints, headingSetpointTolerance)
+    // {
+    //     headingController.enableContinuousInput(true);
+    // };
 
     void setTargetHeading(double radians);
     void update();
