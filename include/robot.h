@@ -42,8 +42,8 @@ private:
         drivetrain,
         // turning pid constants
         PidConstants{0.4, 0.0, 0.001},
-        // turning pid setpoint tolerance
-        0.01,
+        // turning pid setpoint tolerance (~1.5 deg)
+        0.026,
         // turning profile constraints
         TrapezoidProfile::Constraints{2 * M_PI, 4 * M_PI},
     };

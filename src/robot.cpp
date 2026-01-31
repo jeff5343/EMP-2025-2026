@@ -4,7 +4,6 @@
 #include <cmath>
 #include "vex.h"
 
-    
 void Robot::init(ALLIANCE alliance)
 {
     /* CALIBRATE INERTIAL SENSOR */
@@ -30,6 +29,11 @@ void Robot::init(ALLIANCE alliance)
     purePursuit.setPath(paths[0].points, true);
 
     printf("done loading %lu paths!\n", paths.size());
+
+    // TODO: uncomment
+    // deploy pistons at start of the match
+    // intakeOuttake.trianglePistonOut();
+    // intakeOuttake.outtakeElevationPistonOut();
 };
 
 void Robot::usercontrolPeriodic()
@@ -57,27 +61,22 @@ void Robot::usercontrolPeriodic()
 
     // A - reset odometry
     if (controller.ButtonA.pressing())
-        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
-
-    if (controller.ButtonY.pressing()) {
-        if (!hasToggledIntakeChutePiston) {
-            hasToggledIntakeChutePiston = true;
-
-        }
-    } else {
-        hasToggledIntakeChutePiston = false;
-    }
-
-    if (controller.ButtonB.pressing())
     {
-        if (!pathFollowingStarted)
-        {
-            pidDrive.setTargetPose(poseSetpoints[poseSetpointIndex]);
-            pathFollowingStarted = true;
-        }
-        pidDrive.update();
+        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
     }
-    else if (controller.ButtonY.pressing())
+
+    // TODO: uncomment
+    // Y - toggle intake chute piston
+    // if (controller.ButtonY.pressing()) {
+    //     if (!hasToggledIntakeChutePiston) {
+    //         hasToggledIntakeChutePiston = true;
+    //         intakeOuttake.intakeChutePistonToggle();
+    //     }
+    // } else {
+    //     hasToggledIntakeChutePiston = false;
+    // }
+
+    if (controller.ButtonY.pressing())
     {
         if (!pathFollowingStarted)
         {
@@ -197,7 +196,7 @@ void Robot::log()
 {
     /* subsystem logging */
     // drivetrain.log();
-    
+
     /* brain logging */
     Brain.Screen.clearLine();
 
