@@ -235,31 +235,6 @@ void Robot::autonomousRun1()
 {
     // go score that one ball ahahaha
     autonomousPeriodic(0);
-    // 
-    autonomousIntake();
-
-    // go get more balls
     autonomousPeriodic(1);
-
-    // spit out bad balls
-    vex::wait(1000, vex::msec);
-    intakeOuttake.stop();
-
-    // make sure we are facing 180 degrees
-    headingController.goToTargetHeadingCommand(M_PI);
-
-    // go to the scoring zone
-    autonomousPeriodic(2);
-    // score
-    autonomousScoreLongGoal();
-
-    // go back to the tube
-    autonomousPeriodic(3);
-    // intake
-    autonomousIntake();
-
-    // go to scoring zone
-    autonomousPeriodic(4);
-    // score
     autonomousScoreLongGoal();
 }
