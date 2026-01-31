@@ -8,15 +8,15 @@ void Robot::init(ALLIANCE alliance)
 {
     /* CALIBRATE INERTIAL SENSOR */
     isCalibrating = true;
-    inertial.calibrate();
-    while (inertial.installed() && inertial.isCalibrating())
-    {
-        Brain.Screen.clearLine();
-        Brain.Screen.print("Calibrating inertial sensor...");
-        printf("calibrating...\n");
-        vex::this_thread::sleep_for(100);
-    }
-    inertial.resetHeading();
+    // inertial.calibrate();
+    // while (inertial.installed() && inertial.isCalibrating())
+    // {
+    //     Brain.Screen.clearLine();
+    //     Brain.Screen.print("Calibrating inertial sensor...");
+    //     printf("calibrating...\n");
+    //     vex::this_thread::sleep_for(100);
+    // }
+    // inertial.resetHeading();
     drivetrain.startOdometry();
     isCalibrating = false;
     printf("done calibrating!\n");

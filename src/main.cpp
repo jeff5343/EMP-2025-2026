@@ -17,6 +17,11 @@ competition Competition;
 Robot robot;
 ALLIANCE alliance = ALLIANCE::RED_TOP;
 
+// pistons
+inline extern vex::digital_out trianglePiston = vex::digital_out(Brain.ThreeWirePort.B);
+inline extern vex::digital_out outtakeElevationPiston = vex::digital_out(Brain.ThreeWirePort.C);
+inline extern vex::digital_out intakeChutePiston = vex::digital_out(Brain.ThreeWirePort.A);
+
 // define your global instances of motors and other devices here
 
 /*---------------------------------------------------------------------------*/

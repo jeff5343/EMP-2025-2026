@@ -35,7 +35,8 @@ void Odometry::updatePose()
 {
     mutex.lock();
     // find delta heading
-    double newRotationRad = (inertial.rotation(vex::rotationUnits::rev) * 2 * M_PI);
+    // double newRotationRad = (inertial.rotation(vex::rotationUnits::rev) * 2 * M_PI);
+    double newRotationRad = 0;
     double deltaTheta = newRotationRad - prevRotationRad;
     prevRotationRad = newRotationRad;
 

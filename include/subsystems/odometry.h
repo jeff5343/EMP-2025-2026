@@ -132,7 +132,7 @@ public:
         pose = Pose{x, y, rad};
         rightEncoder.setPosition(0, vex::rotationUnits::rev);
         backEncoder.setPosition(0, vex::rotationUnits::rev);
-        inertial.setHeading(rad / (M_PI * 2.0), vex::rotationUnits::rev);
+        // inertial.setHeading(rad / (M_PI * 2.0), vex::rotationUnits::rev);
         mutex.unlock();
 
         setNewEncoderDistances(0, 0);
