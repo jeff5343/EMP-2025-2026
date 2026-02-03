@@ -87,7 +87,7 @@ public:
     /* auto run 1 */
     void autonomousRun1();
 
-    void followPathCommand(int currentPathIndex);
+    void followPathCommand(int currentPathIndex, bool turning);
 
     void logStatements()
     {

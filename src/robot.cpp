@@ -180,7 +180,7 @@ void Robot::followPaths()
     }
 }
 
-void Robot::followPathCommand(int currentPathIndex)
+void Robot::followPathCommand(int currentPathIndex, bool turning)
 {
     // need to 1. determine path we are following
     // 2. set that path to pure pursuit
@@ -194,11 +194,17 @@ void Robot::followPathCommand(int currentPathIndex)
     vex::timer stopwatch = vex::timer();
     double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
     double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
-
+     if (turning) {
+            purePursuit.setTurnKPForTurnPaths();
+        } else {
+            purePursuit.setTurnKPForStraightPaths();
+        }
     while (!purePursuit.isAtGoal() &&
            ((stopwatch.time() < 500) || (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)))
     {
         purePursuit.update();
+        
+       
 
         printf("wat: %.3f, back: %.3f\n", dRight, dBack);
         printf("dist: %.3f\n", purePursuit.distanceToGoalPt());
@@ -264,8 +270,8 @@ void Robot::autonomousRun1()
     }
     vex::wait(200, vex::msec);
     // go score that one ball ahahaha
-    followPathCommand(0);
-    followPathCommand(1);
+    followPathCommand(0, true);
+    followPathCommand(1, false);
     autonomousScoreLongGoal();
 }
 
