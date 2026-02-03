@@ -15,7 +15,7 @@ using namespace vex;
 // A global instance of competition
 competition Competition;
 Robot robot;
-ALLIANCE alliance = ALLIANCE::BLUE_TOP;
+ALLIANCE alliance = ALLIANCE::RED_TOP;
 
 // define your global instances of motors and other devices here
 
@@ -90,20 +90,19 @@ int main()
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
-  timer stopwatch;
-  stopwatch = timer();
 
   // Run the pre-autonomous function.
   pre_auton();
 
-  timer a = timer();
+  timer stopwatch = timer();
 
   // Prevent main from exiting with an infinite loop.
   while (true)
   {
     wait(100, msec);
-    if (stopwatch.time()>500){
-      robot.logStatements();
+    if (stopwatch.time() > 1000)
+    {
+      // robot.logStatements();
       stopwatch.reset();
     }
   }

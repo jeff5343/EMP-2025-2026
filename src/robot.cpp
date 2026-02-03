@@ -18,8 +18,10 @@ void Robot::init(ALLIANCE alliance)
     }
     inertial.resetHeading();
     drivetrain.startOdometry();
-    isCalibrating = false;
     printf("done calibrating!\n");
+
+    Brain.Screen.clearLine();
+    Brain.Screen.print("IS SD CARD LOADED???");
 
     paths = PathParser::loadPaths(pathFileName);
     PathParser::flipForAlliance(paths, alliance);
@@ -29,6 +31,8 @@ void Robot::init(ALLIANCE alliance)
     purePursuit.setPath(paths[0].points, true);
 
     printf("done loading %lu paths!\n", paths.size());
+
+    isCalibrating = false;
 
     // TODO: uncomment
     // deploy pistons at start of the match
@@ -67,12 +71,16 @@ void Robot::usercontrolPeriodic()
 
     // TODO: uncomment
     // Y - toggle intake chute piston
-    if (controller.ButtonY.pressing()) {
-        if (!hasToggledIntakeChutePiston) {
+    if (controller.ButtonY.pressing())
+    {
+        if (!hasToggledIntakeChutePiston)
+        {
             hasToggledIntakeChutePiston = true;
             intakeOuttake.intakeChutePistonToggle();
         }
-    } else {
+    }
+    else
+    {
         hasToggledIntakeChutePiston = false;
     }
 
@@ -87,6 +95,7 @@ void Robot::usercontrolPeriodic()
                 purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
             }
             purePursuit.reset();
+            timer.reset();
         }
         followPaths();
     }
@@ -151,7 +160,12 @@ void Robot::followPaths()
 
     purePursuit.update();
 
-    if (purePursuit.isAtGoal())
+    double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
+    double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
+    printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+    printf("time: %d\n", timer.time());
+
+    if (purePursuit.isAtGoal() || ((timer.time() > 200) && (std::fabs(dRight) < 0.1 && std::fabs(dBack) < 0.3)))
     {
         printf("path: %d complete\n", pathIndex);
         pathIndex++;
@@ -162,30 +176,97 @@ void Robot::followPaths()
         }
         printf("now backwards: %s\n", backwards[pathIndex] ? "true" : "false");
         purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
+        timer.reset();
     }
 }
 
-void Robot::autonomousPeriodic(int currentPathIndex)
+void Robot::followPathCommand(int currentPathIndex)
 {
     // need to 1. determine path we are following
     // 2. set that path to pure pursuit
     // 3. follow that path until we reach the end and then stop
 
-    pathIndex = currentPathIndex;
-    if (paths.size() > 0)
-    {
-        purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
-    }
+    printf("following path: %d\n", currentPathIndex);
 
-    while (!purePursuit.isAtGoal())
+    pathIndex = currentPathIndex;
+    purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
+
+    vex::timer stopwatch = vex::timer();
+    double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
+    double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
+
+    while (!purePursuit.isAtGoal() &&
+           ((stopwatch.time() < 500) || (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)))
     {
         purePursuit.update();
+
+        printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+        printf("dist: %.3f\n", purePursuit.distanceToGoalPt());
+
+        dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
+        dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
+
+        vex::wait(20, vex::msec);
+    }
+    drivetrain.setPercentOut(0, 0);
+
+    printf("finished path, target heading...\n");
+
+    // make sure we are facing correct end position
+    headingController.goToTargetHeadingCommand(paths[currentPathIndex].endHeadingRadians);
+}
+
+void Robot::goForwardSlowly(double speed)
+{
+    printf("going forward...\n");
+    drivetrain.setPercentOut(speed, speed);
+
+    double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
+    double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
+
+    vex::wait(500, vex::msec);
+
+    while (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)
+    {
+        printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+
+        dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
+        dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
 
         vex::wait(20, vex::msec);
     }
 
-    // make sure we are facing correct end position
-    headingController.goToTargetHeadingCommand(paths[currentPathIndex].endHeadingRadians);
+    drivetrain.setPercentOut(0, 0);
+}
+
+void Robot::autonomousIntake()
+{
+    intakeOuttake.startIntaking();
+    goForwardSlowly(0.15);
+    vex::wait(1000, vex::msec);
+    intakeOuttake.stop();
+}
+
+void Robot::autonomousScoreLongGoal()
+{
+    goForwardSlowly(-0.25);
+    printf("outtaking...");
+    intakeOuttake.startOuttakingHigh();
+    vex::wait(10000, vex::msec); // wait 10 seconds to score
+    intakeOuttake.stop();
+}
+
+void Robot::autonomousRun1()
+{
+    while (isCalibrating)
+    {
+        vex::wait(100, vex::msec);
+    }
+    vex::wait(200, vex::msec);
+    // go score that one ball ahahaha
+    followPathCommand(0);
+    followPathCommand(1);
+    autonomousScoreLongGoal();
 }
 
 void Robot::log()
@@ -206,35 +287,4 @@ void Robot::log()
     Brain.Screen.print(drivetrain.getPose().y);
     // brain.Screen.print(", total deg: ");
     // brain.Screen.print(Angle::toDegrees(drivetrain.getOdometry().getTotalRadians()));
-}
-
-void Robot::goForwardSlowly(double timeInMs, double speed)
-{
-    drivetrain.setPercentOut(speed, speed);
-    vex::wait(timeInMs, vex::msec);
-    drivetrain.setPercentOut(0, 0);
-}
-
-void Robot::autonomousIntake()
-{
-    intakeOuttake.startIntaking();
-    goForwardSlowly(1000, 0.1);
-    vex::wait(1000, vex::msec);
-    intakeOuttake.stop();
-}
-
-void Robot::autonomousScoreLongGoal()
-{
-    goForwardSlowly(1000, -0.1);
-    intakeOuttake.startOuttakingHigh();
-    vex::wait(10000, vex::msec); //wait 10 seconds to score
-    intakeOuttake.stop();
-}
-
-void Robot::autonomousRun1()
-{
-    // go score that one ball ahahaha
-    autonomousPeriodic(0);
-    autonomousPeriodic(1);
-    autonomousScoreLongGoal();
 }

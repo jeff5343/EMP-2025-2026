@@ -27,11 +27,11 @@ private:
     Steer: It turns the wheels to match that curvature.*/
     // create variables to store where you want to go, and where you are
     // variables to keep track where we are
-    Pid turnPid{PidConstants{9.5, 0, 0}};
+    Pid turnPid{PidConstants{20, 0, 0.000}};
+    double TURN_PID_KS = 2.0;
     Pid linearPid{PidConstants{2.0, 0, 0}};
-    const double MAX_PERCENT_OUTPUT = 0.4;
-    // do we need these?
-    const double LOOK_AHEAD_DISTANCE = 14; // need to increase it!
+    const double MAX_PERCENT_OUTPUT = 0.8;
+    const double LOOK_AHEAD_DISTANCE = 25; // need to increase it!
     const double MAX_LINEAR_PERCENT_OUT = 20.0;
     bool backwards = false;
 
@@ -48,9 +48,6 @@ private:
     double pt_to_pt_distance(Point p1, Point p2);
     int sgn(double num);
     Point goal_point_search();
-    double distanceToGoalPt();
-    
-
 
     void checkIfLast();
 
@@ -74,6 +71,7 @@ public:
     {
         lastFoundIndex = 0;
     }
+    double distanceToGoalPt();
 
     void logStatements();
 };

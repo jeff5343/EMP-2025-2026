@@ -9,6 +9,8 @@
 #include "util/structs/pose.h"
 #endif
 
+#include "deque"
+
 /**
  * Calculates position on field using 2 encoders.
  *
@@ -43,7 +45,7 @@ private:
     static constexpr bool REVERSE_BACK_ENCODER = true;
 
     /* for one rotation of the heading, the scalar to be multiplied in rad */
-    static constexpr double HEADING_DRIFT_SCALAR_RAD =  1.008140736;
+    static constexpr double HEADING_DRIFT_SCALAR_RAD = 1.008140736;
     double totalRadians = 0;
 
     // distances based on encoders
@@ -52,11 +54,15 @@ private:
     // deltas
     double dRightDist = 0;
     double dBackDist = 0;
+
+    std::deque<double> rightDistQueue;
+    std::deque<double> backDistQueue;
+    double MAX_QUEUE_SIZE = 8;
+
     // rotation from inertial sensor in radians
     double prevRotationRad = 0;
 
     Pose pose{0, 0, 0};
-    Pose velocity{0, 0, 0}; // TODO: implement velocity?
 
     vex::thread worker;
     vex::mutex mutex;
@@ -144,8 +150,35 @@ public:
         mutex.lock();
         double total = totalRadians;
         mutex.unlock();
-        printf("%.3f\n", total);
         return total;
+    }
+
+    /* name is so long hmmm, but it returns an approximation of in/sec */
+    double getDeltaRightDistInchesPerSec()
+    {
+        mutex.lock();
+        double delta = rightDistQueue.back() - rightDistQueue.front();
+        int size = rightDistQueue.size();
+        mutex.unlock();
+        if (size > 0) {
+            return (delta * 1000.0) / (5 * size);
+        } else {
+            return 0;
+        }
+    }
+
+    /* name is so long hmmm, but it returns an approximation of in/sec */
+    double getDeltaBackDistInchesPerSec()
+    {
+        mutex.lock();
+        double delta = backDistQueue.back() - backDistQueue.front();
+        int size = rightDistQueue.size();
+        mutex.unlock();
+        if (size > 0) {
+            return (delta * 1000.0) / (5 * size);
+        } else {
+            return 0;
+        }
     }
 
     ~Odometry()

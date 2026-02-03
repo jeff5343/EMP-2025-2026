@@ -41,7 +41,9 @@ private:
     HeadingController headingController{
         drivetrain,
         // turning pid constants
-        PidConstants{0.4, 0.0, 0.001},
+        PidConstants{0.3, 0.0, 0.000},
+        // kS
+        0.02,
         // turning pid setpoint tolerance (~1.5 deg)
         0.026,
         // turning profile constraints
@@ -58,6 +60,7 @@ private:
     int poseSetpointsLength = 1;
     int poseSetpointIndex = 0;
     bool pathFollowingStarted = false;
+    vex::timer timer = vex::timer();
 
     // for paths
     const std::string pathFileName = "path1.txt";
@@ -72,9 +75,6 @@ public:
     /* called in pre_auton */
     void init(ALLIANCE alliance);
 
-    /* called every 20ms in autonomous */
-    void autonomousPeriodic(int currentPathIndex);
-
     /* follow path */
     void followPaths();
 
@@ -87,11 +87,13 @@ public:
     /* auto run 1 */
     void autonomousRun1();
 
+    void followPathCommand(int currentPathIndex);
+
     void logStatements()
     {
         purePursuit.logStatements();
     }
-    void goForwardSlowly(double timeInMs, double speed);
+    void goForwardSlowly(double speed);
     void autonomousIntake();
     void autonomousScoreLongGoal();
 };

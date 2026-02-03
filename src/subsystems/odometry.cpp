@@ -25,6 +25,16 @@ void Odometry::setNewEncoderDistances(double rightD, double backD)
     dRightDist = rightD - rightDist;
     dBackDist = backD - backDist;
 
+    // add to queues
+    rightDistQueue.push_back(rightD);
+    backDistQueue.push_back(backD);
+    while (rightDistQueue.size() > MAX_QUEUE_SIZE) {
+        rightDistQueue.pop_front();
+    }
+    while (backDistQueue.size() > MAX_QUEUE_SIZE) {
+        backDistQueue.pop_front();
+    }
+
     // update distances of encoders
     rightDist = rightD;
     backDist = backD;
