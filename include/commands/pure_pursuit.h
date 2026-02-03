@@ -28,6 +28,8 @@ private:
     // create variables to store where you want to go, and where you are
     // variables to keep track where we are
     Pid turnPid{PidConstants{20, 0, 0.000}};
+    double TURN_KP = 20;
+    double STRAIGHT_KP = 5;
     double TURN_PID_KS = 2.0;
     Pid linearPid{PidConstants{2.0, 0, 0}};
     const double MAX_PERCENT_OUTPUT = 0.8;
@@ -72,6 +74,14 @@ public:
         lastFoundIndex = 0;
     }
     double distanceToGoalPt();
+
+    void setTurnKPForTurnPaths() {
+        turnPid.setkP(TURN_KP);
+    }
+
+    void setTurnKPForStraightPaths() {
+        turnPid.setkP(STRAIGHT_KP);
+    }
 
     void logStatements();
 };

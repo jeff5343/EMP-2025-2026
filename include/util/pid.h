@@ -25,6 +25,18 @@ public:
     Pid(PidConstants constants, double setpointTolerance = 0.05, double deltaTime = 0.02)
         : constants(constants), deltaTime(deltaTime), setpointTolerance(setpointTolerance) {};
 
+    void setkP(double kP) {
+        constants.kP = kP;
+    }
+
+    void setkI(double kI) {
+        constants.kI = kI;
+    }
+
+    void setkD(double kD) {
+        constants.kD = kD;
+    }
+
     void enableContinuousInput(bool continuous)
     {
         this->continuous = continuous;
