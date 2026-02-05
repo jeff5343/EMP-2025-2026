@@ -23,7 +23,7 @@ void Robot::init(ALLIANCE alliance)
     Brain.Screen.clearLine();
     Brain.Screen.print("IS SD CARD LOADED???");
 
-    paths = PathParser::loadPaths(pathFileName);
+    paths = PathParser::loadPaths(IS_SKILLS ? skillsPathFileName : autoPathFileName);
     PathParser::flipForAlliance(paths, alliance);
 
     // need to get starting points of path not just the first path we need to follow

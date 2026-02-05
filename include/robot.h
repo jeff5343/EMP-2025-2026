@@ -63,7 +63,9 @@ private:
     vex::timer timer = vex::timer();
 
     // for paths
-    const std::string pathFileName = "path1.txt";
+    const bool IS_SKILLS = true;
+    const std::string autoPathFileName = "path1.txt";
+    const std::string skillsPathFileName = "Skillsauto.txt";
     std::vector<Path> paths = {};
     std::vector<bool> backwards = {false, true, true, false, true};
     int pathIndex = 0;
