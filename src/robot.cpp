@@ -285,7 +285,6 @@ void Robot::autonomousRun1()
     vex::wait(200, vex::msec);
     // go score that one ball ahahaha
     followPathCommand(0, false);
-    autonomousIntake();
     followPathCommand(1, false);
     autonomousScoreLongGoal();
 }
@@ -296,6 +295,22 @@ void Robot::skillz()
         vex::wait(100, vex::msec);
     }
     vex::wait(200, vex::msec);
+    followPathCommand(0, false); // line up to tube
+    autonomousIntake(); //fill up intake
+
+    followPathCommand(1, false); // go to long goal
+    autonomousScoreLongGoal(); //go score long goal
+
+    followPathCommand(2, false); // unstuck triangle thing by going forwards
+
+    followPathCommand(3, false); // line up to get a couple more balls
+    followPathCommand(4, false); //get in front of balls
+    vex::wait (200, vex::msec); //make sure intake is starting
+    intakeOuttake.startIntaking(); // start intaking
+    followPathCommand(5, false); // get balls by driving forwards
+    intakeOuttake.stop(); //stop intaking at end of path
+    vex::wait(200, vex::msec); 
+    followPathCommand(6, false); // go to long goal again
 
 
     // start scoring on the other side
