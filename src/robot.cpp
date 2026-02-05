@@ -244,6 +244,12 @@ void Robot::goForwardSlowly(double speed)
     drivetrain.setPercentOut(0, 0);
 }
 
+void Robot::backup(double speed) {
+    drivetrain.setPercentOut(speed, speed);
+    vex::wait(500, vex::msec);
+    drivetrain.setPercentOut(0, 0);
+}
+
 void Robot::autonomousIntake()
 {
     intakeOuttake.startIntaking();
@@ -255,9 +261,18 @@ void Robot::autonomousIntake()
 void Robot::autonomousScoreLongGoal()
 {
     goForwardSlowly(-0.25);
-    printf("outtaking...");
+    printf("outtaking long goal...");
     intakeOuttake.startOuttakingHigh();
     vex::wait(10000, vex::msec); // wait 10 seconds to score
+    intakeOuttake.stop();
+}
+
+void Robot::autonomousScoreLowGoal()
+{
+    goForwardSlowly(0.25);
+    printf("outtaking low goal...");
+    intakeOuttake.startReverseIntaking();
+    vex::wait(2000, vex::msec); // wait 2 seconds to score (TODO: need to time!)
     intakeOuttake.stop();
 }
 
@@ -282,7 +297,33 @@ void Robot::skillz()
     }
     vex::wait(200, vex::msec);
 
+
+    // start scoring on the other side
+    followPathCommand(7, false);
+    autonomousScoreLongGoal();
+
+    // go to chute on other side (TODO: need to make sure flap is down)
+    followPathCommand(8, false);
+    autonomousIntake();
+
+    backup(-.1);
+    // go to target heading for path 9 (TODO: we probably need to back out before we do this...)
+    headingController.goToTargetHeadingCommand(paths[9].endHeadingRadians);
+    followPathCommand(9, false);
+    // score low center goal
+    autonomousScoreLowGoal();
+
+    backup(-.1);
+    // go to target heading to get ready to line up
+    headingController.goToTargetHeadingCommand(paths[10].endHeadingRadians);
+    followPathCommand(10, false);
+
+    // line up to park
+    followPathCommand(11, false);
+    // park
+    followPathCommand(12, false);
 }
+
 void Robot::log()
 {
     /* subsystem logging */

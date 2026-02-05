@@ -101,8 +101,10 @@ public:
         purePursuit.logStatements();
     }
     void goForwardSlowly(double speed);
+    void backup(double speed);
     void autonomousIntake();
     void autonomousScoreLongGoal();
+    void autonomousScoreLowGoal();
 };
 
 #endif
