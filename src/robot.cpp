@@ -162,8 +162,8 @@ void Robot::followPaths()
 
     double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
     double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
-    printf("wat: %.3f, back: %.3f\n", dRight, dBack);
-    printf("time: %d\n", timer.time());
+    // printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+    // printf("time: %d\n", timer.time());
 
     if (purePursuit.isAtGoal() || ((timer.time() > 200) && (std::fabs(dRight) < 0.1 && std::fabs(dBack) < 0.3)))
     {
@@ -194,20 +194,19 @@ void Robot::followPathCommand(int currentPathIndex, bool turning)
     vex::timer stopwatch = vex::timer();
     double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
     double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
-     if (turning) {
-            purePursuit.setTurnKPForTurnPaths();
-        } else {
-            purePursuit.setTurnKPForStraightPaths();
-        }
+    // uncommented for testing...
+    // if (turning)
+    //     purePursuit.setTurnKPForTurnPaths();
+    // else
+    //     purePursuit.setTurnKPForStraightPaths();
+
     while (!purePursuit.isAtGoal() &&
-           ((stopwatch.time() < 500) || (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)))
+           ((stopwatch.time() < 300) || (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)))
     {
         purePursuit.update();
-        
-       
 
-        printf("wat: %.3f, back: %.3f\n", dRight, dBack);
-        printf("dist: %.3f\n", purePursuit.distanceToGoalPt());
+        // printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+        // printf("dist: %.3f\n", purePursuit.distanceToGoalPt());
 
         dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
         dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
@@ -230,11 +229,11 @@ void Robot::goForwardSlowly(double speed)
     double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
     double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
 
-    vex::wait(500, vex::msec);
+    vex::wait(300, vex::msec);
 
     while (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)
     {
-        printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+        // printf("wat: %.3f, back: %.3f\n", dRight, dBack);
 
         dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
         dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
@@ -248,7 +247,7 @@ void Robot::goForwardSlowly(double speed)
 void Robot::autonomousIntake()
 {
     intakeOuttake.startIntaking();
-    goForwardSlowly(0.15);
+    goForwardSlowly(0.2);
     vex::wait(1000, vex::msec);
     intakeOuttake.stop();
 }
@@ -270,7 +269,8 @@ void Robot::autonomousRun1()
     }
     vex::wait(200, vex::msec);
     // go score that one ball ahahaha
-    followPathCommand(0, true);
+    followPathCommand(0, false);
+    autonomousIntake();
     followPathCommand(1, false);
     autonomousScoreLongGoal();
 }
