@@ -206,8 +206,8 @@ void Robot::followPathCommand(int currentPathIndex, bool turning)
     {
         purePursuit.update();
 
-        // printf("wat: %.3f, back: %.3f\n", dRight, dBack);
-        // printf("dist: %.3f\n", purePursuit.distanceToGoalPt());
+         printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+         printf("dist: %.3f\n", purePursuit.distanceToGoalPt());
 
         dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
         dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
