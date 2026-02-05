@@ -17,7 +17,7 @@ int main()
         return -1;
     }
 
-    std::vector<Path> paths = pathParser.loadPaths("../path1.txt");
+    std::vector<Path> paths = pathParser.loadPaths("../Skillsauto.txt");
     pathParser.flipForAlliance(paths, ALLIANCE::RED_TOP);
 
     for (Path &path : paths)
