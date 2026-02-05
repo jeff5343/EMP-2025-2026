@@ -334,7 +334,7 @@ void Robot::skillz()
 
     backup(-.1);
     // go to target heading to get ready to line up
-    headingController.goToTargetHeadingCommand(paths[10].startHeadingRadians);
+    //headingController.goToTargetHeadingCommand(paths[10].startHeadingRadians); //don't need anymore
     followPathCommand(10, false);
 
     // line up to park
