@@ -27,10 +27,10 @@ private:
     Steer: It turns the wheels to match that curvature.*/
     // create variables to store where you want to go, and where you are
     // variables to keep track where we are
-    Pid turnPid{PidConstants{20, 0, 0.000}};
-    double TURN_KP = 20;
-    double STRAIGHT_KP = 1;
-    double TURN_PID_KS = 2.0;
+    Pid turnPid{PidConstants{5, 0, 0.000}}; // kp = 20
+    double TURN_KP = 0; // 20
+    double STRAIGHT_KP = 0; // 1
+    double TURN_PID_KS = 0.1; // ks = 2.0
     Pid linearPid{PidConstants{2.0, 0, 0}};
     const double MAX_PERCENT_OUTPUT = 0.8;
     const double LOOK_AHEAD_DISTANCE = 25; // need to increase it!
