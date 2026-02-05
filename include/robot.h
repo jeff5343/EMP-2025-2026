@@ -66,6 +66,9 @@ private:
     const std::string pathFileName = "path1.txt";
     std::vector<Path> paths = {};
     std::vector<bool> backwards = {false, true, true, false, true};
+    std::vector<bool> backwardsSkills = {false, false, true, false, false, 
+                                         false, false, false, false, true, 
+                                         false, false, false, false, false};
     int pathIndex = 0;
 
     bool isCalibrating = true;
@@ -86,6 +89,8 @@ public:
 
     /* auto run 1 */
     void autonomousRun1();
+
+    void skillz();
 
     void followPathCommand(int currentPathIndex, bool turning);
 

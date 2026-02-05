@@ -274,7 +274,15 @@ void Robot::autonomousRun1()
     followPathCommand(1, false);
     autonomousScoreLongGoal();
 }
+void Robot::skillz()
+{
+    while (isCalibrating)
+    {
+        vex::wait(100, vex::msec);
+    }
+    vex::wait(200, vex::msec);
 
+}
 void Robot::log()
 {
     /* subsystem logging */
