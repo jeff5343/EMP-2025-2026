@@ -24,6 +24,7 @@ void Robot::init(ALLIANCE alliance)
     Brain.Screen.print("IS SD CARD LOADED???");
 
     paths = PathParser::loadPaths(IS_SKILLS ? skillsPathFileName : autoPathFileName);
+    backwards = IS_SKILLS ? backwardsSkills : backwards;
     PathParser::flipForAlliance(paths, alliance);
 
     // need to get starting points of path not just the first path we need to follow
@@ -312,7 +313,7 @@ void Robot::skillz()
     followPathCommand(5, false); // get balls by driving forwards
     intakeOuttake.stop(); //stop intaking at end of path
     vex::wait(200, vex::msec); 
-    
+
     followPathCommand(6, false); // go to long goal again
 
 
