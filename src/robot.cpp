@@ -325,19 +325,19 @@ void Robot::skillz()
     followPathCommand(8, false);
     autonomousIntake();
 
-    backup(-.1);
+    backup(-.2);
     // go to target heading for path 9 (TODO: we probably need to back out before we do this...)
     headingController.goToTargetHeadingCommand(paths[9].startHeadingRadians);
     followPathCommand(9, false);
     // score low center goal
     autonomousScoreLowGoal();
 
-    backup(-.1);
+    backup(-.2);
     // go to target heading to get ready to line up
-    //headingController.goToTargetHeadingCommand(paths[10].startHeadingRadians); //don't need anymore
     followPathCommand(10, false);
 
     // line up to park
+    headingController.goToTargetHeadingCommand(paths[11].startHeadingRadians); //don't need anymore
     followPathCommand(11, false);
     // park
     followPathCommand(12, false);
