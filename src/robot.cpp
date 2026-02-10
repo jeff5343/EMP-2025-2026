@@ -314,34 +314,35 @@ void Robot::skillz()
     intakeOuttake.stop(); //stop intaking at end of path
     vex::wait(200, vex::msec); 
 
-    followPathCommand(6, false); // go to long goal again
+    followPathCommand(6, false); // go backwards
 
+    followPathCommand(7, false); // go to long goal again
 
     // start scoring on the other side
-    followPathCommand(7, false);
+    followPathCommand(8, false);
     autonomousScoreLongGoal();
 
     // go to chute on other side (TODO: need to make sure flap is down)
-    followPathCommand(8, false);
+    followPathCommand(9, false);
     autonomousIntake();
 
     backup(-.2);
     // go to target heading for path 9 (TODO: we probably need to back out before we do this...)
-    headingController.goToTargetHeadingCommand(paths[9].startHeadingRadians);
-    followPathCommand(9, false);
+    headingController.goToTargetHeadingCommand(paths[10].startHeadingRadians);
+    followPathCommand(10, false);
     // score low center goal
     autonomousScoreLowGoal();
 
     backup(-.2);
     // go to target heading to get ready to line up
-    headingController.goToTargetHeadingCommand(paths[10].startHeadingRadians);
-    followPathCommand(10, false);
-
-    // line up to park
     headingController.goToTargetHeadingCommand(paths[11].startHeadingRadians);
     followPathCommand(11, false);
-    // park
+
+    // line up to park
+    headingController.goToTargetHeadingCommand(paths[12].startHeadingRadians);
     followPathCommand(12, false);
+    // park
+    followPathCommand(13, false);
 }
 
 void Robot::log()
