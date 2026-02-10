@@ -263,10 +263,12 @@ void Robot::autonomousIntake()
 void Robot::autonomousScoreLongGoal()
 {
     goForwardSlowly(-0.25);
+    drivetrain.setPercentOut(-.15, -.15);
     printf("outtaking long goal...");
     intakeOuttake.startOuttakingHigh();
     vex::wait(1000, vex::msec); // wait 10 seconds to score
     intakeOuttake.stop();
+    drivetrain.stop();
 }
 
 void Robot::autonomousScoreLowGoal()
@@ -276,6 +278,11 @@ void Robot::autonomousScoreLowGoal()
     intakeOuttake.startReverseIntaking();
     vex::wait(2000, vex::msec); // wait 2 seconds to score (TODO: need to time!)
     intakeOuttake.stop();
+}
+
+void Robot::autonomousPark() {
+    drivetrain.setPercentOut(1.0, 1.0);
+    vex::wait(1000, vex::msec);
 }
 
 void Robot::autonomousRun1()
@@ -344,6 +351,7 @@ void Robot::skillz()
     followPathCommand(12, false);
     // park
     followPathCommand(13, false);
+    autonomousPark();
 }
 
 void Robot::log()

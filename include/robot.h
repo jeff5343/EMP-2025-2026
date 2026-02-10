@@ -105,6 +105,7 @@ public:
     void autonomousIntake();
     void autonomousScoreLongGoal();
     void autonomousScoreLowGoal();
+    void autonomousPark();
 };
 
 #endif
