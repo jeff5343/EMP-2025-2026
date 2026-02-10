@@ -70,7 +70,7 @@ private:
     std::vector<bool> backwards = {false, true, true, false, true};
     std::vector<bool> backwardsSkills = {false, true, false, false, 
                                          false, false, true, false, false, 
-                                         true, false, true, false, false};
+                                         false, false, true, false, false};
     int pathIndex = 0;
 
     bool isCalibrating = true;

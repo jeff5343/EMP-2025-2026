@@ -325,7 +325,7 @@ void Robot::skillz()
 
     // go to chute on other side (TODO: need to make sure flap is down)
     followPathCommand(9, false);
-    // autonomousIntake();
+    autonomousIntake();
 
     backup(-.2);
     // go to target heading for path 9 (TODO: we probably need to back out before we do this...)
