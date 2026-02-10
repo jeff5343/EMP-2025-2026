@@ -206,8 +206,8 @@ void Robot::followPathCommand(int currentPathIndex, bool turning)
     {
         purePursuit.update();
 
-         printf("wat: %.3f, back: %.3f\n", dRight, dBack);
-         printf("dist: %.3f\n", purePursuit.distanceToGoalPt());
+        printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+        printf("dist: %.3f\n", purePursuit.distanceToGoalPt());
 
         dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
         dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
@@ -245,7 +245,8 @@ void Robot::goForwardSlowly(double speed)
     drivetrain.setPercentOut(0, 0);
 }
 
-void Robot::backup(double speed) {
+void Robot::backup(double speed)
+{
     drivetrain.setPercentOut(speed, speed);
     vex::wait(500, vex::msec);
     drivetrain.setPercentOut(0, 0);
@@ -297,22 +298,22 @@ void Robot::skillz()
     }
     vex::wait(200, vex::msec);
     followPathCommand(0, false); // line up to tube
-    autonomousIntake(); //fill up intake
+    autonomousIntake();          // fill up intake
 
     followPathCommand(1, false); // go to long goal
-    autonomousScoreLongGoal(); //go score long goal
+    autonomousScoreLongGoal();   // go score long goal
 
     followPathCommand(2, false); // unstuck triangle thing by going forwards
 
     followPathCommand(3, false); // line up to get a couple more balls
 
-    followPathCommand(4, false); //get in front of balls
-    vex::wait (200, vex::msec); //make sure intake is starting
+    followPathCommand(4, false);   // get in front of balls
+    vex::wait(200, vex::msec);     // make sure intake is starting
     intakeOuttake.startIntaking(); // start intaking
 
     followPathCommand(5, false); // get balls by driving forwards
-    intakeOuttake.stop(); //stop intaking at end of path
-    vex::wait(200, vex::msec); 
+    intakeOuttake.stop();        // stop intaking at end of path
+    vex::wait(200, vex::msec);
 
     followPathCommand(6, false); // go backwards
 
@@ -324,7 +325,7 @@ void Robot::skillz()
 
     // go to chute on other side (TODO: need to make sure flap is down)
     followPathCommand(9, false);
-    autonomousIntake();
+    // autonomousIntake();
 
     backup(-.2);
     // go to target heading for path 9 (TODO: we probably need to back out before we do this...)
