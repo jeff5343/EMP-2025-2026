@@ -266,7 +266,7 @@ void Robot::autonomousScoreLongGoal()
     drivetrain.setPercentOut(-.15, -.15);
     printf("outtaking long goal...");
     intakeOuttake.startOuttakingHigh();
-    vex::wait(1000, vex::msec); // wait 10 seconds to score
+    vex::wait(3000, vex::msec); // wait 10 seconds to score
     intakeOuttake.stop();
     drivetrain.stop();
 }
