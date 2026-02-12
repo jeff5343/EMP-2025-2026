@@ -48,7 +48,11 @@ void pre_auton(void)
 
 void autonomous(void)
 {
-  robot.skillz();
+  if (robot.IS_SKILLS) {
+    robot.skillz();
+  } else {
+    robot.autonomousRun1();
+  }
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................

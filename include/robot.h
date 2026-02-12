@@ -63,7 +63,6 @@ private:
     vex::timer timer = vex::timer();
 
     // for paths
-    const bool IS_SKILLS = true;
     const std::string autoPathFileName = "path1.txt";
     const std::string skillsPathFileName = "Skillsauto.txt";
     std::vector<Path> paths = {};
@@ -77,6 +76,8 @@ private:
     bool hasToggledIntakeChutePiston = false;
 
 public:
+    const bool IS_SKILLS = false;
+
     /* called in pre_auton */
     void init(ALLIANCE alliance);
 
