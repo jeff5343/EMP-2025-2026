@@ -84,9 +84,9 @@ std::vector<Path> PathParser::loadPaths(std::string filePath)
 void PathParser::flipForAlliance(std::vector<Path> &paths, ALLIANCE alliance)
 {
     int neg[2] = {1, 1};
-    if (alliance == ALLIANCE::BLUE_BOT || alliance == ALLIANCE::BLUE_TOP)
+    if (alliance == ALLIANCE::BLUE_LEFT || alliance == ALLIANCE::BLUE_RIGHT)
         neg[0] = -1;
-    if (alliance == ALLIANCE::RED_BOT || alliance == ALLIANCE::BLUE_BOT)
+    if (alliance == ALLIANCE::RED_RIGHT || alliance == ALLIANCE::BLUE_LEFT)
         neg[1] = -1;
 
     for (Path &path : paths)

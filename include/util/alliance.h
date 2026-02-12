@@ -2,10 +2,10 @@
 #define __ALLIANCE_H_INCLUDED__
 
 enum ALLIANCE {
-    RED_TOP,
-    RED_BOT,
-    BLUE_TOP,
-    BLUE_BOT
+    RED_LEFT,
+    RED_RIGHT,
+    BLUE_RIGHT,
+    BLUE_LEFT
 };
 
 #endif
