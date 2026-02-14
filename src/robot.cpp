@@ -37,8 +37,8 @@ void Robot::init(ALLIANCE alliance)
 
     // TODO: uncomment
     // deploy pistons at start of the match
-     intakeOuttake.trianglePistonOut();
-     intakeOuttake.outtakeElevationPistonOut();
+    intakeOuttake.trianglePistonOut();
+    //  intakeOuttake.outtakeElevationPistonOut();
 };
 
 void Robot::usercontrolPeriodic()
@@ -280,7 +280,8 @@ void Robot::autonomousScoreLowGoal()
     intakeOuttake.stop();
 }
 
-void Robot::autonomousPark() {
+void Robot::autonomousPark()
+{
     drivetrain.setPercentOut(1.0, 1.0);
     vex::wait(1000, vex::msec);
 }

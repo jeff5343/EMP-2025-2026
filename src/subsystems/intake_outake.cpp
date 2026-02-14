@@ -80,20 +80,20 @@ void IntakeOuttake::trianglePistonIn()
 {
     // insert piston code here to bring triangle piston in
 
-    trianglePiston.set(true);
+    trianglePiston.set(false);
 }
 void IntakeOuttake::trianglePistonOut()
 {
     // insert piston code here to bring triangle piston out
-    trianglePiston.set(false);
+    trianglePiston.set(true);
 }
 void IntakeOuttake::outtakeElevationPistonIn()
 {
     // insert piston code here to bring outtake elevation piston in
-    outtakeElevationPiston.set(true);
+    outtakeElevationPiston.set(false);
 }
 void IntakeOuttake::outtakeElevationPistonOut()
 {
     // insert piston code here to bring outtake elevation piston out
-    outtakeElevationPiston.set(false);
+    outtakeElevationPiston.set(true);
 }
