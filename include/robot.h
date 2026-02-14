@@ -90,6 +90,10 @@ public:
     /* logging statements */
     void log();
 
+    void extendTriangle() {
+        intakeOuttake.trianglePistonOut();
+    }
+
     /* auto run 1 */
     void autonomousRun1();
 
