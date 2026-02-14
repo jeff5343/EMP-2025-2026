@@ -48,9 +48,13 @@ void pre_auton(void)
 
 void autonomous(void)
 {
-  if (robot.IS_SKILLS) {
+  robot.extendTriangle();
+  if (robot.IS_SKILLS)
+  {
     robot.skillz();
-  } else {
+  }
+  else
+  {
     robot.autonomousRun1();
   }
   // ..........................................................................
@@ -70,6 +74,7 @@ void autonomous(void)
 
 void usercontrol(void)
 {
+  robot.extendTriangle();
   // User control code here, inside the loop
   while (1)
   {
