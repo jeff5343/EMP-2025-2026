@@ -37,8 +37,8 @@ void Robot::init(ALLIANCE alliance)
 
     // TODO: uncomment
     // deploy pistons at start of the match
-    // intakeOuttake.trianglePistonOut();
-    // intakeOuttake.outtakeElevationPistonOut();
+     intakeOuttake.trianglePistonOut();
+     intakeOuttake.outtakeElevationPistonOut();
 };
 
 void Robot::usercontrolPeriodic()
