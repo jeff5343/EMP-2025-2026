@@ -56,7 +56,7 @@ inline extern vex::motor outakeMotor{
     vex::PORT13, vex::ratio6_1, false}; //change port as needed
 
 // pistons
-inline extern vex::digital_out trianglePiston = vex::digital_out(Brain.ThreeWirePort.B);
+inline extern vex::digital_out trianglePiston = vex::digital_out(Brain.ThreeWirePort.H);
 inline extern vex::digital_out outtakeElevationPiston = vex::digital_out(Brain.ThreeWirePort.C);
 inline extern vex::digital_out intakeChutePiston = vex::digital_out(Brain.ThreeWirePort.A);
 
