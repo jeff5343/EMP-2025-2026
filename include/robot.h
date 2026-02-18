@@ -83,8 +83,8 @@ private:
     {
         //I think we should check outtakeSpeed instead since this is the "variable speed" 
         //in case user is coming from intake or can just check all three
-        //if (intakeSpeed<=0 || throughtakeSpeed <=0 || outtakeSpeed<=0)
-        if (intakeSpeed == 0) 
+        
+        if (intakeSpeed<=0 || throughtakeSpeed <=0 || outtakeSpeed<=0) 
         {
             intakeSpeed = 0.8;
             throughtakeSpeed = 0.8;
