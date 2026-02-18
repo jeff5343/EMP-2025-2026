@@ -39,7 +39,10 @@ void Robot::init(ALLIANCE alliance)
     // deploy pistons at start of the match
     //  intakeOuttake.outtakeElevationPistonOut();
 
-    controller.ButtonL1.pressed(Robot::toggleOuttakeHigh);
+    controller.ButtonR1.pressed(Robot::toggleIntake); //R1: intake 
+    controller.ButtonR2.pressed(Robot::toggleReverseIntake); //R2: reverse intake
+    controller.ButtonL1.pressed(Robot::toggleOuttakeHigh); //L1: Score long goal
+    controller.ButtonL2.pressed(Robot::toggleOuttakeMid); //L2: score mid goal
 
     intakeSpeed = 0;
     throughtakeSpeed = 0;
