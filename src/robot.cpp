@@ -38,6 +38,12 @@ void Robot::init(ALLIANCE alliance)
     // TODO: uncomment
     // deploy pistons at start of the match
     //  intakeOuttake.outtakeElevationPistonOut();
+
+    controller.ButtonL1.pressed(Robot::toggleOuttakeHigh);
+
+    intakeSpeed = 0;
+    throughtakeSpeed = 0;
+    outtakeSpeed = 0;
 };
 
 void Robot::usercontrolPeriodic()
@@ -45,6 +51,8 @@ void Robot::usercontrolPeriodic()
     /* DON'T RUN IF CALIBRATING */
     if (isCalibrating)
         return;
+
+    intakeOuttake.set(intakeSpeed, throughtakeSpeed, outtakeSpeed);
 
     /* TELEOP DRIVING: */
 

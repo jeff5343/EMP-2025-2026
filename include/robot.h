@@ -67,13 +67,33 @@ private:
     const std::string skillsPathFileName = "Skillsauto.txt";
     std::vector<Path> paths = {};
     std::vector<bool> backwards = {false, true, true, false, true};
-    std::vector<bool> backwardsSkills = {false, true, false, false, 
-                                         false, false, true, false, false, 
+    std::vector<bool> backwardsSkills = {false, true, false, false,
+                                         false, false, true, false, false,
                                          false, false, true, false, false};
     int pathIndex = 0;
 
     bool isCalibrating = true;
     bool hasToggledIntakeChutePiston = false;
+
+    static double intakeSpeed;
+    static double throughtakeSpeed;
+    static double outtakeSpeed;
+
+    static void toggleOuttakeHigh()
+    {
+        if (intakeSpeed == 0)
+        {
+            intakeSpeed = 0.8;
+            throughtakeSpeed = 0.8;
+            outtakeSpeed = 0.8;
+        }
+        else
+        {
+            intakeSpeed = 0;
+            throughtakeSpeed = 0;
+            outtakeSpeed = 0;
+        }
+    }
 
 public:
     const bool IS_SKILLS = false;
@@ -90,7 +110,8 @@ public:
     /* logging statements */
     void log();
 
-    void extendTriangle() {
+    void extendTriangle()
+    {
         intakeOuttake.trianglePistonOut();
     }
 
