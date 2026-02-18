@@ -99,7 +99,7 @@ private:
     }
     static void toggleOuttakeMid()
     {
-        if (intakeSpeed<=0 || throughtakeSpeed <=0 || outtakeSpeed <=0)
+        if (intakeSpeed<=0 || throughtakeSpeed <=0 || outtakeSpeed >=0)
         {
             intakeSpeed =0.8;
             throughtakeSpeed = 0.8;
@@ -114,7 +114,7 @@ private:
     }
     static void toggleIntake()
     {
-        if (intakeSpeed<=0 || throughtakeSpeed >0 || outtakeSpeed >0)
+        if (intakeSpeed<=0 || throughtakeSpeed !=0 || outtakeSpeed !=0)
         {
             intakeSpeed = 0.8;
             throughtakeSpeed = 0;
