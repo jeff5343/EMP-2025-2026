@@ -156,9 +156,16 @@ void PurePursuit::followGoalPoint(Point goalPt)
         turnError = -1 * std::copysign(1.0, turnError) * ((2 * M_PI) - std::abs(turnError));
     }
 
+    // printf("turnError (rad): %.3f\n", turnError);
+
     double linearError = distanceToGoalPt();
 
     double turnVel = -turnPid.calculate(turnError);
+    if (std::fabs(turnError) > 0.02) // apply static friction with 1 deg difference
+    {
+        turnVel += std::copysign(1.0, turnVel) * TURN_PID_KS;
+    }
+
     // printf("turnVel: %.3f, turnError: %.3f\n", turnVel, turnError);
 
     // printf("linear Error: (%.3f, %.3f)\n", linearError, linearError * kPLinear);
@@ -203,7 +210,7 @@ bool PurePursuit::isAtGoal()
     //  need isAtGoal function, isAtGoal will return bool either true or false
     //  depending on how far we are to the goal
     double distanceToGoal = distanceToGoalPt();
-    if (distanceToGoal <= 1.0)
+    if (distanceToGoal <= 3.0)
         return true;
     else
         return false;
@@ -218,6 +225,20 @@ void PurePursuit::checkIfLast()
     }
 }
 
+void PurePursuit::logStatements()
+{
+    Point goalPt = goal_point_search();
+    Pose pose = drivetrain.getPose();
+    double currentX = pose.x;
+    double currentY = pose.y;
+    printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
+    printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
+    printf("dRight: %.7f, dBack: %.7f\n",
+           drivetrain.getOdometry().getDeltaRightDistInchesPerSec(),
+           drivetrain.getOdometry().getDeltaBackDistInchesPerSec());
+    printf("currentIndex: %d\n", lastFoundIndex);
+}
+
 void PurePursuit::update()
 {
     //:)
@@ -225,10 +246,9 @@ void PurePursuit::update()
     Pose pose = drivetrain.getPose();
     double currentX = pose.x;
     double currentY = pose.y;
-    bool backwards = 1;
-    // printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
-    // printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
-    // printf("currentIndex: %d\n", lastFoundIndex);
+    printf("goal: (%.3f, %.3f)\n", goalPt.x, goalPt.y);
+    printf("currentX: %.3f, currentY: %.3f\n", currentX, currentY);
+    printf("currentIndex: %d\n", lastFoundIndex);
 
     followGoalPoint(goalPt);
     checkIfLast();

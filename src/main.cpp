@@ -15,6 +15,7 @@ using namespace vex;
 // A global instance of competition
 competition Competition;
 Robot robot;
+ALLIANCE alliance = ALLIANCE::RED_LEFT;
 
 // define your global instances of motors and other devices here
 
@@ -32,7 +33,7 @@ void pre_auton(void)
 {
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
-  robot.init();
+  robot.init(alliance);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -47,6 +48,15 @@ void pre_auton(void)
 
 void autonomous(void)
 {
+  robot.extendTriangle();
+  if (robot.IS_SKILLS)
+  {
+    robot.skillz();
+  }
+  else
+  {
+    robot.autonomousRun1();
+  }
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
@@ -64,6 +74,7 @@ void autonomous(void)
 
 void usercontrol(void)
 {
+  robot.extendTriangle();
   // User control code here, inside the loop
   while (1)
   {
@@ -92,9 +103,16 @@ int main()
   // Run the pre-autonomous function.
   pre_auton();
 
+  timer stopwatch = timer();
+
   // Prevent main from exiting with an infinite loop.
   while (true)
   {
     wait(100, msec);
+    if (stopwatch.time() > 1000)
+    {
+      // robot.logStatements();
+      stopwatch.reset();
+    }
   }
 }

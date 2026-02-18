@@ -2,27 +2,42 @@
 #include "util/angle.h"
 #include "util/path_parser.h"
 #include <cmath>
+#include "vex.h"
 
-void Robot::init()
+void Robot::init(ALLIANCE alliance)
 {
     /* CALIBRATE INERTIAL SENSOR */
     isCalibrating = true;
     inertial.calibrate();
     while (inertial.installed() && inertial.isCalibrating())
     {
-        brain.Screen.clearLine();
-        brain.Screen.print("Calibrating inertial sensor...");
+        Brain.Screen.clearLine();
+        Brain.Screen.print("Calibrating inertial sensor...");
         printf("calibrating...\n");
         vex::this_thread::sleep_for(100);
     }
     inertial.resetHeading();
     drivetrain.startOdometry();
-    isCalibrating = false;
     printf("done calibrating!\n");
 
-    paths = PathParser::loadPaths(pathFileName);
+    Brain.Screen.clearLine();
+    Brain.Screen.print("IS SD CARD LOADED???");
+
+    paths = PathParser::loadPaths(IS_SKILLS ? skillsPathFileName : autoPathFileName);
+    backwards = IS_SKILLS ? backwardsSkills : backwards;
+    PathParser::flipForAlliance(paths, alliance);
+
+    // need to get starting points of path not just the first path we need to follow
+    drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
     purePursuit.setPath(paths[0].points, true);
+
     printf("done loading %lu paths!\n", paths.size());
+
+    isCalibrating = false;
+
+    // TODO: uncomment
+    // deploy pistons at start of the match
+    //  intakeOuttake.outtakeElevationPistonOut();
 };
 
 void Robot::usercontrolPeriodic()
@@ -32,38 +47,44 @@ void Robot::usercontrolPeriodic()
         return;
 
     /* TELEOP DRIVING: */
+
+    // R1 - intake
     if (controller.ButtonR1.pressing())
-    {
-        intakeRightMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
-        intakeLeftMotor.spin(vex::forward, 10, vex::voltageUnits::volt);
-    }
+        intakeOuttake.startIntaking();
+    // R2 - reverse intake (score center goal low)
+    else if (controller.ButtonR2.pressing())
+        intakeOuttake.startReverseIntaking();
+    // L1 - score long goal
     else if (controller.ButtonL1.pressing())
+        intakeOuttake.startOuttakingHigh();
+    // L2 - score center goal high
+    else if (controller.ButtonL2.pressing())
+        intakeOuttake.startOuttakingMid();
+    else
+        intakeOuttake.stop();
+
+    // A - reset odometry
+    if (controller.ButtonA.pressing())
     {
-        intakeRightMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
-        intakeLeftMotor.spin(vex::forward, -10, vex::voltageUnits::volt);
+        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
+    }
+
+    // TODO: uncomment
+    // Y - toggle intake chute piston
+    if (controller.ButtonY.pressing())
+    {
+        if (!hasToggledIntakeChutePiston)
+        {
+            hasToggledIntakeChutePiston = true;
+            intakeOuttake.intakeChutePistonToggle();
+        }
     }
     else
     {
-        intakeRightMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
-        intakeLeftMotor.spin(vex::forward, 0, vex::voltageUnits::volt);
+        hasToggledIntakeChutePiston = false;
     }
 
-    // TODO: find out how to bind functions to events??
-    if (controller.ButtonA.pressing())
-    {
-        drivetrain.resetOdometry(-47.2795, 46.5748, M_PI);
-    }
-
-    if (controller.ButtonB.pressing())
-    {
-        if (!pathFollowingStarted)
-        {
-            pidDrive.setTargetPose(poseSetpoints[poseSetpointIndex]);
-            pathFollowingStarted = true;
-        }
-        pidDrive.update();
-    }
-    else if (controller.ButtonY.pressing())
+    if (controller.ButtonX.pressing())
     {
         if (!pathFollowingStarted)
         {
@@ -74,6 +95,7 @@ void Robot::usercontrolPeriodic()
                 purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
             }
             purePursuit.reset();
+            timer.reset();
         }
         followPaths();
     }
@@ -99,7 +121,7 @@ void Robot::usercontrolPeriodic()
     }
     else
     {
-        // so that setTargetPose is ran when b is pressed ahfwahf
+        // so that setTargetPose is ran when b is pressed
         pathFollowingStarted = false;
 
         // convert axis positions to range -1.0 to 1.0
@@ -138,7 +160,12 @@ void Robot::followPaths()
 
     purePursuit.update();
 
-    if (purePursuit.isAtGoal())
+    double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
+    double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
+    // printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+    // printf("time: %d\n", timer.time());
+
+    if (purePursuit.isAtGoal() || ((timer.time() > 200) && (std::fabs(dRight) < 0.1 && std::fabs(dBack) < 0.3)))
     {
         printf("path: %d complete\n", pathIndex);
         pathIndex++;
@@ -147,23 +174,184 @@ void Robot::followPaths()
             drivetrain.setPercentOut(0, 0);
             return;
         }
+        printf("now backwards: %s\n", backwards[pathIndex] ? "true" : "false");
         purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
+        timer.reset();
     }
 }
 
-void Robot::autonomousPeriodic()
+void Robot::followPathCommand(int currentPathIndex, bool turning)
 {
-    if (!pathFollowingStarted)
+    // need to 1. determine path we are following
+    // 2. set that path to pure pursuit
+    // 3. follow that path until we reach the end and then stop
+
+    printf("following path: %d\n", currentPathIndex);
+
+    pathIndex = currentPathIndex;
+    purePursuit.setPath(paths[pathIndex].points, backwards[pathIndex]);
+
+    vex::timer stopwatch = vex::timer();
+    double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
+    double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
+    // uncommented for testing...
+    // if (turning)
+    //     purePursuit.setTurnKPForTurnPaths();
+    // else
+    //     purePursuit.setTurnKPForStraightPaths();
+
+    while (!purePursuit.isAtGoal() &&
+           ((stopwatch.time() < 300) || (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)))
     {
-        pathFollowingStarted = true;
-        pathIndex = 0;
-        if (paths.size() > 0)
-        {
-            purePursuit.setPath(paths[0].points, backwards[pathIndex]);
-        }
-        purePursuit.reset();
+        purePursuit.update();
+
+        printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+        printf("dist: %.3f\n", purePursuit.distanceToGoalPt());
+
+        dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
+        dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
+
+        vex::wait(20, vex::msec);
     }
-    purePursuit.update();
+    drivetrain.setPercentOut(0, 0);
+
+    printf("finished path, target heading...\n");
+
+    // make sure we are facing correct end position
+    headingController.goToTargetHeadingCommand(paths[currentPathIndex].endHeadingRadians);
+}
+
+void Robot::goForwardSlowly(double speed)
+{
+    printf("going forward...\n");
+    drivetrain.setPercentOut(speed, speed);
+
+    double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
+    double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
+
+    vex::wait(300, vex::msec);
+
+    while (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)
+    {
+        // printf("wat: %.3f, back: %.3f\n", dRight, dBack);
+
+        dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
+        dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
+
+        vex::wait(20, vex::msec);
+    }
+
+    drivetrain.setPercentOut(0, 0);
+}
+
+void Robot::backup(double speed)
+{
+    drivetrain.setPercentOut(speed, speed);
+    vex::wait(500, vex::msec);
+    drivetrain.setPercentOut(0, 0);
+}
+
+void Robot::autonomousIntake()
+{
+    intakeOuttake.startIntaking();
+    goForwardSlowly(0.2);
+    vex::wait(1000, vex::msec);
+    intakeOuttake.stop();
+}
+
+void Robot::autonomousScoreLongGoal()
+{
+    goForwardSlowly(-0.25);
+    drivetrain.setPercentOut(-.15, -.15);
+    printf("outtaking long goal...");
+    intakeOuttake.startOuttakingHigh();
+    vex::wait(3000, vex::msec); // wait 10 seconds to score
+    intakeOuttake.stop();
+    drivetrain.stop();
+}
+
+void Robot::autonomousScoreLowGoal()
+{
+    goForwardSlowly(0.25);
+    printf("outtaking low goal...");
+    intakeOuttake.startReverseIntaking();
+    vex::wait(2000, vex::msec); // wait 2 seconds to score (TODO: need to time!)
+    intakeOuttake.stop();
+}
+
+void Robot::autonomousPark()
+{
+    drivetrain.setPercentOut(1.0, 1.0);
+    vex::wait(1000, vex::msec);
+}
+
+void Robot::autonomousRun1()
+{
+    while (isCalibrating)
+    {
+        vex::wait(100, vex::msec);
+    }
+    vex::wait(200, vex::msec);
+    // go score that one ball ahahaha
+    followPathCommand(0, false);
+    followPathCommand(1, false);
+    autonomousScoreLongGoal();
+}
+void Robot::skillz()
+{
+    while (isCalibrating)
+    {
+        vex::wait(100, vex::msec);
+    }
+    vex::wait(200, vex::msec);
+    followPathCommand(0, false); // line up to tube
+    autonomousIntake();          // fill up intake
+
+    followPathCommand(1, false); // go to long goal
+    autonomousScoreLongGoal();   // go score long goal
+
+    followPathCommand(2, false); // unstuck triangle thing by going forwards
+
+    followPathCommand(3, false); // line up to get a couple more balls
+
+    followPathCommand(4, false);   // get in front of balls
+    vex::wait(200, vex::msec);     // make sure intake is starting
+    intakeOuttake.startIntaking(); // start intaking
+
+    followPathCommand(5, false); // get balls by driving forwards
+    intakeOuttake.stop();        // stop intaking at end of path
+    vex::wait(200, vex::msec);
+
+    followPathCommand(6, false); // go backwards
+
+    followPathCommand(7, false); // go to long goal again
+
+    // start scoring on the other side
+    followPathCommand(8, false);
+    autonomousScoreLongGoal();
+
+    // go to chute on other side (TODO: need to make sure flap is down)
+    followPathCommand(9, false);
+    autonomousIntake();
+
+    backup(-.2);
+    // go to target heading for path 9 (TODO: we probably need to back out before we do this...)
+    headingController.goToTargetHeadingCommand(paths[10].startHeadingRadians);
+    followPathCommand(10, false);
+    // score low center goal
+    autonomousScoreLowGoal();
+
+    backup(-.2);
+    // go to target heading to get ready to line up
+    headingController.goToTargetHeadingCommand(paths[11].startHeadingRadians);
+    followPathCommand(11, false);
+
+    // line up to park
+    headingController.goToTargetHeadingCommand(paths[12].startHeadingRadians);
+    followPathCommand(12, false);
+    // park
+    followPathCommand(13, false);
+    autonomousPark();
 }
 
 void Robot::log()
@@ -172,16 +360,16 @@ void Robot::log()
     // drivetrain.log();
 
     /* brain logging */
-    brain.Screen.clearLine();
+    Brain.Screen.clearLine();
 
     // brain.Screen.print("rightD: ");
     // brain.Screen.print(drivetrain.getOdometry().getRightDist());
-    brain.Screen.print(", heading: ");
-    brain.Screen.print(Angle::toDegrees(drivetrain.getPose().radians));
-    brain.Screen.print(", x: ");
-    brain.Screen.print(drivetrain.getPose().x);
-    brain.Screen.print(", y: ");
-    brain.Screen.print(drivetrain.getPose().y);
+    Brain.Screen.print(", heading: ");
+    Brain.Screen.print(Angle::toDegrees(drivetrain.getPose().radians));
+    Brain.Screen.print(", x: ");
+    Brain.Screen.print(drivetrain.getPose().x);
+    Brain.Screen.print(", y: ");
+    Brain.Screen.print(drivetrain.getPose().y);
     // brain.Screen.print(", total deg: ");
     // brain.Screen.print(Angle::toDegrees(drivetrain.getOdometry().getTotalRadians()));
 }

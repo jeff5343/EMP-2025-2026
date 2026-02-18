@@ -1,0 +1,61 @@
+#PATH-POINTS-START 0. (F) line up to tube
+-128.052,39.352,120,0
+-128.052,119.408,120,270
+-128.052,119.408,0,270
+#PATH-POINTS-START 1. (T) go score
+-128.052,119.408,120,180
+-62.258,121.92,120,270
+-62.258,121.92,0,270
+#PATH-POINTS-START 2. (F) go forwards
+-82.578,121.92,120,270
+-118.897,120.09,120,180
+-118.897,120.09,0,180
+#PATH-POINTS-START 3. (F) line up
+-118.897,120.089,120,180
+-117.549,40.64,120,90
+-117.549,40.64,0,90
+#PATH-POINTS-START 4. (F) go to bottom of balls
+-117.108,41.366,120,90
+-17.12,42.949,120
+-2.54,43.18,120,0
+-2.54,43.18,0,0
+#PATH-POINTS-START 5. (F) intake
+-2.6,43.155,120,0
+-0.216,96.233,120,0
+-0.216,96.233,0,0
+#PATH-POINTS-START 6. (T) backwards
+-0.215,96.83,120,0
+1.574,72.975,120,90
+1.574,72.975,0,90
+#PATH-POINTS-START 7. (F) to tube pt1
+1.574,73.571,120,95
+97.594,74.764,120,0
+97.594,74.764,0,0
+#PATH-POINTS-START 8. (F) line up
+97.594,74.764,120,0
+99.979,132.08,120,90
+99.979,132.08,0,90
+#PATH-POINTS-START 9. (F) intake from tube
+78.74,132.08,120,90
+147.32,132.08,120,90
+147.32,132.08,0,90
+#PATH-POINTS-START 10. (F) to middle
+129.54,132.08,120,230
+54.282,66.23,120
+27.94,43.18,120,220
+27.94,43.18,0,220
+#PATH-POINTS-START 11. (T) go backwards2
+27.816,43.751,120,220
+51.075,66.414,120,270
+51.075,66.414,0,270
+#PATH-POINTS-START 12. (F) line up park
+50.8,65.151,120,270
+-49.2,65.014,120
+-149.199,64.878,120
+-153.873,64.872,120,180
+-153.873,64.872,0,180
+#PATH-POINTS-START 13. (F) park
+-153.873,64.872,120,180
+-153.488,16.317,120,180
+-153.488,16.317,0,180
+#PATH.JERRYIO-DATA {"appVersion":"0.10.0","format":"path.jerryio v0.1","gc":{"robotWidth":14,"robotHeight":15,"robotIsHolonomic":false,"showRobot":true,"uol":2.54,"pointDensity":39.37,"controlMagnetDistance":1.968503937007874,"fieldImage":{"displayName":"VURC 2026 - Push Back","signature":"VURC-PushBack-H2H-TopDownHighlighted-TileColor66_71","origin":{"__type":"built-in"}},"coordinateSystem":"VEX Gaming Positioning System"},"paths":[{"segments":[{"controls":[{"uid":"8FFcfHMNKC","x":-50.414,"y":15.493,"lock":false,"visible":true,"heading":0,"__type":"end-point"},{"uid":"DqjaNA6ZOW","x":-50.414,"y":47.011,"lock":false,"visible":true,"heading":270,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"6fBI4LLFdE"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"0. (F) line up to tube","uid":"EkhZevirbL","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"UhBXsElbMx","x":-50.414,"y":47.011,"lock":false,"visible":true,"heading":180,"__type":"end-point"},{"uid":"aDiCNocboE","x":-24.511,"y":48,"lock":false,"visible":true,"heading":270,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"8j0IVME4Lu"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"1. (T) go score","uid":"p8lqy6L7Ke","lock":false,"visible":false},{"segments":[{"controls":[{"uid":"i4kZTmg1OE","x":-32.511,"y":48,"lock":false,"visible":true,"heading":270,"__type":"end-point"},{"uid":"q3r4EY04da","x":-46.80977135422075,"y":47.27937178915475,"lock":false,"visible":true,"heading":180,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"rCqxzSATof"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"2. (F) go forwards","uid":"SZ7tYsyBhx","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"Tuh5qD4jr2","x":-46.81,"y":47.279,"lock":false,"visible":true,"heading":180,"__type":"end-point"},{"uid":"b84d7wQRnA","x":-46.279,"y":16,"lock":false,"visible":true,"heading":90,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"IP0VfmLnQb"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"3. (F) line up","uid":"j4kQTZDRsI","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"jKqgOnHZun","x":-46.10537070181976,"y":16.285743083510994,"lock":false,"visible":true,"heading":90,"__type":"end-point"},{"uid":"8fVDQYSANw","x":-1,"y":17,"lock":false,"visible":true,"heading":0,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"tgDbtXM0gG"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"4. (F) go to bottom of balls","uid":"ji9MMSRol7","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"GkB58ZB0Wr","x":-1.0237289481561151,"y":16.99014373591199,"lock":false,"visible":true,"heading":0,"__type":"end-point"},{"uid":"ILIUNVWgq6","x":-0.085,"y":37.887,"lock":false,"visible":true,"heading":0,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"e0mpcEMRv6"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"5. (F) intake","uid":"X2W9VrfEMz","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"F8NMegLG2u","x":-0.08452807828812253,"y":38.12216330794182,"lock":false,"visible":true,"heading":0,"__type":"end-point"},{"uid":"4CHzCpYijs","x":0.6198725741128719,"y":28.730154609261895,"lock":false,"visible":true,"heading":90,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"kHAmC8zbwk"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"6. (T) backwards","uid":"VJppEnrWuL","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"psKGgyLPpb","x":0.6198725741128719,"y":28.964954826728892,"lock":false,"visible":true,"heading":95,"__type":"end-point"},{"uid":"cT3EGFlx3j","x":38.42270758629957,"y":29.43455526166289,"lock":false,"visible":true,"heading":0,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"ddRniKTq39"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"7. (F) to tube pt1","uid":"dE2kODMfHJ","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"JVMCr3iX2E","x":38.42270758629957,"y":29.43455526166289,"lock":false,"visible":true,"heading":0,"__type":"end-point"},{"uid":"QCCHPHip17","x":39.362,"y":52,"lock":false,"visible":true,"heading":90,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"VoCEqB3KB6"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"8. (F) line up","uid":"3wlcOG1AOy","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"NLwz6yfAsH","x":31,"y":52,"lock":false,"visible":true,"heading":90,"__type":"end-point"},{"uid":"bgiOe5HztG","x":58,"y":52,"lock":false,"visible":true,"heading":90,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"YJ8WgZJalm"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"9. (F) intake from tube","uid":"i0Km4hdkn4","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"TvVerWeR0J","x":51,"y":52,"lock":false,"visible":true,"heading":230,"__type":"end-point"},{"uid":"EhgFhjWzYu","x":11,"y":17,"lock":false,"visible":true,"heading":220,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"4OFi0n3dyi"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"10. (F) to middle","uid":"DQFSKDvfz6","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"pLfgVNuNR3","x":10.95108214266079,"y":17.224943953378986,"lock":false,"visible":true,"heading":220,"__type":"end-point"},{"uid":"YTbRuru55h","x":20.108290623873717,"y":26.147352217124915,"lock":false,"visible":true,"heading":270,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"vmS567UQHL"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"11. (T) go backwards2","uid":"is7LlZTnM9","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"ggDX9n1nla","x":20,"y":25.65,"lock":false,"visible":true,"heading":270,"__type":"end-point"},{"uid":"WiKqqPkug6","x":-60.58,"y":25.54,"lock":false,"visible":true,"heading":180,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"fu9OBzy29Y"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"12. (F) line up park","uid":"Sr7b6DeQ3H","lock":false,"visible":true},{"segments":[{"controls":[{"uid":"30fEXvbxCB","x":-60.58,"y":25.54,"lock":false,"visible":true,"heading":180,"__type":"end-point"},{"uid":"iWjizi5UBf","x":-60.428183967306644,"y":6.424133949897072,"lock":false,"visible":true,"heading":180,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"Z2m3NpAxQl"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":600,"label":"600"},"step":1,"from":40,"to":120},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1}},"name":"13. (F) park","uid":"khrUvzqwLe","lock":false,"visible":true}]}

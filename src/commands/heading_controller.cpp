@@ -13,6 +13,9 @@ void HeadingController::update()
 {
     Pose current = drivetrain.getPose();
     double turnOut = headingController.calculate(current.radians);
+    if (std::fabs(turnOut) > 0.01) {
+        turnOut += std::copysign(1.0, turnOut) * kS;
+    }
     drivetrain.setPercentOut(-turnOut, turnOut);
 }
 
