@@ -58,7 +58,7 @@ void Robot::usercontrolPeriodic()
     intakeOuttake.set(intakeSpeed, throughtakeSpeed, outtakeSpeed);
 
     /* TELEOP DRIVING: */
-
+/*
     // R1 - intake
     if (controller.ButtonR1.pressing())
         intakeOuttake.startIntaking();
@@ -72,7 +72,7 @@ void Robot::usercontrolPeriodic()
     else if (controller.ButtonL2.pressing())
         intakeOuttake.startOuttakingMid();
     else
-        intakeOuttake.stop();
+        intakeOuttake.stop();*/
 
     // A - reset odometry
     if (controller.ButtonA.pressing())
