@@ -4,6 +4,10 @@
 #include <cmath>
 #include "vex.h"
 
+double Robot::intakeSpeed = 0;
+double Robot::throughtakeSpeed = 0;
+double Robot::outtakeSpeed = 0;
+
 void Robot::init(ALLIANCE alliance)
 {
     /* CALIBRATE INERTIAL SENSOR */
@@ -43,10 +47,6 @@ void Robot::init(ALLIANCE alliance)
     controller.ButtonR2.pressed(Robot::toggleReverseIntake); //R2: reverse intake
     controller.ButtonL1.pressed(Robot::toggleOuttakeHigh); //L1: Score long goal
     controller.ButtonL2.pressed(Robot::toggleOuttakeMid); //L2: score mid goal
-
-    intakeSpeed = 0;
-    throughtakeSpeed = 0;
-    outtakeSpeed = 0;
 };
 
 void Robot::usercontrolPeriodic()

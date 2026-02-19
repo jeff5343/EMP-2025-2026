@@ -75,16 +75,13 @@ private:
     bool isCalibrating = true;
     bool hasToggledIntakeChutePiston = false;
 
-    static double intakeSpeed;
-    static double throughtakeSpeed;
-    static double outtakeSpeed;
 
     static void toggleOuttakeHigh()
     {
-        //I think we should check outtakeSpeed instead since this is the "variable speed" 
-        //in case user is coming from intake or can just check all three
-        
-        if (intakeSpeed<=0 || throughtakeSpeed <=0 || outtakeSpeed<=0) 
+        // I think we should check outtakeSpeed instead since this is the "variable speed"
+        // in case user is coming from intake or can just check all three
+
+        if (intakeSpeed <= 0 || throughtakeSpeed <= 0 || outtakeSpeed <= 0)
         {
             intakeSpeed = 0.8;
             throughtakeSpeed = 0.8;
@@ -147,6 +144,10 @@ private:
     }
 
 public:
+    static double intakeSpeed;
+    static double throughtakeSpeed;
+    static double outtakeSpeed;   
+
     const bool IS_SKILLS = false;
 
     /* called in pre_auton */
