@@ -201,7 +201,7 @@ void Robot::followPathCommand(int currentPathIndex, bool turning)
     //     purePursuit.setTurnKPForStraightPaths();
 
     while (!purePursuit.isAtGoal() &&
-           ((stopwatch.time() < 300) || (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)))
+           ((stopwatch.time() < 300) || (std::fabs(dRight) > 0.05 || std::fabs(dBack) > 0.3)))
     {
         purePursuit.update();
 
@@ -254,9 +254,9 @@ void Robot::backup(double speed)
 void Robot::autonomousIntake()
 {
     intakeOuttake.intakeChutePistonOut();
-    vex:wait(1000, vex::msec);
-    goForwardSlowly(0.1);
-    drivetrain.setPercentOut(0.1, 0.1);
+    // vex:wait(1000, vex::msec);
+    goForwardSlowly(0.15);
+    drivetrain.setPercentOut(0.15, 0.15);
     intakeOuttake.startIntaking();
     vex::wait(5000, vex::msec);
     intakeOuttake.stop();
