@@ -255,10 +255,12 @@ void Robot::autonomousIntake()
 {
     intakeOuttake.intakeChutePistonOut();
     vex:wait(1000, vex::msec);
-    goForwardSlowly(0.2);
+    goForwardSlowly(0.1);
+    drivetrain.setPercentOut(0.1, 0.1);
     intakeOuttake.startIntaking();
     vex::wait(5000, vex::msec);
     intakeOuttake.stop();
+    drivetrain.stop();
 }
 
 void Robot::autonomousScoreLongGoal()
@@ -298,6 +300,19 @@ void Robot::autonomousRun1()
     // go score that one ball ahahaha
     followPathCommand(0, false);
     followPathCommand(1, false);
+    autonomousScoreLongGoal();
+
+    // score round 1 (intaking and scoring)
+    intakeOuttake.intakeChutePistonOut();
+    followPathCommand(2, false);
+    autonomousIntake();
+    followPathCommand(3, false);
+    autonomousScoreLongGoal();
+
+    // score round 2 (intaking and scoring)
+    followPathCommand(4, false);
+    autonomousIntake();
+    followPathCommand(5, false);
     autonomousScoreLongGoal();
 }
 
