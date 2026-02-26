@@ -23,7 +23,7 @@ void IntakeOuttake::outtake(double percentOut)
 void IntakeOuttake::startIntaking()
 {
     intake(0.8);
-    throughtake(0.8);
+    throughtake(0.0);
     outtake(0);
 }
 
