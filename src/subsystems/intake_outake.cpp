@@ -62,12 +62,12 @@ void IntakeOuttake::stop()
 void IntakeOuttake::intakeChutePistonIn()
 {
     // insert piston code here to bring intake chute piston in
-    intakeChutePiston.set(true);
+    intakeChutePiston.set(false);
 }
 void IntakeOuttake::intakeChutePistonOut()
 {
     // insert piston code here to bring intake chute piston out
-    intakeChutePiston.set(false);
+    intakeChutePiston.set(true);
 }
 void IntakeOuttake::intakeChutePistonToggle()
 {

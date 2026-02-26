@@ -229,9 +229,9 @@ void Robot::goForwardSlowly(double speed)
     double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
     double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
 
-    vex::wait(300, vex::msec);
+    vex::wait(1000, vex::msec);
 
-    while (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)
+    while (std::fabs(dRight) > 0.05 || std::fabs(dBack) > 0.3)
     {
         // printf("wat: %.3f, back: %.3f\n", dRight, dBack);
 
@@ -253,9 +253,11 @@ void Robot::backup(double speed)
 
 void Robot::autonomousIntake()
 {
-    intakeOuttake.startIntaking();
+    intakeOuttake.intakeChutePistonOut();
+    vex:wait(1000, vex::msec);
     goForwardSlowly(0.2);
-    vex::wait(1000, vex::msec);
+    intakeOuttake.startIntaking();
+    vex::wait(5000, vex::msec);
     intakeOuttake.stop();
 }
 
@@ -263,7 +265,7 @@ void Robot::autonomousScoreLongGoal()
 {
     goForwardSlowly(-0.25);
     drivetrain.setPercentOut(-.15, -.15);
-    printf("outtaking long goal...");
+    // printf("outtaking long goal...");
     intakeOuttake.startOuttakingHigh();
     vex::wait(3000, vex::msec); // wait 10 seconds to score
     intakeOuttake.stop();
@@ -292,11 +294,14 @@ void Robot::autonomousRun1()
         vex::wait(100, vex::msec);
     }
     vex::wait(200, vex::msec);
+
     // go score that one ball ahahaha
     followPathCommand(0, false);
+    autonomousIntake();
     followPathCommand(1, false);
     autonomousScoreLongGoal();
 }
+
 void Robot::skillz()
 {
     while (isCalibrating)
