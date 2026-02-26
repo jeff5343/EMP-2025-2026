@@ -297,7 +297,6 @@ void Robot::autonomousRun1()
 
     // go score that one ball ahahaha
     followPathCommand(0, false);
-    autonomousIntake();
     followPathCommand(1, false);
     autonomousScoreLongGoal();
 }
