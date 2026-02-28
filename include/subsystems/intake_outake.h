@@ -6,17 +6,20 @@ class IntakeOuttake
 {
 private:
     void intake(double percentOut);
-    void throughtake(double percentOut); 
+    void throughtake(double percentOut);
     void outtake(double percentOut);
 
     bool intakeChuteOut = false;
+    bool triangleOut = true;
+    bool descoreOut = false;
 
     static bool constexpr REVERSE_INTAKE_MOTOR = true;
     static bool constexpr REVERSE_THROUGHTAKE_MOTOR = false;
     static bool constexpr REVERSE_OUTTAKE_MOTOR = false;
-    
+
 public:
-    IntakeOuttake() {
+    IntakeOuttake()
+    {
         intakeMotor.setReversed(REVERSE_INTAKE_MOTOR);
         throughtakeMotor.setReversed(REVERSE_THROUGHTAKE_MOTOR);
         outakeMotor.setReversed(REVERSE_OUTTAKE_MOTOR);
@@ -36,10 +39,15 @@ public:
     void intakeChutePistonToggle();
 
     // On Startup (only set once)
-    void trianglePistonIn();          // function to bring triangle piston in
-    void trianglePistonOut();         // function to bring triangle piston out
-    void outtakeElevationPistonIn();  // function to bring outtake elevation piston in
-    void outtakeElevationPistonOut(); // function to bring outtake elevation piston out
+    void trianglePistonIn();                                     // function to bring triangle piston in
+    void trianglePistonOut();                                    // function to bring triangle piston out
+    void trianglePistonToggle();
+    void outtakeElevationPistonIn(); // function to bring outtake elevation piston in
+    void outtakeElevationPistonOut();                            // function to bring outtake elevation piston out
+
+    void descorerPistonIn();                                     // function to abring triangle piston in
+    void descorerPistonOut();                                    // function to bring triangle piston out
+    void descorerPistonToggle();
 };
 
 #endif

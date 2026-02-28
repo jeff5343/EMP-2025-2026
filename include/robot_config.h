@@ -59,6 +59,7 @@ inline extern vex::motor outakeMotor{
 inline extern vex::digital_out trianglePiston = vex::digital_out(Brain.ThreeWirePort.H);
 inline extern vex::digital_out outtakeElevationPiston = vex::digital_out(Brain.ThreeWirePort.C);
 inline extern vex::digital_out intakeChutePiston = vex::digital_out(Brain.ThreeWirePort.A);
+inline extern vex::digital_out descorePiston = vex::digital_out(Brain.ThreeWirePort.G);
 
 // IMU
 inline extern vex::inertial inertial{vex::PORT19};
