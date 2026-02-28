@@ -27,6 +27,7 @@ public:
     void startReverseIntaking();
     void startOuttakingHigh();
     void startOuttakingMid();
+    void set(double in, double through, double out);
     void stop();  
 
     // Game (set multiple times in a match)
