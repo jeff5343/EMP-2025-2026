@@ -327,10 +327,12 @@ void Robot::autonomousRun1()
     autonomousIntake();
     followPathCommand(3, false);
     autonomousScoreLongGoal();
+    //add reverse intake here
 
     // score round 2 (intaking and scoring)
     followPathCommand(4, false);
     autonomousIntake();
+    
     followPathCommand(5, false);
     autonomousScoreLongGoal();
 }
