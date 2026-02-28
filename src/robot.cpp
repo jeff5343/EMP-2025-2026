@@ -43,10 +43,10 @@ void Robot::init(ALLIANCE alliance)
     // deploy pistons at start of the match
     //  intakeOuttake.outtakeElevationPistonOut();
 
-    controller.ButtonR1.pressed(Robot::toggleIntake); //R1: intake 
-    controller.ButtonR2.pressed(Robot::toggleReverseIntake); //R2: reverse intake
-    controller.ButtonL1.pressed(Robot::toggleOuttakeHigh); //L1: Score long goal
-    controller.ButtonL2.pressed(Robot::toggleOuttakeMid); //L2: score mid goal
+    controller.ButtonR1.pressed(Robot::toggleIntake);        // R1: intake
+    controller.ButtonR2.pressed(Robot::toggleReverseIntake); // R2: reverse intake
+    controller.ButtonL1.pressed(Robot::toggleOuttakeHigh);   // L1: Score long goal
+    controller.ButtonL2.pressed(Robot::toggleOuttakeMid);    // L2: score mid goal
 };
 
 void Robot::usercontrolPeriodic()
@@ -58,32 +58,34 @@ void Robot::usercontrolPeriodic()
     intakeOuttake.set(intakeSpeed, throughtakeSpeed, outtakeSpeed);
 
     /* TELEOP DRIVING: */
-/*
-    // R1 - intake
-    if (controller.ButtonR1.pressing())
-        intakeOuttake.startIntaking();
-    // R2 - reverse intake (score center goal low)
-    else if (controller.ButtonR2.pressing())
-        intakeOuttake.startReverseIntaking();
-    // L1 - score long goal
-    else if (controller.ButtonL1.pressing())
-        intakeOuttake.startOuttakingHigh();
-    // L2 - score center goal high
-    else if (controller.ButtonL2.pressing())
-        intakeOuttake.startOuttakingMid();
-    else
-        intakeOuttake.stop();*/
+    /*
+        // R1 - intake
+        if (controller.ButtonR1.pressing())
+            intakeOuttake.startIntaking();
+        // R2 - reverse intake (score center goal low)
+        else if (controller.ButtonR2.pressing())
+            intakeOuttake.startReverseIntaking();
+        // L1 - score long goal
+        else if (controller.ButtonL1.pressing())
+            intakeOuttake.startOuttakingHigh();
+        // L2 - score center goal high
+        else if (controller.ButtonL2.pressing())
+            intakeOuttake.startOuttakingMid();
+        else
+            intakeOuttake.stop();*/
 
     // A - reset odometry
     if (controller.ButtonA.pressing())
     {
-         if (!hasToggledDescorePiston)
+        if (!hasToggledDescorePiston)
         {
             hasToggledDescorePiston = true;
             intakeOuttake.descorerPistonToggle();
         }
-               // drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
-    } else {
+        // drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
+    }
+    else
+    {
         hasToggledDescorePiston = false;
     }
 
@@ -295,17 +297,17 @@ void Robot::autonomousScoreLongGoal()
 
 void Robot::autoScoreLongGoalwithTroubleshooting()
 {
-    //new code
+    // new code
     goForwardSlowly(-0.25);
     drivetrain.setPercentOut(-.15, -.15);
     printf("outtaking long goal...");
     intakeOuttake.startOuttakingHigh();
-    vex::wait(3000, vex::msec); // wait 3 seconds to score
-    intakeOuttake.startReverseIntaking(); //reverse intake if balls are stuck
+    vex::wait(3000, vex::msec);           // wait 3 seconds to score
+    intakeOuttake.startReverseIntaking(); // reverse intake if balls are stuck
     vex::wait(500, vex::msec);
     intakeOuttake.startOuttakingHigh();
-    vex::wait(2000, vex::msec); // wait 3 seconds to score
-    intakeOuttake.startReverseIntaking(); //reverse intake if balls are stuck
+    vex::wait(2000, vex::msec);           // wait 3 seconds to score
+    intakeOuttake.startReverseIntaking(); // reverse intake if balls are stuck
     vex::wait(500, vex::msec);
     intakeOuttake.startOuttakingHigh();
     vex::wait(2000, vex::msec); // wait 3 seconds to score
@@ -347,12 +349,12 @@ void Robot::autonomousRun1()
     autonomousIntake();
     followPathCommand(3, false);
     autoScoreLongGoalwithTroubleshooting();
-    //add reverse intake here
+    // add reverse intake here
 
     // score round 2 (intaking and scoring)
     followPathCommand(4, false);
     autonomousIntake();
-    
+
     followPathCommand(5, false);
     autoScoreLongGoalwithTroubleshooting();
 }
