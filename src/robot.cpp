@@ -291,10 +291,10 @@ void Robot::autonomousScoreLongGoal()
     // printf("outtaking long goal...");
     intakeOuttake.startOuttakingHigh();
     vex::wait(3000, vex::msec); // wait 10 seconds to score
-    intakeOuttake.startReverseIntaking();
-    vex::wait(500, vex::msec);
-    intakeOuttake.startOuttakingHigh();
-    vex::wait(3000, vex::msec); // wait 10 seconds to score
+    // intakeOuttake.startReverseIntaking();
+    // vex::wait(500, vex::msec);
+    // intakeOuttake.startOuttakingHigh();
+    // vex::wait(3000, vex::msec); // wait 10 seconds to score
     intakeOuttake.stop();
     drivetrain.stop();
 }
