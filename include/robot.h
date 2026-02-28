@@ -74,6 +74,7 @@ private:
 
     bool isCalibrating = true;
     bool hasToggledIntakeChutePiston = false;
+    bool hasToggledDescorePiston = false;
 
 public:
     const bool IS_SKILLS = false;

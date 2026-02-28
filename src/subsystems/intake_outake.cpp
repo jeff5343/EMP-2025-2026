@@ -87,6 +87,13 @@ void IntakeOuttake::trianglePistonOut()
     // insert piston code here to bring triangle piston out
     trianglePiston.set(true);
 }
+
+void IntakeOuttake::trianglePistonToggle()
+{
+    triangleOut = !triangleOut;
+    trianglePiston.set(triangleOut);
+}
+
 void IntakeOuttake::outtakeElevationPistonIn()
 {
     // insert piston code here to bring outtake elevation piston in
@@ -96,4 +103,17 @@ void IntakeOuttake::outtakeElevationPistonOut()
 {
     // insert piston code here to bring outtake elevation piston out
     outtakeElevationPiston.set(true);
+}
+
+void IntakeOuttake::descorerPistonIn() {
+    descorePiston.set(true);
+}
+
+void IntakeOuttake::descorerPistonOut() {
+    descorePiston.set(false);
+}
+
+void IntakeOuttake::descorerPistonToggle() {
+    descoreOut = !descoreOut;
+    descorePiston.set(descoreOut);
 }

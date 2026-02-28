@@ -66,7 +66,14 @@ void Robot::usercontrolPeriodic()
     // A - reset odometry
     if (controller.ButtonA.pressing())
     {
-        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
+         if (!hasToggledDescorePiston)
+        {
+            hasToggledDescorePiston = true;
+            intakeOuttake.descorerPistonToggle();
+        }
+               // drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
+    } else {
+        hasToggledDescorePiston = false;
     }
 
     // TODO: uncomment
@@ -77,6 +84,7 @@ void Robot::usercontrolPeriodic()
         {
             hasToggledIntakeChutePiston = true;
             intakeOuttake.intakeChutePistonToggle();
+            // intakeOuttake.trianglePistonToggle();
         }
     }
     else
@@ -256,7 +264,7 @@ void Robot::autonomousIntake()
     intakeOuttake.intakeChutePistonOut();
     // vex:wait(1000, vex::msec);
     goForwardSlowly(0.15);
-    drivetrain.setPercentOut(0.15, 0.15);
+    drivetrain.setPercentOut(0.05, 0.05);
     intakeOuttake.startIntaking();
     vex::wait(5000, vex::msec);
     intakeOuttake.stop();
