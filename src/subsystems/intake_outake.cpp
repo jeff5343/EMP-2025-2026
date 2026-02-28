@@ -19,6 +19,12 @@ void IntakeOuttake::outtake(double percentOut)
 
 /* public functions */
 
+void IntakeOuttake::set(double in, double through, double out) {
+    intake(in);
+    throughtake(through);
+    outtake(out);
+}
+
 // two motor subsystems for intake and throughtake
 void IntakeOuttake::startIntaking()
 {
