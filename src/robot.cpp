@@ -293,6 +293,26 @@ void Robot::autonomousScoreLongGoal()
     drivetrain.stop();
 }
 
+void Robot::autoScoreLongGoalwithTroubleshooting()
+{
+    //new code
+    goForwardSlowly(-0.25);
+    drivetrain.setPercentOut(-.15, -.15);
+    printf("outtaking long goal...");
+    intakeOuttake.startOuttakingHigh();
+    vex::wait(3000, vex::msec); // wait 3 seconds to score
+    intakeOuttake.startReverseIntaking(); //reverse intake if balls are stuck
+    vex::wait(500, vex::msec);
+    intakeOuttake.startOuttakingHigh();
+    vex::wait(2000, vex::msec); // wait 3 seconds to score
+    intakeOuttake.startReverseIntaking(); //reverse intake if balls are stuck
+    vex::wait(500, vex::msec);
+    intakeOuttake.startOuttakingHigh();
+    vex::wait(2000, vex::msec); // wait 3 seconds to score
+    intakeOuttake.stop();
+    drivetrain.stop();
+}
+
 void Robot::autonomousScoreLowGoal()
 {
     goForwardSlowly(0.25);
@@ -326,7 +346,7 @@ void Robot::autonomousRun1()
     followPathCommand(2, false);
     autonomousIntake();
     followPathCommand(3, false);
-    autonomousScoreLongGoal();
+    autoScoreLongGoalwithTroubleshooting();
     //add reverse intake here
 
     // score round 2 (intaking and scoring)
@@ -334,7 +354,7 @@ void Robot::autonomousRun1()
     autonomousIntake();
     
     followPathCommand(5, false);
-    autonomousScoreLongGoal();
+    autoScoreLongGoalwithTroubleshooting();
 }
 
 void Robot::skillz()

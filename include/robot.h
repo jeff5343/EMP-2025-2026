@@ -183,6 +183,7 @@ public:
     void backup(double speed);
     void autonomousIntake();
     void autonomousScoreLongGoal();
+    void autoScoreLongGoalwithTroubleshooting();
     void autonomousScoreLowGoal();
     void autonomousPark();
 };
