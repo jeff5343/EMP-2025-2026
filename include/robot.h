@@ -67,7 +67,7 @@ private:
     const std::string skillsPathFileName = "Skillsauto.txt";
     std::vector<Path> paths = {};
     std::vector<bool> backwards = {false, true, false, true, false, true};
-    std::vector<bool> backwardsSkills = {false, true, false, false, 
+    std::vector<bool> backwardsSkills = {false, false, true, false, false, 
                                          false, false, true, false, false, 
                                          false, false, true, false, false};
     int pathIndex = 0;

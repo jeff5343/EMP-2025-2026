@@ -363,55 +363,57 @@ void Robot::skillz()
     {
         vex::wait(100, vex::msec);
     }
-    vex::wait(200, vex::msec);
+
+    // intake and scoring 1
     followPathCommand(0, false); // line up to tube
+    followPathCommand(1, false); // go to chute
     autonomousIntake();          // fill up intake
 
-    followPathCommand(1, false); // go to long goal
+    followPathCommand(2, false); // go to long goal
     autonomousScoreLongGoal();   // go score long goal
 
-    followPathCommand(2, false); // unstuck triangle thing by going forwards
+    followPathCommand(3, false); // unstuck triangle thing by going forwards
+    followPathCommand(4, false); // line up to get a couple more balls
 
-    followPathCommand(3, false); // line up to get a couple more balls
-
-    followPathCommand(4, false);   // get in front of balls
-    vex::wait(200, vex::msec);     // make sure intake is starting
+    followPathCommand(5, false);   // get in front of balls
     intakeOuttake.startIntaking(); // start intaking
+    vex::wait(200, vex::msec);     // make sure intake is starting
 
-    followPathCommand(5, false); // get balls by driving forwards
+    followPathCommand(6, false); // get balls by driving forwards
     intakeOuttake.stop();        // stop intaking at end of path
     vex::wait(200, vex::msec);
 
-    followPathCommand(6, false); // go backwards
+    followPathCommand(7, false); // go backwards
 
-    followPathCommand(7, false); // go to long goal again
+    followPathCommand(8, false); // go to long goal again
 
     // start scoring on the other side
-    followPathCommand(8, false);
+    followPathCommand(9, false);
     autonomousScoreLongGoal();
 
     // go to chute on other side (TODO: need to make sure flap is down)
-    followPathCommand(9, false);
-    autonomousIntake();
-
-    backup(-.2);
-    // go to target heading for path 9 (TODO: we probably need to back out before we do this...)
-    headingController.goToTargetHeadingCommand(paths[10].startHeadingRadians);
     followPathCommand(10, false);
+    // autonomousIntake();
+
+    // backup(-.2);
+    // // go to target heading for path 9 (TODO: we probably need to back out before we do this...)
+    // headingController.goToTargetHeadingCommand(paths[10].startHeadingRadians);
+    // followPathCommand(10, false);
+
     // score low center goal
-    autonomousScoreLowGoal();
+    // autonomousScoreLowGoal();
 
-    backup(-.2);
-    // go to target heading to get ready to line up
-    headingController.goToTargetHeadingCommand(paths[11].startHeadingRadians);
-    followPathCommand(11, false);
+    // backup(-.2);
+    // // go to target heading to get ready to line up
+    // headingController.goToTargetHeadingCommand(paths[11].startHeadingRadians);
+    // followPathCommand(11, false);
 
-    // line up to park
-    headingController.goToTargetHeadingCommand(paths[12].startHeadingRadians);
-    followPathCommand(12, false);
-    // park
-    followPathCommand(13, false);
-    autonomousPark();
+    // // line up to park
+    // headingController.goToTargetHeadingCommand(paths[12].startHeadingRadians);
+    // followPathCommand(12, false);
+    // // park
+    // followPathCommand(13, false);
+    // autonomousPark();
 }
 
 void Robot::log()
