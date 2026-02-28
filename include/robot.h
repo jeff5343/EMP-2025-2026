@@ -66,15 +66,15 @@ private:
     const std::string autoPathFileName = "path1.txt";
     const std::string skillsPathFileName = "Skillsauto.txt";
     std::vector<Path> paths = {};
-    std::vector<bool> backwards = {false, true, true, false, true};
-    std::vector<bool> backwardsSkills = {false, true, false, false,
+    std::vector<bool> backwards = {false, true, false, true, false, true};
+    std::vector<bool> backwardsSkills = {false, false, true, false, false,
                                          false, false, true, false, false,
                                          false, false, true, false, false};
     int pathIndex = 0;
 
     bool isCalibrating = true;
     bool hasToggledIntakeChutePiston = false;
-
+    bool hasToggledDescorePiston = false;
 
     static void toggleOuttakeHigh()
     {
@@ -96,57 +96,57 @@ private:
     }
     static void toggleOuttakeMid()
     {
-        if (intakeSpeed<=0 || throughtakeSpeed <=0 || outtakeSpeed >=0)
+        if (intakeSpeed <= 0 || throughtakeSpeed <= 0 || outtakeSpeed >= 0)
         {
-            intakeSpeed =0.8;
+            intakeSpeed = 0.8;
             throughtakeSpeed = 0.8;
             outtakeSpeed = -0.8;
         }
         else
         {
-            intakeSpeed =0;
-            throughtakeSpeed =0;
-            outtakeSpeed =0;
+            intakeSpeed = 0;
+            throughtakeSpeed = 0;
+            outtakeSpeed = 0;
         }
     }
     static void toggleIntake()
     {
-        if (intakeSpeed<=0 || throughtakeSpeed !=0 || outtakeSpeed !=0)
+        if (intakeSpeed <= 0 || throughtakeSpeed != 0 || outtakeSpeed != 0)
         {
             intakeSpeed = 0.8;
             throughtakeSpeed = 0;
-            outtakeSpeed =0;
-            //not doing throughtake to prevent balls from flying out since it would get stuck in mid score
+            outtakeSpeed = 0;
+            // not doing throughtake to prevent balls from flying out since it would get stuck in mid score
         }
         else
         {
-            intakeSpeed =0;
-            throughtakeSpeed =0;
-            outtakeSpeed =0;
+            intakeSpeed = 0;
+            throughtakeSpeed = 0;
+            outtakeSpeed = 0;
         }
     }
     static void toggleReverseIntake()
     {
-        //if intake speed is either stopped or currently intaking, switch everything to reverse
-        if (intakeSpeed>=0|| throughtakeSpeed>=0 || outtakeSpeed>=0)
+        // if intake speed is either stopped or currently intaking, switch everything to reverse
+        if (intakeSpeed >= 0 || throughtakeSpeed >= 0 || outtakeSpeed >= 0)
         {
-            intakeSpeed =-0.8;
-            throughtakeSpeed =-0.8;
-            outtakeSpeed=-0.8;
+            intakeSpeed = -0.8;
+            throughtakeSpeed = -0.8;
+            outtakeSpeed = -0.8;
         }
-        //otherwise set everything to 0
+        // otherwise set everything to 0
         else
         {
-            intakeSpeed =0;
-            throughtakeSpeed =0;
-            outtakeSpeed =0;
+            intakeSpeed = 0;
+            throughtakeSpeed = 0;
+            outtakeSpeed = 0;
         }
     }
 
 public:
     static double intakeSpeed;
     static double throughtakeSpeed;
-    static double outtakeSpeed;   
+    static double outtakeSpeed;
 
     const bool IS_SKILLS = false;
 
@@ -182,6 +182,7 @@ public:
     void backup(double speed);
     void autonomousIntake();
     void autonomousScoreLongGoal();
+    void autoScoreLongGoalwithTroubleshooting();
     void autonomousScoreLowGoal();
     void autonomousPark();
 };
