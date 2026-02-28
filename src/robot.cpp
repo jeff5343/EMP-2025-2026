@@ -43,10 +43,10 @@ void Robot::init(ALLIANCE alliance)
     // deploy pistons at start of the match
     //  intakeOuttake.outtakeElevationPistonOut();
 
-    controller.ButtonR1.pressed(Robot::toggleIntake);        // R1: intake
-    controller.ButtonR2.pressed(Robot::toggleReverseIntake); // R2: reverse intake
-    controller.ButtonL1.pressed(Robot::toggleOuttakeHigh);   // L1: Score long goal
-    controller.ButtonL2.pressed(Robot::toggleOuttakeMid);    // L2: score mid goal
+    // controller.ButtonR1.pressed(Robot::toggleIntake);        // R1: intake
+    // controller.ButtonR2.pressed(Robot::toggleReverseIntake); // R2: reverse intake
+    // controller.ButtonL1.pressed(Robot::toggleOuttakeHigh);   // L1: Score long goal
+    // controller.ButtonL2.pressed(Robot::toggleOuttakeMid);    // L2: score mid goal
 };
 
 void Robot::usercontrolPeriodic()
@@ -55,24 +55,23 @@ void Robot::usercontrolPeriodic()
     if (isCalibrating)
         return;
 
-    intakeOuttake.set(intakeSpeed, throughtakeSpeed, outtakeSpeed);
+    // intakeOuttake.set(intakeSpeed, throughtakeSpeed, outtakeSpeed);
 
     /* TELEOP DRIVING: */
-    /*
-        // R1 - intake
-        if (controller.ButtonR1.pressing())
-            intakeOuttake.startIntaking();
-        // R2 - reverse intake (score center goal low)
-        else if (controller.ButtonR2.pressing())
-            intakeOuttake.startReverseIntaking();
-        // L1 - score long goal
-        else if (controller.ButtonL1.pressing())
-            intakeOuttake.startOuttakingHigh();
-        // L2 - score center goal high
-        else if (controller.ButtonL2.pressing())
-            intakeOuttake.startOuttakingMid();
-        else
-            intakeOuttake.stop();*/
+    // R1 - intake
+    if (controller.ButtonR1.pressing())
+        intakeOuttake.startIntaking();
+    // R2 - reverse intake (score center goal low)
+    else if (controller.ButtonR2.pressing())
+        intakeOuttake.startReverseIntaking();
+    // L1 - score long goal
+    else if (controller.ButtonL1.pressing())
+        intakeOuttake.startOuttakingHigh();
+    // L2 - score center goal high
+    else if (controller.ButtonL2.pressing())
+        intakeOuttake.startOuttakingMid();
+    else
+        intakeOuttake.stop();
 
     // A - reset odometry
     if (controller.ButtonA.pressing())
