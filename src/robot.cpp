@@ -43,10 +43,10 @@ void Robot::init(ALLIANCE alliance)
     // deploy pistons at start of the match
     //  intakeOuttake.outtakeElevationPistonOut();
 
-    controller.ButtonR1.pressed(Robot::toggleIntake); //R1: intake 
-    controller.ButtonR2.pressed(Robot::toggleReverseIntake); //R2: reverse intake
-    controller.ButtonL1.pressed(Robot::toggleOuttakeHigh); //L1: Score long goal
-    controller.ButtonL2.pressed(Robot::toggleOuttakeMid); //L2: score mid goal
+    controller.ButtonR1.pressed(Robot::toggleIntake);        // R1: intake
+    controller.ButtonR2.pressed(Robot::toggleReverseIntake); // R2: reverse intake
+    controller.ButtonL1.pressed(Robot::toggleOuttakeHigh);   // L1: Score long goal
+    controller.ButtonL2.pressed(Robot::toggleOuttakeMid);    // L2: score mid goal
 };
 
 void Robot::usercontrolPeriodic()
@@ -58,26 +58,35 @@ void Robot::usercontrolPeriodic()
     intakeOuttake.set(intakeSpeed, throughtakeSpeed, outtakeSpeed);
 
     /* TELEOP DRIVING: */
-/*
-    // R1 - intake
-    if (controller.ButtonR1.pressing())
-        intakeOuttake.startIntaking();
-    // R2 - reverse intake (score center goal low)
-    else if (controller.ButtonR2.pressing())
-        intakeOuttake.startReverseIntaking();
-    // L1 - score long goal
-    else if (controller.ButtonL1.pressing())
-        intakeOuttake.startOuttakingHigh();
-    // L2 - score center goal high
-    else if (controller.ButtonL2.pressing())
-        intakeOuttake.startOuttakingMid();
-    else
-        intakeOuttake.stop();*/
+    /*
+        // R1 - intake
+        if (controller.ButtonR1.pressing())
+            intakeOuttake.startIntaking();
+        // R2 - reverse intake (score center goal low)
+        else if (controller.ButtonR2.pressing())
+            intakeOuttake.startReverseIntaking();
+        // L1 - score long goal
+        else if (controller.ButtonL1.pressing())
+            intakeOuttake.startOuttakingHigh();
+        // L2 - score center goal high
+        else if (controller.ButtonL2.pressing())
+            intakeOuttake.startOuttakingMid();
+        else
+            intakeOuttake.stop();*/
 
     // A - reset odometry
     if (controller.ButtonA.pressing())
     {
-        drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
+        if (!hasToggledDescorePiston)
+        {
+            hasToggledDescorePiston = true;
+            intakeOuttake.descorerPistonToggle();
+        }
+        // drivetrain.resetOdometry(paths[0].points[0][0], paths[0].points[0][1], paths[0].startHeadingRadians);
+    }
+    else
+    {
+        hasToggledDescorePiston = false;
     }
 
     // TODO: uncomment
@@ -88,6 +97,7 @@ void Robot::usercontrolPeriodic()
         {
             hasToggledIntakeChutePiston = true;
             intakeOuttake.intakeChutePistonToggle();
+            // intakeOuttake.trianglePistonToggle();
         }
     }
     else
@@ -212,7 +222,7 @@ void Robot::followPathCommand(int currentPathIndex, bool turning)
     //     purePursuit.setTurnKPForStraightPaths();
 
     while (!purePursuit.isAtGoal() &&
-           ((stopwatch.time() < 300) || (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)))
+           ((stopwatch.time() < 300) || (std::fabs(dRight) > 0.05 || std::fabs(dBack) > 0.3)))
     {
         purePursuit.update();
 
@@ -240,9 +250,9 @@ void Robot::goForwardSlowly(double speed)
     double dRight = drivetrain.getOdometry().getDeltaRightDistInchesPerSec();
     double dBack = drivetrain.getOdometry().getDeltaBackDistInchesPerSec();
 
-    vex::wait(300, vex::msec);
+    vex::wait(1000, vex::msec);
 
-    while (std::fabs(dRight) > 0.1 || std::fabs(dBack) > 0.3)
+    while (std::fabs(dRight) > 0.05 || std::fabs(dBack) > 0.3)
     {
         // printf("wat: %.3f, back: %.3f\n", dRight, dBack);
 
@@ -264,23 +274,47 @@ void Robot::backup(double speed)
 
 void Robot::autonomousIntake()
 {
+    intakeOuttake.intakeChutePistonOut();
+    // vex:wait(1000, vex::msec);
+    goForwardSlowly(0.15);
+    drivetrain.setPercentOut(0.05, 0.05);
     intakeOuttake.startIntaking();
-    goForwardSlowly(0.2);
-    vex::wait(1000, vex::msec);
+    vex::wait(5000, vex::msec);
     intakeOuttake.stop();
+    drivetrain.stop();
 }
 
 void Robot::autonomousScoreLongGoal()
 {
     goForwardSlowly(-0.25);
     drivetrain.setPercentOut(-.15, -.15);
-    printf("outtaking long goal...");
+    // printf("outtaking long goal...");
     intakeOuttake.startOuttakingHigh();
     vex::wait(3000, vex::msec); // wait 10 seconds to score
     intakeOuttake.startReverseIntaking();
     vex::wait(500, vex::msec);
     intakeOuttake.startOuttakingHigh();
     vex::wait(3000, vex::msec); // wait 10 seconds to score
+    intakeOuttake.stop();
+    drivetrain.stop();
+}
+
+void Robot::autoScoreLongGoalwithTroubleshooting()
+{
+    // new code
+    goForwardSlowly(-0.25);
+    drivetrain.setPercentOut(-.15, -.15);
+    printf("outtaking long goal...");
+    intakeOuttake.startOuttakingHigh();
+    vex::wait(3000, vex::msec);           // wait 3 seconds to score
+    intakeOuttake.startReverseIntaking(); // reverse intake if balls are stuck
+    vex::wait(500, vex::msec);
+    intakeOuttake.startOuttakingHigh();
+    vex::wait(2000, vex::msec);           // wait 3 seconds to score
+    intakeOuttake.startReverseIntaking(); // reverse intake if balls are stuck
+    vex::wait(500, vex::msec);
+    intakeOuttake.startOuttakingHigh();
+    vex::wait(2000, vex::msec); // wait 3 seconds to score
     intakeOuttake.stop();
     drivetrain.stop();
 }
@@ -307,66 +341,85 @@ void Robot::autonomousRun1()
         vex::wait(100, vex::msec);
     }
     vex::wait(200, vex::msec);
+
     // go score that one ball ahahaha
     followPathCommand(0, false);
     followPathCommand(1, false);
     autonomousScoreLongGoal();
+
+    // score round 1 (intaking and scoring)
+    intakeOuttake.intakeChutePistonOut();
+    followPathCommand(2, false);
+    autonomousIntake();
+    followPathCommand(3, false);
+    autoScoreLongGoalwithTroubleshooting();
+    // add reverse intake here
+
+    // score round 2 (intaking and scoring)
+    followPathCommand(4, false);
+    autonomousIntake();
+
+    followPathCommand(5, false);
+    autoScoreLongGoalwithTroubleshooting();
 }
+
 void Robot::skillz()
 {
     while (isCalibrating)
     {
         vex::wait(100, vex::msec);
     }
-    vex::wait(200, vex::msec);
+
+    // intake and scoring 1
     followPathCommand(0, false); // line up to tube
+    followPathCommand(1, false); // go to chute
     autonomousIntake();          // fill up intake
 
-    followPathCommand(1, false); // go to long goal
+    followPathCommand(2, false); // go to long goal
     autonomousScoreLongGoal();   // go score long goal
 
-    followPathCommand(2, false); // unstuck triangle thing by going forwards
+    followPathCommand(3, false); // unstuck triangle thing by going forwards
+    followPathCommand(4, false); // line up to get a couple more balls
 
-    followPathCommand(3, false); // line up to get a couple more balls
-
-    followPathCommand(4, false);   // get in front of balls
-    vex::wait(200, vex::msec);     // make sure intake is starting
+    followPathCommand(5, false);   // get in front of balls
     intakeOuttake.startIntaking(); // start intaking
+    vex::wait(200, vex::msec);     // make sure intake is starting
 
-    followPathCommand(5, false); // get balls by driving forwards
+    followPathCommand(6, false); // get balls by driving forwards
     intakeOuttake.stop();        // stop intaking at end of path
     vex::wait(200, vex::msec);
 
-    followPathCommand(6, false); // go backwards
+    followPathCommand(7, false); // go backwards
 
-    followPathCommand(7, false); // go to long goal again
+    followPathCommand(8, false); // go to long goal again
 
     // start scoring on the other side
-    followPathCommand(8, false);
+    followPathCommand(9, false);
     autonomousScoreLongGoal();
 
     // go to chute on other side (TODO: need to make sure flap is down)
-    followPathCommand(9, false);
-    autonomousIntake();
-
-    backup(-.2);
-    // go to target heading for path 9 (TODO: we probably need to back out before we do this...)
-    headingController.goToTargetHeadingCommand(paths[10].startHeadingRadians);
     followPathCommand(10, false);
+    // autonomousIntake();
+
+    // backup(-.2);
+    // // go to target heading for path 9 (TODO: we probably need to back out before we do this...)
+    // headingController.goToTargetHeadingCommand(paths[10].startHeadingRadians);
+    // followPathCommand(10, false);
+
     // score low center goal
-    autonomousScoreLowGoal();
+    // autonomousScoreLowGoal();
 
-    backup(-.2);
-    // go to target heading to get ready to line up
-    headingController.goToTargetHeadingCommand(paths[11].startHeadingRadians);
-    followPathCommand(11, false);
+    // backup(-.2);
+    // // go to target heading to get ready to line up
+    // headingController.goToTargetHeadingCommand(paths[11].startHeadingRadians);
+    // followPathCommand(11, false);
 
-    // line up to park
-    headingController.goToTargetHeadingCommand(paths[12].startHeadingRadians);
-    followPathCommand(12, false);
-    // park
-    followPathCommand(13, false);
-    autonomousPark();
+    // // line up to park
+    // headingController.goToTargetHeadingCommand(paths[12].startHeadingRadians);
+    // followPathCommand(12, false);
+    // // park
+    // followPathCommand(13, false);
+    // autonomousPark();
 }
 
 void Robot::log()

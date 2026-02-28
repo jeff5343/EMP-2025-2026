@@ -29,7 +29,7 @@ void IntakeOuttake::set(double in, double through, double out) {
 void IntakeOuttake::startIntaking()
 {
     intake(0.8);
-    throughtake(0.8);
+    throughtake(0.0);
     outtake(0);
 }
 
@@ -68,12 +68,12 @@ void IntakeOuttake::stop()
 void IntakeOuttake::intakeChutePistonIn()
 {
     // insert piston code here to bring intake chute piston in
-    intakeChutePiston.set(true);
+    intakeChutePiston.set(false);
 }
 void IntakeOuttake::intakeChutePistonOut()
 {
     // insert piston code here to bring intake chute piston out
-    intakeChutePiston.set(false);
+    intakeChutePiston.set(true);
 }
 void IntakeOuttake::intakeChutePistonToggle()
 {
@@ -93,6 +93,13 @@ void IntakeOuttake::trianglePistonOut()
     // insert piston code here to bring triangle piston out
     trianglePiston.set(true);
 }
+
+void IntakeOuttake::trianglePistonToggle()
+{
+    triangleOut = !triangleOut;
+    trianglePiston.set(triangleOut);
+}
+
 void IntakeOuttake::outtakeElevationPistonIn()
 {
     // insert piston code here to bring outtake elevation piston in
@@ -102,4 +109,17 @@ void IntakeOuttake::outtakeElevationPistonOut()
 {
     // insert piston code here to bring outtake elevation piston out
     outtakeElevationPiston.set(true);
+}
+
+void IntakeOuttake::descorerPistonIn() {
+    descorePiston.set(true);
+}
+
+void IntakeOuttake::descorerPistonOut() {
+    descorePiston.set(false);
+}
+
+void IntakeOuttake::descorerPistonToggle() {
+    descoreOut = !descoreOut;
+    descorePiston.set(descoreOut);
 }
