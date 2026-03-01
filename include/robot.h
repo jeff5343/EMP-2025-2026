@@ -148,7 +148,7 @@ public:
     static double throughtakeSpeed;
     static double outtakeSpeed;
 
-    const bool IS_SKILLS = false;
+    const bool IS_SKILLS = true;
 
     /* called in pre_auton */
     void init(ALLIANCE alliance);
